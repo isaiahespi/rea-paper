@@ -3,6 +3,10 @@
 
 /.quarto/
 /_manuscript
+/fonts
+/src
+/notes
+/data-raw
 
 .Rproj.user
 .Rhistory

@@ -1,0 +1,431 @@
+---
+title: Analysis of Question Wording Differences
+author: Isaiah
+---
+
+
+
+
+## Differences from Question Wording
+
+::: {.callout-note}
+This supplement is under construction. Resolution of various formatting issues are in progress.
+:::
+
+The following is an analysis of results from a question wording experiment embedded within a survey of public opinion on election administration and election staff. Certain questions were included in the survey to assess whether certain actions taken by election officials or circumstances at polling sites would; 
+
+  1) impact one's confidence in the fairness and accuracy of upcoming elections, or 
+  2) impact confidence in voter safety while voting in-person. 
+
+It was hypothesized that different statement wording would have some effect on response choice to certain item statements. In order to test this hypothesis, another set of the same questions were constructed and half of the sample was presented with one version of item statements, while the other half was presented with a different version in which a few statements were slightly modified. Specifically, three of the six statements in question set 'B' [`Q44`, `Q46`] differed from three statements in question set 'A' [`Q41`, `Q43`]. See the table below for the full breakdown.
+  
+
+```{r}
+#| label: qset-setup
+#| include: false
+
+
+# create a table containing the differing statements for question sets A and B
+
+qsetA <- df |> 
+  select(q41_1:q46_6) |> 
+  labelled::set_variable_labels(
+    q41_1 = "Election officials test every machine used in the election to ensure they are secure.",
+    q41_2 = "Election officials conduct audits of ballots after every election to confirm the results were accurate.",
+    q41_3 = "Poll watchers affiliated with the political parties or candidates observe the election.",
+    q41_4 = "Election staff and volunteers include military veterans and their family members from the community.",
+    q41_5 = "Election staff and volunteers include lawyers from the community.",
+    q41_6 = "Election staff and volunteers include college students from the community.",
+    q43_1 = "Election officials ensure that law enforcement officers are present at polling sites.",
+    q43_2 = "Poll watchers affiliated with the political parties or candidates observe the election.",
+    q43_3 = "People holding signs or giving out literature in support of a candidate or ballot question.",
+    q43_4 = "Election staff and volunteers include military veterans and their family members from the community.",
+    q43_5 = "Election staff and volunteers include lawyers from the community.",
+    q43_6 = "Election staff and volunteers include college students from the community."
+    ) |> 
+  surveytoolbox::varl_tb() |> 
+  select(var, var_label) |> 
+  dplyr::slice(1:12) |> 
+  dplyr::rename('Qset A' = var,
+                'A statements' = var_label)
+
+qsetB <- df |> 
+  select(q41_1:q46_6) |> 
+  labelled::set_variable_labels(
+    q44_1 = "Election officials test every machine used in the election to ensure they are secure.",
+    q44_2 = "The majority of election staff and volunteers consist of military veterans and their family members from the community.",
+    q44_3 = "The majority of election staff and volunteers consist of lawyers from the community.",
+    q44_4 = "Election officials conduct audits of ballots after every election to confirm the results were accurate.",
+    q44_5 = "Poll watchers affiliated with the political parties or candidates observe the election.",
+    q44_6 = "The majority of election staff and volunteers consist of college students from the community.",
+    q46_1 = "Election officials ensure that law enforcement officers are present at polling sites.",
+    q46_2 = "The majority of election staff and volunteers consist of military veterans and their family members from the community.",
+    q46_3 = "The majority of election staff and volunteers consist of lawyers from the community.",
+    q46_4 = "Poll watchers affiliated with the political parties or candidates observe the election.",
+    q46_5 = "The majority of election staff and volunteers consist of college students from the community.",
+    q46_6 = "People holding signs or giving out literature in support of a candidate or ballot question."
+    ) |> 
+  surveytoolbox::varl_tb() |> 
+  select(var, var_label) |> 
+  dplyr::slice(13:24) |> 
+  dplyr::rename('Qset B' = var,
+                'B statements' = var_label)
+
+# bind the dataframes together as one with two columns
+qsetAB <- dplyr::bind_cols(qsetA, qsetB)
+rm(qsetA, qsetB)
+```
+
+
+```{r}
+#| label: tbl-qset
+#| tbl-cap: "Question Numbers and Statements"
+#| fig-cap: "Question Numbers and Statements"
+#| column: page-inset-right
+
+
+# create a table containing the differing statements for question sets A and B
+kableExtra::kbl(qsetAB, format = 'html', align = 'l') |> 
+  kableExtra::pack_rows("Regardless of whether any of these are actually the case, how would the following impact your confidence in the fairness and accuracy of elections conducted this November?", 1, 6) |>
+  kableExtra::pack_rows("How would the following impact your confidence that voters are safe from violence, threats of violence, or intimidation while voting in-person during elections this November?", 7, 12) |>
+  kableExtra::row_spec(c(2,9), align = 'l') |> 
+  kableExtra::footnote(
+    general ="Response options ranged from 'Decrease confidence a lot', 'Decrease confidence somewhat', 'No impact on confidence', 'Increase confidence somewhat', and 'Increase confidence a lot'.",
+    footnote_as_chunk = T
+  ) |> 
+  kableExtra::kable_styling(
+    font_size = 13,
+    row_label_position = 'l',
+    bootstrap_options = c('striped',
+                          'bordered',
+                          'hover',
+                          'condensed',
+                          'responsive'))
+
+```
+
+
+Survey participants were randomly grouped according to the set of questions presented to them, `Qset A` or `Qset B` respectively, and responses were analyzed to test for significant differences between the different item statements. If significant differences were observed for each modified item statement in comparison to the unmodified versions, then response effects could be attributed to the change in statement wording. However, if differences were significant for one or two of the statements but not all three, then response effects could not be attributed to statement wording alone. If no differences were found, then the responses from the two question sets would be considered equivalent and coalesced into one variable per question for subsequent analysis. 
+
+To put it simply, significant differences in proportion needed to be observed for all three statements that differed between `Qset A` and `Qset B` in order to reject the null hypothesis that the two question sets were equivalent, and support the theory that response effects were due to the difference in question wording.   
+
+In order to test the statement-wording hypothesis, the five-point Likert item response options were re-coded as dichotomous 'dummy' variables. For instance, "Increase confidence a lot" and "Increase confidence somewhat" were collapsed and recoded such that "Increase" = 1, whereas all other responses were collapsed and re-coded such that "No increase" = 0. The same process was done for any "Decrease" responses. Proportions of responses were compared for both the 'Increase' and 'Decrease' dummy categories.
+
+
+```{r}
+#| label: law-school-setup1
+#| include: false
+
+# I coalesce these vars so I can put them in a cross tab by qset
+law_skool <- df |> 
+  group_by(rowID) |> 
+  mutate(
+    q41.5.clps = dplyr::coalesce(q41_5.clps, q44_3.clps),
+    q41.6.clps = dplyr::coalesce(q41_6.clps, q44_6.clps),
+    q43.5.clps = dplyr::coalesce(q43_5.clps, q46_3.clps),
+    q43.6.clps = dplyr::coalesce(q43_6.clps, q46_5.clps),) |>
+  ungroup() |>
+  filter(!is.na(qset)) 
+
+law_skool <- law_skool |> 
+  select(qset, q41.5.clps, q41.6.clps, q43.5.clps, q43.6.clps) |> 
+  mutate(
+    fair_lawyers = dplyr::case_when(
+      q41.5.clps == 'increase'  ~ 'Increase',
+      q41.5.clps == 'no_impact'  ~ 'No increase',
+      q41.5.clps == 'decrease'  ~ 'No increase',
+      TRUE ~ NA
+    )) |> 
+  mutate(
+    fair_students = dplyr::case_when(
+      q41.6.clps == 'increase'  ~ 'Increase',
+      q41.6.clps == 'no_impact'  ~ 'No increase',
+      q41.6.clps == 'decrease'  ~ 'No increase',
+      TRUE ~ NA
+    )) |> 
+  mutate(
+    safe_lawyers = dplyr::case_when(
+      q43.5.clps == 'increase'  ~ 'Increase',
+      q43.5.clps == 'no_impact'  ~ 'No increase',
+      q43.5.clps == 'decrease'  ~ 'No increase',
+      TRUE ~ NA
+    )) |> 
+  mutate(
+    safe_students = dplyr::case_when(
+      q43.6.clps == 'increase'  ~ 'Increase',
+      q43.6.clps == 'no_impact'  ~ 'No increase',
+      q43.6.clps == 'decrease'  ~ 'No increase',
+      TRUE ~ NA
+    )) |> 
+  select(qset, fair_lawyers, fair_students, safe_lawyers, safe_students) 
+
+law_skool <- law_skool |> 
+  mutate(qset = forcats::fct_recode(qset, Includes = "A", Majority = "B"))
+```
+
+
+```{r}
+#| label: law-school-setup2
+#| include: false
+
+var_names <- law_skool[,2:5] |> colnames()
+
+# function to run prop_tests over a list of crosstabs 
+tabyl.fun <- function(x){
+  crab_df <- law_skool |> select(qset, all_of(x)) |> 
+    janitor::tabyl(qset, !!sym(x), show_na = F) |> 
+    select(-1) |> 
+    rstatix::prop_test(detailed = T)
+}
+
+# this maps the function tabyl.fun to each character string in 'var_names'
+# the results are put into a list of tibbles, in this case, a list of 4 tibbles
+law_skool_prop_tests <- map(var_names, tabyl.fun)
+
+# I combine the 4 tibbles within the list into a single tibble
+pt_lawyers_students <- purrr::reduce(law_skool_prop_tests, dplyr::full_join)
+
+# add column that identifies rows of different prop_tests
+pt_lawyers_students$items <- var_names
+
+# add column that identifies response compared
+response <- c("Increase", "Increase", "Increase", "Increase")
+pt_lawyers_students$response <- response
+
+
+
+# relocate columns to better positions, rename columns, remove df column
+pt_lawyers_students <- pt_lawyers_students |>
+  dplyr::relocate(c(items, response), .before = n) |>
+  dplyr::relocate(p.signif, .after = p) |>
+  dplyr::rename(valid_n = n,
+                Qset_A_n = n1,
+                Qset_B_n = n2) |>
+  dplyr::mutate(prop.diff = estimate1 - estimate2,
+                .before = statistic) |> 
+  select(-df)
+```
+
+::: {.panel-tabset}
+
+## Fairness-Lawyers
+
+```{r}
+#| label: tbl-fair-lawyers
+#| tbl-cap: "'Increase' confidence in election fairness by question wording: Lawyers"
+#| fig-cap: "Proportion of those who report an 'Increase' in confidence in fairness of elections when election staff either 'Includes' or is a 'majority' of lawyers"
+
+
+# crabs
+law_skool |> 
+  janitor::tabyl(qset, fair_lawyers, show_na = F) |> 
+  janitor::adorn_totals('both') |> 
+  janitor::adorn_percentages(denominator = 'row') |> 
+  janitor::adorn_pct_formatting(digits = 2, affix_sign = F) |> 
+  janitor::adorn_ns() |> 
+  janitor::adorn_title(
+    'combined',
+    row_name = "Wording") |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    latex_options = "basic",
+    font_size = 13
+  )
+```
+
+
+## Fairness-Students
+
+```{r}
+#| label: tbl-fair-students
+#| tbl-cap: "'Increase' confidence in election fairness by question wording: College Students"
+#| fig-cap: "Proportion of those who report an 'Increase' in confidence in fairness of elections when election staff either 'Includes' or is a 'majority' of college students"
+
+# crabs
+law_skool |> 
+  janitor::tabyl(qset, fair_students, show_na = F) |> 
+  janitor::adorn_totals('both') |> 
+  janitor::adorn_percentages(denominator = 'row') |> 
+  janitor::adorn_pct_formatting(digits = 2, affix_sign = F) |> 
+  janitor::adorn_ns() |> 
+  janitor::adorn_title(
+    'combined',
+    row_name = "Wording") |>  
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    latex_options = "basic",
+    font_size = 13
+  )
+```
+
+## Safety-Lawyers
+
+```{r}
+#| label: tbl-safe-lawyers
+#| tbl-cap: "'Increase' confidence in voter safety by question wording: Lawyers"
+#| fig-cap: "Proportion of those who report an 'Increase' in confidence in voter safety when election staff either 'Includes' or is a 'majority' of college students"
+
+
+# crabs
+law_skool |> 
+  janitor::tabyl(qset, safe_lawyers, show_na = F) |> 
+  janitor::adorn_totals('both') |> 
+  janitor::adorn_percentages(denominator = 'row') |> 
+  janitor::adorn_pct_formatting(digits = 2, affix_sign = F) |> 
+  janitor::adorn_ns() |>  
+  janitor::adorn_title(
+    'combined',
+    row_name = "Wording") |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    latex_options = "basic",
+    font_size = 13
+  )
+```
+
+## Safety-Students
+
+```{r}
+#| label: tbl-safe-students
+#| tbl-cap: "'Increase' confidence in voter safety by question wording: College Students"
+#| fig-cap: "'Increase' confidence in voter safety by question wording: College Students"
+
+
+# crabs
+law_skool |> 
+  janitor::tabyl(qset, safe_students, show_na = F) |> 
+  janitor::adorn_totals('both') |> 
+  janitor::adorn_percentages(denominator = 'row') |> 
+  janitor::adorn_pct_formatting(digits = 2, affix_sign = F) |> 
+  janitor::adorn_ns() |>  
+  janitor::adorn_title(
+    'combined',
+    row_name = "Wording") |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    latex_options = "basic",
+    font_size = 13
+  )
+
+
+```
+
+:::
+
+
+Results of testing revealed no statistically significant differences *attributable to differences in question wording*. However, there were significant differences observed between the fifth and sixth statements pertaining to lawyers and college students. Significant differences were found between the following items; 
+
+```{r}
+#| label: tbl-qset2
+#| tbl-cap: "Statements with significant differences between Question Set"
+#| column: page-inset-right
+
+# create a table containing the differing statements for question sets A and B
+A <- qsetAB |> 
+  filter(row_number() == 5:6 | row_number() == 11:12) |> 
+  select(1:2)
+  
+B <- qsetAB |> 
+  filter(row_number() == 3 | row_number() == 6 | row_number() == 9 | row_number() == 11) |> 
+  select(3:4)
+
+AB <- dplyr::bind_cols(A, B)
+rm(A, B)
+
+kableExtra::kbl(AB, format = 'html', align = 'l') |>
+  kableExtra::pack_rows(
+    "...how would the following impact your confidence in the fairness and accuracy of elections conducted this November?",
+    1,
+    2
+  ) |>
+  kableExtra::pack_rows(
+    "How would the following impact your confidence that voters are safe from violence, threats of violence, or intimidation while voting in-person during elections this November?",
+    3,
+    4
+  ) |>
+  kableExtra::row_spec(c(2, 5), align = 'l') |>
+  kableExtra::kable_styling(
+    font_size = 13,
+    row_label_position = 'l',
+    bootstrap_options = c('striped', 'bordered', 'hover', 'condensed', 'responsive')
+  )
+
+```
+
+```{r}
+
+df |> 
+  mutate(qset = forcats::fct_recode(
+    qset,
+    "Election staff 'includes'..." = 'A',
+    "Election staff is 'Majority' of... " = 'B'
+  )) |> 
+  sjlabelled::var_labels(
+    q41.4 = "Veterans",
+    q41.5 = "Lawyers",
+    q41.6 = "College Students",
+    q43.4 = "Veterans",
+    q43.5 = "Lawyers",
+    q43.6 = "College Students"
+  ) |> 
+  ggstats::gglikert(include = c(q41.4, q41.5, q41.6, q43.4, q43.5, q43.6),
+                    y = 'qset', facet_rows = vars(.question))+
+  labs(
+    title = "Differences in Proportion Between Question Wording")+
+  theme_bw()+
+  theme(legend.position = 'bottom')
+
+
+```
+
+
+```{r}
+#| label: pt-law-school
+#| tbl-cap: "Prop. Test Results Comparing Qset A to Qset B"
+#| fig-cap: "Prop. Test Results Comparing Qset A to Qset B"
+#| column: page-inset-right
+#| echo: false
+
+# print prop_tests as table 
+kableExtra::kbl(
+  pt_lawyers_students,
+  format = 'html',
+  format.args = list(scientific = F),
+  digits = 5
+  ) |> 
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "bordered", "condensed", "responsive"),
+    latex_options = "basic",
+    font_size = 13,
+    fixed_thead = T
+  )
+
+```
+
+
+
+Comparison of responses between `Qset A` and `Qset B` revealed differences in response to item statements concerning lawyers and students. The difference in proportions were initially attributed to the different statement wording between question sets A and B. However, the effect appears to be conditional on the group identified in the statement. Since differences are only present when the statement concerns either lawyers or students . That is, significant differences were observed when a statement read, "The majority of election staff and volunteers consist of lawyers/college students in the community" (qset B) compared to when a statement read, "Election staff and volunteers includes lawyers/college students in the community" (qset A). 
+
+Moreover, the direction of the difference remained consistent. Confidence in fairness and accuracy of elections, as well as confidence in voter safety at the polls, was reported to increase less and decrease more under the prospect of having the majority of election staff consist of lawyers/college students compared to when election staff is said to merely *include* lawyers/college students. 
+
+To put in other words, there was a higher proportion of those who reported that their confidence in fairness and voter safety would decrease among those who read that the majority of election staff consists of either lawyers or college students compared to those who read that election staff merely included lawyers or college students. Conversely, no significant differences were observed between question/statement wording when the group was identified as military veterans and their family members in the community. 
+
+These results suggest that the differences in proportion initially attributed to question/statement wording are likely an artifact of a rival cause, potentially related to general impressions of the groups involved.  
+
+
+Where proportions between the two independent samples were equivalent (i.e., no significant differences in proportion were found), responses were coalesced (i.e., merged) into one variable.
+
+-   Q44_1 coalesced into Q41_1
+-   Q44_4 coalesced into Q41_2
+-   Q44_5 coalesced into Q41_3
+-   Q44_2 coalesced into Q41_4
+-   Q46_1 coalesced into Q43_1
+-   Q46_4 coalesced into Q43_2
+-   Q46_6 coalesced into Q43_3
+-   Q46_2 coalesced into Q43_4
+
+

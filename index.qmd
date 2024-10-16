@@ -6,12 +6,13 @@ authors:
   - name: Isaiah Espinoza
     email: gespinoz@umd.edu
     roles: author
-    corresponding: true
-affiliations:
-  - id: uni
-    name: University of Maryland
-    department: Department of Government and Politics
-reference-section-title: Bibliography
+    affiliation:
+      - name: University of Maryland
+        department: Department of Government and Politics
+        city: College Park
+        state: MD
+        country: US
+reference-section-title: References
 date: "2024-10-16"
 ---
 

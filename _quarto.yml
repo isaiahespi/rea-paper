@@ -1,6 +1,8 @@
 project:
   type: manuscript
   output-dir: docs
+  render: 
+    - index.qmd
 
 manuscript:
   article: index.qmd
@@ -16,27 +18,43 @@ format:
     toc: true
     toc-depth: 3
     embed-resources: true
+    embed-fonts: true
     link-citations: true
     smooth-scroll: true
     link-external-newwindow: true
     citations-hover: true
+    theme: 
+      light: [bookup.scss]
+      dark: [bookup.scss, bookuo_dark.scss]
   # docx: default
   jats: default
 
   # (other formats)
   # pdf: default
-  aog-article-pdf: default
+  aog-article-pdf:
+    keep-tex: false
+    mainfont: Palatino Linotype
+    urlcolor: RoyalBlue
   submittable-pdf:
     keep-tex: false
     endnotes: false
     titlepage: false
   submittable-docx:
     keep-md: false
-  preprint-typst: 
-    mainfont: Libertinus Serif
-    running-head: Running head # preprint-typst format
-    
+  # preprint-typst: 
+  #   mainfont: Libertinus Serif
+  #   running-head: Running head # preprint-typst format
+  #   bibliography: references.bib
+  #   bibliographystyle: "chicago-author-date"
 
+format-links:
+    - html
+    - format: submittable-pdf
+      text: PDF
+      icon: file-pdf
+    - format: submittable-docx
+      text: MS Word
+      icon: file-word
 execute:
   freeze: auto
 
