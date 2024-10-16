@@ -1,11 +1,18 @@
 ---
 title: title
+shorttitle: A Short title # aog-article-pdf
+shortauthors: Isaiah      # aog-article-pdf
 authors:
-  - name: Norah Jones
-    affiliation: The University
-    roles: writing
+  - name: Isaiah Espinoza
+    email: gespinoz@umd.edu
+    roles: author
     corresponding: true
-bibliography: references.bib
+affiliations:
+  - id: uni
+    name: University of Maryland
+    department: Department of Government and Politics
+reference-section-title: Bibliography
+date: "2024-10-16"
 ---
 
 ## Section
