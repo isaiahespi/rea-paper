@@ -3,9 +3,6 @@ project:
 
 manuscript:
   article: index.qmd
-  notebooks: 
-    - notebook: data-processing.qmd
-      title: Demo
 
 bibliography: references.bib
 csl: american-political-science-association.csl
@@ -15,12 +12,13 @@ date-format: "YYYY-M-D"
 
 format:
   bookup-html: 
-      toc: true
-      toc-depth: 3
-      embed-resources: true
-      link-citations: true
-      smooth-scroll: true
-      link-external-newwindow: true
+    toc: true
+    toc-depth: 3
+    embed-resources: true
+    link-citations: true
+    smooth-scroll: true
+    link-external-newwindow: true
+    citations-hover: true
   # docx: default
   jats: default
 
