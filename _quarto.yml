@@ -1,0 +1,45 @@
+project:
+  type: manuscript
+
+manuscript:
+  article: index.qmd
+  notebooks: 
+    - notebook: data-processing.qmd
+      title: Demo
+
+bibliography: references.bib
+csl: american-political-science-association.csl
+mainfont: Palatino Linotype
+date-modified: last-modified
+date-format: "YYYY-M-D"
+
+format:
+  bookup-html: 
+      toc: true
+      toc-depth: 3
+      embed-resources: true
+      link-citations: true
+      smooth-scroll: true
+      link-external-newwindow: true
+  # docx: default
+  jats: default
+
+  # (other formats)
+  # pdf: default
+  aog-article-pdf: default
+  submittable-pdf:
+    keep-tex: false
+    endnotes: false
+    titlepage: false
+  submittable-docx:
+    keep-md: false
+  preprint-typst: 
+    mainfont: Libertinus Serif
+    running-head: Running head # preprint-typst format
+    
+
+execute:
+  freeze: auto
+
+
+
