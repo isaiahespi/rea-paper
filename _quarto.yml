@@ -31,10 +31,10 @@ format:
 
   # (other formats)
   # pdf: default
-  aog-article-pdf:
-    keep-tex: false
-    mainfont: Palatino Linotype
-    urlcolor: RoyalBlue
+  # aog-article-pdf:
+  #   keep-tex: false
+  #   mainfont: Palatino Linotype
+  #   urlcolor: RoyalBlue
   submittable-pdf:
     keep-tex: false
     endnotes: false
