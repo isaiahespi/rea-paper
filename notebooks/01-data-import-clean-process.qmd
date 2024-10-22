@@ -38,10 +38,55 @@ raw_spss_dict <- raw_spss |> labelled::generate_dictionary()
 # data dictionary from labelled package. Will save as .csv file
 raw_spss_dict <- raw_spss |> surveytoolbox::data_dict()
 
-# uncomment to save the data dictionary as a .csv file
-# write.csv(raw_spss_dict, file = "codebooks/raw_spss_dict.csv")
+# save data dictionary of raw_spss dataset download
+write.csv(raw_spss_dict, file = "data/raw_spss_dict.csv")
 
 ```
+
+## Filter Raw data
+
+From the raw data set, there are `r dim(raw_spss)[1]` observations in the data set (each observation is a row). The survey was programmed in such a way to automatically drop participants who, 
+
+1.    Didn't consent to take part in the survey. 
+2.    Were under 18 years of age[^1]
+3.    Self-identified as not being a U.S. citizen
+4.    Failed two attention checks embedded within the survey
+
+Although the survey was programmed in this way, however, any responses of these participants were still recorded and included in the data. Survey participants may not have been dropped from participating in the survey until after they had already entered in a few responses. For instance, a respondent failing both attention checks would not have been dropped from the survey until the tenth question (Q10) within the survey, but their responses prior to being dropped would still be included in a row within the data set. This results in a lot of missing data (i.e., NA values) filling up observations (rows) in the data. The following code filters the data set to exclude any respondent who met the aforementioned exclusion criteria.
+
+[^1]: The panel of participants gathered by Lucid already excluded anyone under 18 years of age, however a number of discrepancies were found between the age of respondents included in the Lucid embedded data and the age reported by the respondents themselves. However, the survey question asking the respondent's age was programmed so that respondents selected their age from a drop down menu. Since the lowest available option in the drop down list of ages was 18, there was no way for respondents who may have been under 18 to report their actual age from the drop down menu. Of course, it is always possible for any respondent to simply lie about their age, but this footnote is added for posterity.
+
+```{r}
+#| label: subset-data
+
+
+data_spss <- raw_spss |> 
+  tibble::rowid_to_column("rowID") |>   # <1>
+  filter(Q1 == 1, # consent = 1         # <2>
+         Q3 != 3,                       # <3>
+         Q9 == 1 | Q9 == 0 & Q10 == 1   # <4>
+         )
+
+```
+
+1.    Adds a column at the start of the dataframe (`rowID`) of sequential row ids starting at 1.
+2.    Exclude anyone who didn't consent to partake in the survey
+3.    Exclude non-U.S. citizens
+4.    Exclude anyone who failed the two attention checks
+
+This results in `r dim(data_spss)[1]` number of observations in the data set after excluding those who met the exclusion criteria. There are still a number of respondents who failed to fully complete the survey. These respondents either closed the survey prior to completion or failed to click the submit button at the end of the survey. They can be identified in the data set by the `Finished` variable in the data set where `Finished = 1`.
+
+```{r}
+#| label: finished-count
+
+# identify and count the number of partial responses in the data
+data_spss |> 
+  group_by(finished) |> 
+  count()
+
+```
+
+From the code above, I found that there were `125` participants who didn't complete the survey. It seemed important to identify the number of incomplete or partial responses in the data set considering subsequent analysis will have to take missing values into consideration. I decided to keep partial responses instead of dropping any respondent who didn't fully complete the survey. I reasoned that the responses were still validly recorded and because I could only speculate the reasons why so many respondents failed to complete the survey.  
 
 ## create dataframe from raw data
 
@@ -52,19 +97,9 @@ The following code is lengthy, but creates a dataframe (object class `tbl_df` `t
 
 # create dataframe
 data_spss <- raw_spss |>
-  janitor::clean_names() |>
-  
-  # decision was made to include only those who fully completed the survey
-  filter(finished==1) |> 
-  
-  # get rid of superfluous Qualtrics columns
-  # Keep Qualtrics `response_id`
-  dplyr::select(!1:8 & !10:17 & !265) |>
-  
-  # put demographic data up front
-  dplyr::relocate(q59:q74, .before = q1) |>
-  
-  # rename demographic vars and timing vars and identify lucid vars
+  janitor::clean_names() |>                                       # <1>
+  select(!1:8 & !10:17 & !265) |>                                 # <2>
+  relocate(q59:q74, .before = q1) |>                              # <3>
   dplyr::rename(
     q13_treat_time = q13_page_submit,
     q16_control_time = q16_page_submit,
@@ -94,14 +129,9 @@ data_spss <- raw_spss |>
     partylean = q72,
     ideo = q73,
     ideolean = q74
-  ) |>
-  
-  # put both response ID variables next to each other
-  dplyr::relocate(lucid_rid, .after = response_id) |>
-  
-  # set variable labels for embedded lucid vars
-  # set variable labels for select questions
-  labelled::set_variable_labels(
+  ) |>                                                           # <4>
+  relocate(lucid_rid, .after = response_id) |>                   # <5>
+  labelled::set_variable_labels(                                 # <6>
     lucid_age = "Lucid: age",
     lucid_gender = "Lucid: What is your gender?",
     lucid_hhi = "Lucid: What is your current Annual household income before taxes?",
@@ -112,71 +142,60 @@ data_spss <- raw_spss |>
     lucid_region = "Lucid: For Region, ZIP is asked which is automatically mapped to the Region",
     lucid_zip = "Lucid: What is your ZIP code?",
     lucid_rid = "Lucid respondent ID",
-    q1 = "Consent to Participate...",
+    q1    = "Consent to Participate...",
     q28_1 = "There will be voter fraud...",
     q28_2 = "Many votes will not actually be counted",
     q28_3 = "Many people will show up to vote and be told they are not eligible",
     q28_4 = "A foreign country will tamper with the votes cast in Maricopa County, Arizona...",
-    q28_5 = "Election officials in Maricopa County, Arizoa will try to discourage some people from voting",
+    q28_5 = "Election officials in Maricopa County, Arizona will try to discourage some people from voting",
     q40_1 = "There will be voter fraud...",
     q40_2 = "Many votes will not actually be counted",
     q40_3 = "Many people will show up to vote and be told they are not eligible",
     q40_4 = "A foreign country will tamper with the votes cast in your local area...",
     q40_5 = "Election officials in your community will try to discourage some people from voting",
+
     q41_1 = "Election officials test every machine used in the election to ensure they are secure.",
     q41_2 = "Election officials conduct audits of ballots after every election...",
     q41_3 = "Poll watchers affiliated with the political parties or candidates observe the election.",
     q41_4 = "Election staff and volunteers include military veterans and their family members from the community.",
     q41_5 = "Election staff and volunteers include lawyers from the community.",
     q41_6 = "Election staff and volunteers include college students from the community.",
+    
     q43_1 = "Election officials ensure that law enforcement officers are present at polling sites.",
     q43_2 = "Poll watchers affiliated with the political parties or candidates observe the election.",
     q43_3 = "People holding signs or giving out literature in support of a candidate or ballot question.",
     q43_4 = "Election staff and volunteers include military veterans and their family members from the community.",
     q43_5 = "Election staff and volunteers include lawyers from the community.",
     q43_6 = "Election staff and volunteers include college students from the community.",
+    
     q44_1 = "Election officials test every machine used in the election to ensure they are secure.",
-    q44_2 = "Election officials conduct audits of ballots after every election to confirm the results were accurate.",
-    q44_3 = "Poll watchers affiliated with the political parties or candidates observe the election.",
-    q44_4 = "The majority of election staff and volunteers consist of military veterans and their family members from the community.",
-    q44_5 = "The majority of election staff and volunteers consist of lawyers from the community.",
+    q44_2 = "The majority of election staff and volunteers consist of military veterans and their family members from the community.",
+    q44_3 = "The majority of election staff and volunteers consist of lawyers from the community.",
+    q44_4 = "Election officials conduct audits of ballots after every election to confirm the results were accurate.",
+    q44_5 = "Poll watchers affiliated with the political parties or candidates observe the election.",
     q44_6 = "The majority of election staff and volunteers consist of college students from the community.",
+    
     q46_1 = "Election officials ensure that law enforcement officers are present at polling sites.",
-    q46_2 = "People holding signs or giving out literature in support of a candidate or ballot question.",
-    q46_3 = "Poll watchers affiliated with the political parties or candidates observe the election.",
-    q46_4 = "The majority of election staff and volunteers consist of military veterans and their family members from the community.",
-    q46_5 = "The majority of election staff and volunteers consist of lawyers from the community.",
-    q46_6 = "The majority of election staff and volunteers consist of college students from the community.",
+    q46_2 = "The majority of election staff and volunteers consist of military veterans and their family members from the community.",
+    q46_3 = "The majority of election staff and volunteers consist of lawyers from the community.",
+    q46_4 = "Poll watchers affiliated with the political parties or candidates observe the election.",
+    q46_5 = "The majority of election staff and volunteers consist of college students from the community.",
+    q46_6 = "People holding signs or giving out literature in support of a candidate or ballot question.",
     group = "Experimental condition",
-    qset = "Condition A = question set [q41, q43] ; Condition B = question set [q44, q46]"
-  ) |> 
-  
-  # filter the data to only include those who consented, U.S. citizens, 
-  # and those who didn't fail the attention check
-  dplyr::filter(q1 == 1, # include only those who consented
-         q3 != 3,        # exclude non-U.S. citizens
-         q9 == 1 | q9 == 0 & q10 == 1 #exclude attn check failures
-         ) |>  
-  
-  # add a column of ascending sequential row ids starting at 1
-  tibble::rowid_to_column("rowID")
+    qset = "A = question set [q41, q43]; B = question set [q44, q46]"
+  )
 
 
 ```
 
-The `janitor` R package is used to `clean_names()` which ensures the column names of the dataframe are unique, consist only of the '_' character, numbers, and letters. All uppercase column names will be converted to lowercase (e.g., Q1 to q1). The `dplyr::select()`, `dplyr::relocate()`, and `dplyr::rename()` functions utilize the dplyr R package to...
+1.    The `janitor` R package is used to `clean_names()` which ensures the column names of the dataframe are unique, consist only of the '_' character, numbers, and letters. All uppercase column names will be converted to lowercase (e.g., Q1 to q1).
+2.    The `dplyr::select()` selectively removes superfluous columns that come standard when survey data is downloaded from Qualtrics. 
+2.    Keep Qualtrics `response_id`
+3.    Use `dplyr::relocate()` to relocate demographic variables (e.g., Q59 to Q74) to a position just before the Q1 column
+4.    Use `dplyr::rename()` functions to rename demographic vars and timing vars and identify Lucid variables
+5.    Use `dplyr::relocate()` to put the Lucid rid ('lucid_rid') to a position just after the Qualtrics Response ID ('response_id')
+6.    Use `labelled::set_variable_labels()` to set the *variable labels* attached to each respective variable[^1].
 
--   selectively remove superfluous columns that come standard when survey data is downloaded from Qualtrics; 
--   relocate demographic variables (e.g., Q59 to Q74) to a position just before the Q1 column and the Lucid rid ('lucid_rid') to a position just after the Qualtrics Response ID ('response_id');
--   rename specific columns/variables.
-
-In addition, the function `set_variable_labels()` from the `labelled` R package sets the *variable labels* attached to each respective variable[^1]. Crucially, the raw data is filtered using `dplyr::filter()` so the resulting dataframe only includes survey respondents who... 
-
--   Consented to take the survey
--   Is a U.S. citizen
--   Passed either attention check embedded within the survey.
-
-Finally, a column is added at the front of the dataframe ('rowID') which simply adds a column at the start of the dataframe of ascending sequential row ids starting at 1. The resulting dataframe (`tbl_df`) consists of 1,388 rows, where each row consists of a valid survey response, and 254 columns/variables.
 
 [^1]: *Variable* labels differ from *value* labels. The variable labels of this data set contain the question text of the particular survey question, truncated for some. For more detailed explanation and guidance on working with labelled data, usually imported from an SPSS .sav file, see the following resources: Shannon Pileggi's [Leveraging labelled data in R](https://www.pipinghotdata.com/posts/2020-12-23-leveraging-labelled-data-in-r/) and [The case for variable labels in R](https://www.pipinghotdata.com/posts/2022-09-13-the-case-for-variable-labels-in-r/); Joseph Larmarange's R package [labelled](https://larmarange.github.io/labelled/); and Daniel Lüdecke's [Labelled Data and the sjlabelled-Package](https://strengejacke.github.io/sjlabelled/articles/intro_sjlabelled.html) and the [sjlabelled package](https://strengejacke.github.io/sjlabelled/index.html). Also see Martin Chan's R package [surveytoolbox](https://martinctc.github.io/surveytoolbox/) which is also very helpful for [Working with SPSS labels in R](https://martinctc.github.io/blog/working-with-spss-labels-in-r/).  
 
@@ -196,8 +215,8 @@ older'. Since age was indicated using a drop down list, the first response is co
 # as numeric
 data_spss |> 
   dplyr::select(lucid_age, q2) |> 
-  dplyr::mutate("match" = 
-                  ifelse(as.numeric(lucid_age) == q2, "match", "no match")) |> 
+  dplyr::mutate(
+    "match" = ifelse(as.numeric(lucid_age) == q2, "match", "no match")) |> 
   head(10)
 
 ```
@@ -206,7 +225,7 @@ The output displays the first 10 observations and no match is found comparing th
 
 [^2]: At this point, most of the variable objects of the dataframe are class `"haven_labelled"` `"vctrs_vctr"` `"double"`, which means that the variable object in R has numeric values with *value labels* attached, hence `<dbl+lbl>`. According to description of the `labelled()` function in the `haven` R package, "A labelled vector is a common data structure in other statistical environments, allowing you to assign text labels to specific values. This class makes it possible to import such labelled vectors in to R without loss of fidelity."
 
-As such, the variable `q2` cannot simply be converted to numeric (class) using the `as.numeric()` function because value label (i.e., the `'lbl'` in `<dbl+lbl>`) would be dropped, leaving the age values to incorrectly reflect the response codes rather than the actual age of the respondent. To resolve this problem, I use `dplyr::mutate()` and `dplyr::case_match()` to re-name the variable column and re-code the values to reflect the correct age and convert the object to a numeric class.
+As such, the variable `q2` cannot simply be converted to numeric (class) using the `as.numeric()` function because value label (i.e., the `'lbl'` in `<dbl+lbl>`) would be dropped, leaving the age values to incorrectly reflect the response codes rather than the actual age of the respondent. To resolve this problem, I use `dplyr::mutate()` and `dplyr::case_match()` to re-name the variable column and re-code the values to reflect the correct age and convert the object to a numeric class. Admittedly, this was quite tedious.
    
 
 ```{r}
@@ -214,7 +233,8 @@ As such, the variable `q2` cannot simply be converted to numeric (class) using t
 
 data_spss <- data_spss |>
   # rename `q2` to 'age' and recode values
-  dplyr::mutate(age = dplyr::case_match(
+  dplyr::mutate(
+    q2 = dplyr::case_match(
       q2,
       1 ~ 18,
       2 ~ 19,
@@ -290,17 +310,15 @@ data_spss <- data_spss |>
       72 ~ 89,
       73 ~ 92 # one person reported '90 or older'. R's age in Lucid data is 92
     ),
-    .after = q2, # place 'age' after `q2`
     .keep = "unused" # drop `q2` from dataframe
   ) |> 
   # set variable label consisting of question text
-  labelled::set_variable_labels(age = "What is your age?")
+  labelled::set_variable_labels(q2 = "What is your age?")
 
 
 ```
 
-It is still possible that the `lucid_age` variable doesn't match the re-coded `age` (formally `q2`) values. In fact, this is the case, as demonstrated by running the code below.
-
+It is still possible that the `lucid_age` variable doesn't match the re-coded `q2` values. In fact, this is the case, as demonstrated by running the code below.
 
 ```{r}
 #| label: lucid-age-discrepancies
@@ -319,9 +337,9 @@ data_spss |>
 
 ```
 
-What results is confirmation that there are a total of 170 discrepancies between the respondent's age as indicated by the embedded Lucid data and the age reported by the respondent in the survey. Thus, the age reported by the respondent in the survey will take precedence over the embedded data provided by Lucid[^3].
+What results is confirmation that there are a total of 170 discrepancies between the respondent's age as indicated by the embedded Lucid data and the age reported by the respondent in the survey. The age reported by the respondent in the survey will take precedence over the embedded data provided by Lucid[^3].
 
-[^3]: Note, however, that one of the response options for the question "What is your age?" (Q2) was "90 or older", and one respondent's age reported by Lucid was 92 years old. Since there was no response code associated with being 92 years of age, the response code `73` was recoded to represent 92. In this one case, it was a stroke of luck that no more than one of the survey respondents happened to be 90 years of age or older. If there was, however, then there would have been no way to recode the `age` variable to reflect those respondent's actual age *and* convert the variable object to a numeric class. This issue isn't insurmountable, of course, but the lesson here is that it seems like best practice is to ensure respondents have to manually enter their age or birth year in the survey rather than choose from a list of options.
+[^3]: Note, however, that one of the response options for the question "What is your age?" (`q2`) was "90 or older", and one respondent's age reported by Lucid was 92 years old. Since there was no response code associated with being 92 years of age, the response code `73` was recoded to represent 92. In this one case, it was a stroke of luck that no more than one of the survey respondents happened to be 90 years of age or older. If there was, however, then there would have been no way to recode the `q2` variable to reflect those respondent's actual age *and* convert the variable object to a numeric class. This issue isn't insurmountable, of course, but the lesson here is to ensure respondents manually enter their age or birth year in the survey rather than choose from a drop down list of options.
 
 ## Recode variables to identify question display order  
 
@@ -768,11 +786,17 @@ The `Qset` variable (which stands for 'Question set') identified respondents who
 
 ```{r}
 
-# merge (or coalesce) the qset vars that can be merged this merges some vars
-# from the q44 and q46 set into q41 and q43 there was no sig diff found for all
-# but the qset B questions regarding lawyers and students. However these are
-# being coalesced into single question vars anyway since I am able to to still
-# distinguish responses by the grouping var `qset`
+# merge (or coalesce) the qset vars that can be merged. 
+# The following merges vars from the q44 and q46 set into q41 and q43. `qset` A
+# was presented to one half of the respondents, whereas `qset` B was presented
+# to the other half. Because of this, the variable columns in the dataframe for
+# each question in the series contains missing values representing this fact.
+# Below I coalesce the `qset` B question items with `qset` A. The function finds
+# the first non-missing value at each position, allowing me to generate a
+# complete vector that contains the responses to the series of questions from
+# either set. I am able to distinguish between the different question sets since
+# they are still grouped by the `qset` variable.
+
 df <- df |> 
   group_by(rowID) |> 
   mutate(q41.1 = dplyr::coalesce(q41_1, q44_1),
@@ -805,37 +829,36 @@ df <- df |>
          ) |>
   ungroup() |> 
   
-  # assign variable labels to these coalesced variables
+  # add variable labels to coalesced variables
   sjlabelled::var_labels(
     q41.1 = "Election officials test machines",
     q41.2 = "Election officials conduct audits",
     q41.3 = "Partisan Poll watchers observe the election.",
-    q41.4 = "Election staff includes veterans and family",
-    q41.5 = "Election staff includes lawyers",
-    q41.6 = "Election staff includes college students",
+    q41.4 = "Election staff includes/is majority of veterans and family",
+    q41.5 = "Election staff includes/is majority of lawyers",
+    q41.6 = "Election staff includes/is majority of college students",
     
     q43.1 = "Election officials test machines",
     q43.2 = "Election officials conduct audits",
     q43.3 = "Partisan Poll watchers observe the election.",
-    q43.4 = "Election staff includes veterans and family",
-    q43.5 = "Election staff includes lawyers",
-    q43.6 = "Election staff includes college students",
+    q43.4 = "Election staff includes/is majority of veterans and family",
+    q43.5 = "Election staff includes/is majority of lawyers",
+    q43.6 = "Election staff includes/is majority of college students",
     
     q41.1.clps = "Election officials test machines",
     q41.2.clps = "Election officials conduct audits",
     q41.3.clps = "Partisan Poll watchers observe the election.",
-    q41.4.clps = "Election staff includes veterans and family",
-    q41.5.clps = "Election staff includes lawyers",
-    q41.6.clps = "Election staff includes college students",
+    q41.4.clps = "Election staff includes/is majority of veterans and family",
+    q41.5.clps = "Election staff includes/is majority of lawyers",
+    q41.6.clps = "Election staff includes/is majority of college students",
     
     q43.1.clps = "Election officials test machines",
     q43.2.clps = "Election officials conduct audits",
     q43.3.clps = "Partisan Poll watchers observe the election.",
-    q43.4.clps = "Election staff includes veterans and family",
-    q43.5.clps = "Election staff includes lawyers",
-    q43.6.clps = "Election staff includes college students"
+    q43.4.clps = "Election staff includes/is majority of veterans and family",
+    q43.5.clps = "Election staff includes/is majority of lawyers",
+    q43.6.clps = "Election staff includes/is majority of college students"
   )
-
 
 
 ```
@@ -847,54 +870,29 @@ Finally, dummy variables were created from the newly coalesced variables where 1
 # create dummy variables where 1 = 'Increase in confidence' and 0 = "No increase
 # in confidence".
 # add dummy variables to dataframe
+# this is to test treatment effects
 df <- df |> 
   mutate(across(c(q41.1.clps:q43.6.clps), 
                 ~ dplyr::case_when(
                 . == "increase" ~ 1, 
                 . == "no_impact" ~ 0,
                 . == 'decrease' ~ 0
-                ), .names = "{.col}.dum")) 
-
-```
-
-
-## Creating a purely numeric dataframe
-
-For whatever reasons, it is sometimes preferred to use a purely numeric dataframe. The following code creates a dataframe from the earlier `data_spss` dataframe that removes all value labels from the numeric values of the variables, i.e., drops all the `lbl` from `<dbl+lbl>`.
-
-The following code merely duplicates the source code from an R script located in the project directory, which can be found and viewed [here](https://github.com/isaiahespi/cdce_vets/blob/80e843e8a9fa24d1d7524c76631b709f9f675876/scripts/02-data-numeric.R).
-
-```{r}
-#| label: numeric-data-clean
-
-data2 <- data_spss |>
-  # subset spss data set to omit the display order variables
-  select(!contains("_do_")
-         & !contains("_ado_")
-         & !contains("_click")
-         & !contains("_count")) |>
-  mutate(
-    group = case_when(
-      group == "Treatment" ~ 1,
-      group == "Control" ~ 0),
-    qset = case_when(
-      qset == "A" ~ 1,
-      qset == "B" ~ 0)) |>
-  
-  # remove all 'lbl' from all <dbl+lbl> variables, making them all numeric
-  haven::zap_labels() |> 
-  # re-code values for consistent direction with like variables
-  mutate(
-    q8  = case_match(q8, 1 ~ 5, 2 ~ 4, 3 ~3, 4~2, 5 ~ 1),
-    q20 = case_match(q20, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1),
-    q23 = case_match(q23, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1),
-    q24 = case_match(q24, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1),
-    q31 = case_match(q31, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1),
-    q34 = case_match(q34, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1),
-    q35 = case_match(q35, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1),
-    q49 = case_match(q49, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1),
-    q50 = case_match(q50, 1 ~ 4, 2 ~ 3, 3 ~ 2, 4 ~ 1))
-
+                ), .names = "{.col}.dum")) |> 
+  # add variable labels
+  sjlabelled::var_labels(
+    q41.1.clps.dum = "Election officials test machines",
+    q41.2.clps.dum = "Election officials conduct audits",
+    q41.3.clps.dum = "Partisan Poll watchers observe the election.",
+    q41.4.clps.dum = "Election staff includes/is majority of veterans and family",
+    q41.5.clps.dum = "Election staff includes/is majority of lawyers",
+    q41.6.clps.dum = "Election staff includes/is majority of college students",
+    q43.1.clps.dum = "Election officials test machines",
+    q43.2.clps.dum = "Election officials conduct audits",
+    q43.3.clps.dum = "Partisan Poll watchers observe the election.",
+    q43.4.clps.dum = "Election staff includes/is majority of veterans and family",
+    q43.5.clps.dum = "Election staff includes/is majority of lawyers",
+    q43.6.clps.dum = "Election staff includes/is majority of college students"
+  )
 
 ```
 
@@ -906,22 +904,18 @@ All that is left to do is to save the dataframe that is now ready for further an
 ```{r}
 
 # save df processed data set.
-save(df, file = "data/df-2024-09-11.Rdata")
-write.csv(df, file = "data/df-2024-09-11.csv")
-
-
-# save the numeric only processed data set.
-save(data2, file = "data/data_numeric_vets_survey-exp-2024-09-11.Rdata")
-write.csv(data2, file = "data/data_numeric_vets_survey-exp-2024-09-11.csv")
+save(df, file = "data/research-paper-df-2024-09-11.Rdata")
+write.csv(df, file = "data/research-paper-df-2024-09-11.csv")
 
 
 # save a data dict that can be saved as .csv
 # generate data dictionary
-df_dict <- surveytoolbox::data_dict(df) # I prefer this to the labelled dict
-write.csv(df_dict, file = "codebooks/df_dict.csv")
+df_dictionary <- surveytoolbox::data_dict(df)
+write.csv(df_dictionary, file = "data/df_dictionary.csv")
 
-# remove uneeded dataframes and leave df and df_dict
-rm(data, data_dict_spss, data_spss, data_spss_dict, data2_dict_num, raw_spss, raw_spss_dict)
+
+# remove uneeded dataframes from global environment ::::::::::::::::::::::::####
+rm(data, data_dict_spss, data_spss, raw_spss, raw_spss_dict, data_labels)
 
 
 ```
