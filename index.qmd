@@ -16,5 +16,5 @@ reference-section-title: References
 date: "2024-10-16"
 ---
 
-## Section
-This is a simple placeholder for the manuscript's main document [@knuth84].
+## Intro
+
