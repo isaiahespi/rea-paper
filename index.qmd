@@ -16,5 +16,206 @@ reference-section-title: References
 date: "2024-10-16"
 ---
 
+```{r}
+#| label: setup
+#| include: false
+
+# load packages
+library(tidyverse)
+
+# load data
+load("data/research-paper-data-20241029.Rdata")
+
+# load data dictionary/codebook
+codebook <- read.csv("data/survey_codebook.csv")
+data_dict <- read.csv("data/data_dictionary.csv")
+
+# also load the raw data dict for comparison
+raw_spss_dict <- read.csv("data/raw_spss_dict.csv")
+
+
+```
+
+
+```{r}
+#| label: fns
+#| include: false
+
+source(here::here('src', 'funs.R'))
+
+```
+
+
+\pagebreak
+
 ## Intro
 
+Here are intro words
+
+
+\pagebreak
+
+# Appendix {.appendix}
+
+::: {.content-visible when-format="html" unless-format="pdf"}
+
+```{r}
+#| label: tbl-desc
+#| tbl-cap: "Description of Sample Demographics"
+#| tbl-cap-location: top
+
+# quick, informative, easy table of sample demographics w/ some other questions.
+tbl.desc <- data |>  
+  labelled::set_variable_labels(
+    age_cat = "Age group, in years"
+  ) |> 
+  gtsummary::tbl_summary(
+    by = qset,
+    include = c(
+    qset,
+    age_cat, 
+    gender_3cat, 
+    race, 
+    educ_4cat, 
+    partyid_3cat,
+    ideo,
+    ideolean,
+    voted2020,
+    choice2020, 
+    voteintent,
+    milserv1,
+    milserv2,
+    milservfam),
+    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"),
+    type = list(milserv1 ~ "categorical",
+                
+                milserv2 ~ "categorical",
+                milservfam ~"categorical"), 
+    missing = "no") |> 
+  gtsummary::add_n() |> 
+  gtsummary::add_overall() |> 
+  gtsummary::modify_header(label = "**Variable**") |> 
+  gtsummary::bold_labels()
+
+
+gtsummary::as_gt(tbl.desc) |>  
+  gt::tab_footnote(
+    footnote = "'true' Independents do not identify nor 'lean' toward either political party",
+    placement = "left"
+    ) |>  
+  gt::cols_align(align = 'left', columns = everything()) |> 
+  gt::tab_options(
+    table.font.size = "small",
+    data_row.padding = gt::px(1)
+  )
+
+
+```
+
+
+:::
+
+
+There should be nothing below here
+
+::: {.content-hidden unless-format="pdf"}
+
+```{r}
+#| label: tbl-desc-pdf
+#| tbl-cap: "Description of Sample Demographics"
+#| tbl-cap-location: top
+
+frqs <- data |> 
+  select(qset, age_cat, gender_3cat, educ_4cat, race, partyid_3cat) |>
+  map(count_prop)
+
+demog_df <- purrr::reduce(frqs, dplyr::full_join)
+
+
+kableExtra::kbl(demog_df,
+                booktabs = T, 
+                digits = 2,
+                col.names = c("Name", "n", "Pct")) |> 
+  kableExtra::pack_rows("Qset", 1, 2) |> 
+  kableExtra::pack_rows("Age", 3, 10) |> 
+  kableExtra::pack_rows("Gender", 11, 13) |> 
+  kableExtra::pack_rows("Education", 14, 17) |> 
+  kableExtra::pack_rows("Race", 18, 22) |> 
+  kableExtra::pack_rows("Party ID", 23, 25) |> 
+  kableExtra::kable_styling(
+    latex_options = c("striped", "scale_down"),
+    full_width = F,
+    font_size = 8) |> 
+  kableExtra::column_spec(1, width = "20em")
+
+
+```
+
+
+```{r}
+#| label: tbl-desc-pdf-2
+
+tbl.desc <- data |> 
+  mutate(across(where(is.factor), ~forcats::fct_recode(., NULL = "-99"))) |> 
+  labelled::set_variable_labels(
+    age_cat = "Age group, in years",
+    gender_3cat = "Gender",
+    race = "Race",
+    educ_4cat = "Highest level of education completed",
+    milserv1 = "Prior service in the Armed Forces",
+    milserv2 = "Currently serving in the Armed Forces",
+    milservfam = "Member of immediate family served or is currently serving",
+    voted2020 = "Turnout in 2020",
+    choice2020 = "Vote Choice 2020",
+    voteintent = "Vote Intent 2024",
+    ideo = "Political Ideology",
+    ideolean = "Political Ideology, lean",
+    partyid_3cat = "Party ID"
+  ) |>
+  gtsummary::tbl_summary(
+    by = qset,
+    include = c(
+      age_cat,
+      gender_3cat,
+      race,
+      educ_4cat,
+      partyid_3cat,
+      ideo,
+      ideolean,
+      voted2020,
+      choice2020,
+      voteintent,
+      milserv1,
+      milserv2,
+      milservfam
+    ),
+    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    type = list(
+      milserv1 ~ "categorical",
+      
+      milserv2 ~ "categorical",
+      milservfam ~ "categorical"
+    ),
+    missing = "no"
+  ) |>
+  gtsummary::add_n() |>
+  gtsummary::add_overall() |>
+  gtsummary::modify_header(label = "**Variable**") |>
+  gtsummary::bold_labels()
+
+
+gtsummary::as_kable_extra(
+  tbl.desc, 
+  booktabs = T,
+  digits = 2,
+  addtl_fmt = T,
+  linesep = ""
+) |> 
+  kableExtra::kable_styling(
+    latex_options = c("striped", "scale_down"),
+    font_size = 9)
+
+```
+
+
+:::

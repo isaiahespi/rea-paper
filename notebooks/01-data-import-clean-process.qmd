@@ -11,7 +11,7 @@ format:
 ---
 
 
-This document describes and executes the cleaning and processing of the survey data set downloaded from Qualtrics on 2024-09-11 at 11:39AM. Currently, this notebook is mainly to describe and explain the process undertaken in R to import, clean, wrangle, and transform the data set for later analysis. To see the process without all my explanatory text, see the relevant R script viewed [here](https://github.com/isaiahespi/cdce_vets/blob/80e843e8a9fa24d1d7524c76631b709f9f675876/scripts/01-data.R).  
+This document describes and executes the cleaning and processing of the survey data set downloaded from Qualtrics on 2024-10-23. Currently, this notebook is mainly to describe and explain the process undertaken in R to import, clean, wrangle, transform, and process the data set for later analysis. To see the process without all my explanatory text, see the relevant R script viewed [here](https://github.com/isaiahespi/rea-paper/blob/0bd7138259d244e9a046828fdcf09f2a33837b95/src/01-data.R).  
 
 ## Load data
 
@@ -19,13 +19,13 @@ This document describes and executes the cleaning and processing of the survey d
 #| label: load-data
 
 
-# load raw SPSS export that includes display order vars
-# downloaded 2024-09-11 at 11:38 AM
-raw_spss <- haven::read_sav(file = "data-raw/vets_spss_do_2024-09-11_11.38.sav") 
+# load raw SPSS export (includes display order vars)
+# downloaded on 2024-10-29 at 12:02 PM
+raw_spss <- haven::read_sav("data-raw/VMF_Election_Worker_Recruitment_Survey_with_display_order_20241029_T12.02.sav")
 
 ```
 
-## Create data dictionary/codebook
+## Create data dictionary and Survey Codebook
 
 A data dictionary contains metadata about the data. The `labelled::generate_dictionary` function is used to create a data dictionary. A dataframe is loaded into the R environment with the number of observations equal to number of variables in the original data set. One problem that I encountered was that I was unable to quickly save the data dictionary generated using the `labelled` R package. As an alternative, I utilized the `data_dict()` function from the R package `surveytoolbox` in order to save the dictionary as a `.csv` file. 
 
@@ -42,6 +42,36 @@ raw_spss_dict <- raw_spss |> surveytoolbox::data_dict()
 write.csv(raw_spss_dict, file = "data/raw_spss_dict.csv")
 
 ```
+
+The data dictionary is the same as a codebook, but I also wanted to have a codebook that contained only the survey questions, variable labels (i.e., question text), responses (value labels), and associated values. So the saved `codebook` contains only the survey questions and the two grouping variables (`qset` and `group`).
+
+```{r}
+#| label: survey_codebook
+
+# create and save survey codebook
+
+# this includes only the survey questions: question number (var), the question
+# text (label_var), the value labels (label_val), and the numeric codes (value)
+codebook <- raw_spss |> 
+  janitor::clean_names() |> 
+  # get rid of superfluous Qualtrics columns
+  # Keep Qualtrics `response_id`
+  select(!1:8 & !10:17 & !265) |>
+  # subset spss data set to omit the display order variables
+  select(!contains("_do_")
+         & !contains("_ado_")
+         & !contains("_click")
+         & !contains("_count")) |>
+  select(contains("q"), group) |>
+  surveytoolbox::data_dict()
+
+# save codebook as .csv file in data/ directory
+write.csv(codebook, file = "data/survey_codebook.csv")
+
+
+```
+
+
 
 ## Filter Raw data
 

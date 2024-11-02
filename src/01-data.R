@@ -408,9 +408,15 @@ data <- data |>
       "Voted" = "Yes, I'm sure I voted",
       "Didn't vote" = c("I'm sure I didn't vote", "I don't think I voted"),
       "Unsure/Ineligible" = c("I think I voted","I was not eligible to vote")
-      )) |>
+      )) |> 
+  mutate(ideo_3cat = pewmethods::fct_case_when(
+    ideo == "Extremely Liberal" | ideo == "Liberal" | ideo == "Slightly liberal" ~ "Liberal",
+    ideo == "Extremely conservative" | ideo == "Conservative" | ideo == "Slightly conservative" ~ "Conservative",
+    TRUE ~ ideo
+  )) |> 
   labelled::set_variable_labels(
-    voted2020.clps = "Turnout 2020"
+    voted2020.clps = "Turnout 2020",
+    ideo_3cat = "Ideology, 4 categories"
   )
 
 
@@ -433,7 +439,35 @@ data <- data |>
   ) |> 
   dplyr::relocate(
     voted2020.clps, .after = voted2020
+  ) |> 
+  dplyr::relocate(
+    ideo_3cat, .before = ideo
   )
+
+# create dummy variables where 1 = 'Increase in confidence' and 0 = "No increase
+# in confidence".
+# add dummy variables to dataframe
+data <- data |>
+  mutate(across(
+    c(q41.1:q43.6),
+    ~ dplyr::case_when(
+      . == "Decrease confidence a lot" ~ "Decrease",
+      . == "Decrease confidence somewhat" ~ "Decrease",
+      . == "No impact on confidence" ~ "No impact",
+      . == "Increase confidence somewhat" ~ "Increase",
+      . == "Increase confidence a lot" ~ "Increase",
+      .default = as.character(.)), .names = "{.col}.clps")) |> 
+  mutate(across(c(q41.1.clps:q43.6.clps), 
+                ~ dplyr::case_when(
+                . == "Increase" ~ 1, 
+                . == "No impact" ~ 0,
+                . == 'Decrease' ~ 0),
+                .names = "{.col}.dum")) |> 
+  mutate(across(c(q41.1.clps, q41.2.clps, q41.3.clps, q41.4.clps,
+                  q41.5.clps, q41.6.clps, q43.1.clps, q43.2.clps,
+                  q43.3.clps, q43.4.clps, q43.5.clps, q43.6.clps),
+                ~ haven::as_factor(.)))
+
 
 # merge question sets ::::::::::::::::::::::::::::::::::::::::::::::::::::::####
 
@@ -515,7 +549,7 @@ data_dict <- data |>
 data |> arrange(desc(end_date))
 
 # get a glimpse of the data
-glimpse(data)
+# glimpse(data)
 
 
 
@@ -528,9 +562,13 @@ write.csv(data, file = "data/research-paper-data-20241029.csv")
 
 # save a data dict that can be saved as .csv
 # generate data dictionary
+# data dictionary from labelled package. Will save as .csv file
+data_dict <- surveytoolbox::data_dict(data)
 write.csv(data_dict, file = "data/data_dictionary.csv")
 
 
+
+
 # remove uneeded dataframes from global environment ::::::::::::::::::::::::####
-rm(raw_spss, raw_spss_dict, data_labels, data_dictionary)
+rm(raw_spss, raw_spss_dict, data_labels)
 

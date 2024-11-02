@@ -3,9 +3,27 @@ project:
   output-dir: docs
   render: 
     - index.qmd
+    - "!notebooks/01-data-import-clean-process.qmd"
+    - "!notebooks/02-tables.qmd"
+    - "!notebooks/03-figures.qmd"
+    - "!notebooks/question-set-differences.qmd"
 
 manuscript:
   article: index.qmd
+  resources:
+    - data/research-paper-data-20241029.Rdata
+    - data/survey_codebook.csv
+    - data/data_dictionary.csv
+    - data/raw_spss_dict.csv
+  code-links: 
+    - text: Data Import Script
+      icon: file-code
+      href: src/01-data.R
+      url: https://github.com/isaiahespi/rea-paper/blob/0bd7138259d244e9a046828fdcf09f2a33837b95/src/01-data.R
+  # notebooks: 
+  #   - notebook: notebooks/01-data-import-clean-process.qmd
+  #     title: "Data Import and Clean"
+  #   - notebook: notebooks/02-tables.qmd
 
 bibliography: references.bib
 csl: american-political-science-association.csl
@@ -17,7 +35,7 @@ format:
   bookup-html: 
     toc: true
     toc-depth: 3
-    embed-resources: true
+    embed-resources: false
     embed-fonts: true
     link-citations: true
     smooth-scroll: true
