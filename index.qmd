@@ -1,5 +1,6 @@
 ---
 title: title
+subtitle: subtitle
 shorttitle: A Short title # aog-article-pdf
 shortauthors: Isaiah      # aog-article-pdf
 authors:
@@ -14,13 +15,13 @@ authors:
         country: US
 reference-section-title: References
 date: "2024-10-16"
+date-modified: today
 crossref:
   custom: 
     - key: hyp
       kind: float
       reference-prefix: H
       latex-env: hypothesis # required for PDF format
-
 ---
 
 ```{r}
@@ -43,7 +44,6 @@ raw_spss_dict <- read.csv("data/raw_spss_dict.csv")
 
 ```
 
-
 ```{r}
 #| label: fns
 #| include: false
@@ -52,47 +52,41 @@ source(here::here('src', 'funs.R'))
 
 ```
 
-
 \pagebreak
 
-## Intro
+## Introduction
 
-Election administration officials make efforts to sustain public trust and confidence in the fairness and accuracy of elections, and attempt to boost such confidence where ever it may be deprived. Concerns for safety have developed among election staff and voters in more recent elections. Regular measures are taken to enhance the *trustworthiness*[^1] of the electoral process through practices meant to improve the conduct, transparency, or overall administration of elections in the United States. 
+Election administration officials make efforts to sustain public trust and confidence in the fairness and accuracy of elections, and attempt to boost such confidence where ever it may be deprived. Concerns for safety have developed among election staff and voters in more recent elections. Regular measures are taken to enhance the *trustworthiness*[^1] of the electoral process through practices meant to improve the conduct, transparency, or overall administration of elections in the United States.
 
-Although election officials undertake great efforts to enhance the trustworthiness of election administration, public *trust* in elections is a psychological construct influenced by many things outside of election official control such as partisanship or elite rhetoric [@hooghe2018; @sances2015]. Moreover, a person's evaluation of the election in hindsight is often influenced by the election outcome itself [@daniller2019 ;@stewart2022]. Thus, measures taken by election officials can be undermined, trivialized, or made irrelevant depending on how one feels after the election results have come out. 
+Although election officials undertake great efforts to enhance the trustworthiness of election administration, public *trust* in elections is a psychological construct influenced by many things outside of election official control such as partisanship or elite rhetoric [@hooghe2018; @sances2015]. Moreover, a person's evaluation of the election in hindsight is often influenced by the election outcome itself [@daniller2019; @stewart2022]. Thus, measures taken by election officials can be undermined, trivialized, or made irrelevant depending on how one feels after the election results have come out.
 
 Such volatile attitudes and evaluations post-election can leave a lasting impression that election officials must contend with upon the next election cycle [@levendusky2024; @bowler2024]. For instance, we have witnessed many people's outright refusal to accept the 2020 U.S. election results as legitimate despite consistent review of the evidence confirming the results as fair and accurate. Such a case demonstrates that public trust in elections is, at best, only partial to trustworthiness of election administration in the United States[^2]. Or in other words, there is only so much that election officials can do to sustain or improve public trust in election administration.
 
-Even though election officials can do a lot to secure election integrity, especially under intense scrutiny, there's not much they can do to cement public confidence after election night passes. At best, election officials can ease public anxieties prior to election night. As mentioned, this usually consists of enhancing procedures and practices and adapting to advancing election technology. 
+Even though election officials can do a lot to secure election integrity, especially under intense scrutiny, there's not much they can do to cement public confidence after election night passes. At best, election officials can ease public anxieties prior to election night. As mentioned, this usually consists of enhancing procedures and practices and adapting to advancing election technology.
 
-One point of contention that election officials have faced in the past regard evaluation of election workers. Previous literature has focused on how voter interaction with election workers [@claassen2008], or the voter experience generally [@atkeson2007], influences evaluations of election administration. As such, election worker competency has been examined as a factor significant to evaluations of performance of elections [@hall2007; @hall2009]. However, considering that individual perceptions and preconceived notions play a huge role in cognition [@cikara2014; @vanbavel2021], it is reasonable to expect that the group an election worker hails from would be an important influence upon the voter's perception or evaluation of their own experience as well as subsequent evaluations of the electoral process. Supposing such is the case, we can expect that information about *who* (i.e., which groups) election officials are targeting in publicized recruitment efforts would lessen particular election anxieties. That is to say, it is reasonable to expect that telling people *who* will be working as election staff and volunteers would ease election anxieties, therefore improve confidence that the election will be conducted fairly, accurately, and safe for all involved. 
+One point of contention that election officials have faced in the past regard evaluation of election workers. Previous literature has focused on how voter interaction with election workers [@claassen2008], or the voter experience generally [@atkeson2007], influences evaluations of election administration. As such, election worker competency has been examined as a factor significant to evaluations of performance of elections [@hall2007; @hall2009]. However, considering that individual perceptions and preconceived notions play a huge role in cognition [@cikara2014; @vanbavel2021], it is reasonable to expect that the group an election worker hails from would be an important influence upon the voter's perception or evaluation of their own experience as well as subsequent evaluations of the electoral process. Supposing such is the case, we can expect that information about *who* (i.e., which groups) election officials are targeting in publicized recruitment efforts would lessen particular election anxieties. That is to say, it is reasonable to expect that telling people *who* will be working as election staff and volunteers would ease election anxieties, therefore improve confidence that the election will be conducted fairly, accurately, and safe for all involved.
 
 In this paper, I report results from a recent survey experiment administered to test whether publicized efforts to recruit veterans to work as election staff and volunteers would ease election anxieties (e.g., concern for electoral fairness and accuracy, as well as concerns for voter safety). Results of the survey experiment support the hypothesis that emphasizing veterans as the target of election worker recruitment efforts eases pre-elections anxieties to an extent. In particular, among those who read the treatment vignette, confidence that the elections would be fair and accurate was higher in comparison. In addition, expectations of electoral fraud were lower, as were concerns for voter safety compared to those who read a control vignette. Notable is that there was a significant increase in confidence, and lower expectations of fraud, among those who believe that the 2020 election was illegitimate.
 
 -   when distinguished by partisanship...
 -   moreover, broken down by other demographic variables such as race, gender, education, etc.
--   holding these factors constant demonstrates a [increased/decreased] likelihood that a respondent's confidence would likely [increase/decrease], expectations of fraud would likely [increase/decrease], and concerns for safety would lessen among those in the treatment group compared to those in the control. These results allow us to attribute the differences to the treatment stimulus, namely, the prospect of having veterans serve as election staff or volunteers.
-
-[^1]: I adopt a distinction made between *trustworthiness* and *trust* in elections [@stewart2022]. The "*worthiness*" of one's trust in the conduct and administration of elections is based on the extent that outcomes of an election reasonably follow the rules prescribed and can be adjudicated as such. "If the process is conducted fairly and competently, and the results are determined by the actions of voters...we can call this a trustworthy election" [@stewart2022, 237]. *Trustworthiness* is distinguished from *trust* as a psychological construct, "...the conclusion reached by the public about the functioning of the process" [@stewart2022, 237]. To put in other terms, trustworthiness is built by the structure, procedures, and practices of the institution, in this case election administration. The public's trust in elections, however, is amendable to an indefinite number of factors that may be seemingly unrelated to the formal procedures of election administration. To illustrate, my car is trustworthy because I've known it to function quite well as a car should; it passes whatever criteria upon inspection, its sufficiently fueled, and is in generally good working order. I have every reason to deem it worthy of my trust. However, I don't trust my car because I am sure it is haunted.
-
-[^2]: It is important to point out here that election administration is just one institution that interacts with many other institutions and processes which form the electoral system *writ large* [@stewart2022]. The way in which I discuss the institution of election administration, as well as the way in which I discuss and distinguish public trust in elections from broader conceptions of public trust, is borrowed substantively from @stewart2022's conceptual framework of the same. Distinctions between *trust* and *trustworthiness* and the notion of election administration as an institution are already apparent inspirations convenient for situating the theory of this research inquiry.
+-   holding these factors constant demonstrates a \[increased/decreased\] likelihood that a respondent's confidence would likely \[increase/decrease\], expectations of fraud would likely \[increase/decrease\], and concerns for safety would lessen among those in the treatment group compared to those in the control. These results allow us to attribute the differences to the treatment stimulus, namely, the prospect of having veterans serve as election staff or volunteers.
 
 ## Background: Election Administration and Public Confidence
 
 Election officials have tried hard to inspire confidence in the administration and conduct of elections by improving the degree to which elections are trustworthy. Development and implementation of procedures such as post-election auditing of ballots and logic-and-accuracy testing of ballot tabulation equipment are prominent examples adding to the long history of efforts to enhance the trustworthiness of election administration in the United States.
 
-Prior to the year 2000, one of the main issues facing election administration was recruiting enough election workers to volunteer at the polls (i.e., poll workers) [@maidenberg1996]. Election worker recruitment is still much of an issue in the current era as it was then, perhaps worse [@ferrer2024]. In addition to ensuring election admin offices were adequately staffed, the controversy of the 2000 general election made the public more attentive to issues concerning the conduct and administration of elections. In particular, voting technology [@herrnson2009] and election worker competence was a of interest in election studies [@classen2008; @hall2009; @hall2007]. Following the passage of the Help America Vote Act in 2002, election officials efforts to boost public confidence in the conduct and administration of elections revolved primarily around the accuracy of vote counts, ballot tabulation equipment or voting machines, the commitment of election staff, and more [@atkeson2007]. These somewhat generic issues of election worker staffing, competence, and voting technology were likely mere stepping stones leading to more intense election administration issues. 
+Prior to the year 2000, one of the main issues facing election administration was recruiting enough election workers to volunteer at the polls (i.e., poll workers) [@maidenberg1996]. Election worker recruitment is still much of an issue in the current era as it was then, perhaps worse [@ferrer2024]. In addition to ensuring election admin offices were adequately staffed, the controversy of the 2000 general election made the public more attentive to issues concerning the conduct and administration of elections. In particular, voting technology [@herrnson2009] and election worker competence was a of interest in election studies [@claassen2008; @hall2009; @hall2007]. Following the passage of the Help America Vote Act in 2002, election officials efforts to boost public confidence in the conduct and administration of elections revolved primarily around the accuracy of vote counts, ballot tabulation equipment or voting machines, the commitment of election staff, and more [@atkeson2007]. These somewhat generic issues of election worker staffing, competence, and voting technology were likely mere stepping stones leading to more intense election administration issues.
 
-In 2024, election officials made valiant efforts to boost public confidence in the fairness and accuracy of elections within an intensified political climate that appeared quite hostile to election officials [@edlin2024; @brennancenterforjustice2024]. Although polling around the time indicated that most people thought that U.S. elections would be run at least somewhat well [@nadeem2024], many election officials nationwide took efforts to assuage the worry of those most skeptical. Enhancing trustworthiness in election administration is a regular duty for election officials, but baseless allegations regarding the fairness and accuracy of the 2020 election loomed ever larger, and the fear of political violence became prominent for both election officials and the public. Safety concerns for election staff, volunteers, and voters alike only added to, and perhaps exacerbated, public concern for the integrity of election administration in the United States. Especially as the steady increase in election official turnover seems to be increasing even more [@ferrer2024].  
+In 2024, election officials made valiant efforts to boost public confidence in the fairness and accuracy of elections within an intensified political climate that appeared quite hostile to election officials [@edlin2024; @brennancenterforjustice2024]. Although polling around the time indicated that most people thought that U.S. elections would be run at least somewhat well [@nadeem2024], many election officials nationwide took efforts to assuage the worry of those most skeptical. Enhancing trustworthiness in election administration is a regular duty for election officials, but baseless allegations regarding the fairness and accuracy of the 2020 election loomed ever larger, and the fear of political violence became prominent for both election officials and the public. Safety concerns for election staff, volunteers, and voters alike only added to, and perhaps exacerbated, public concern for the integrity of election administration in the United States. Especially as the steady increase in election official turnover seems to be increasing even more [@ferrer2024].
 
 Election anxiety was high in the lead up to the 2024 elections in the United States. Concerns for voter safety and the prospect of political violence remained prescient and compelled many local officials to prepare for the worst [@edlin2024; @doubek2024]. Election officials in Washoe County, Nevada, installed panic buttons for election staff that would alert a monitoring center to summon law enforcement [@lincoln2024]. Nevada also passed a law making it a felony to harass, threaten, or intimidate election workers [@nevadasecretaryofstate2023]. Leading up to election day, news outlets reported that election work had become a seemingly dangerous job [@wire2024]. A Brennan Center survey report stated that, "...large numbers of election officials report having experienced threats, abuse, or harassment for doing their jobs" [@edlin2024]. Concerns over the fairness of elections and accuracy of vote counts intensified, heightening concerns over the prospect of political violence and, in turn, engendered increased worry for the safety of voters and election workers alike.
 
 Suffice to say, pre-election anxiety consists of more than concerns over fairness and accuracy of vote counts in light of added safety concerns. It is not hard to recognize that increased tension in the pre-election period makes for a volatile political environment.
 
-
 ## Literature Reivew
 
-Assessing the public's *trust* in elections has not been straightforward. Inquiry into public trust in elections has been approached by scholars of political science in many different ways [@cook2005], often distinguishable by the scope of the research question and more or less constrained by the particular conception of public trust. Quite often, trust in election administration is conflated with trust in government writ large, government legitimacy, government or system responsiveness, or even satisfaction with democracy [@daniller2019]. At this level, not only is the level of public trust in elections sometimes vague, but there's little consideration over the difference between such attitudes pre-election and post-election. In contrast, a considerable amount of research tends to conceive of public trust in accordance with the institution in question [@atkeson2007; @hooghe2018]. 
+Assessing the public's *trust* in elections has not been straightforward. Inquiry into public trust in elections has been approached by scholars of political science in many different ways [@cook2005], often distinguishable by the scope of the research question and more or less constrained by the particular conception of public trust. Quite often, trust in election administration is conflated with trust in government writ large, government legitimacy, government or system responsiveness, or even satisfaction with democracy [@daniller2019]. At this level, not only is the level of public trust in elections sometimes vague, but there's little consideration over the difference between such attitudes pre-election and post-election. In contrast, a considerable amount of research tends to conceive of public trust in accordance with the institution in question [@atkeson2007; @hooghe2018].
 
 Election administration is just one part of the larger set of institutions which form the electoral system. As such, the performance of the institution along with the rest "...lends credibility to the outcome of an election: whether it is considered by citizens and the international community to be fair and legitimate." [@stewart2022, 236].
 
@@ -100,129 +94,168 @@ Trust and confidence in the conduct of elections concerns aspects of elections t
 
 Intuitively, enhancing public trust in elections would best be accomplished by enhancing the *trustworthiness* of the institution, i.e., consistently doing the things that election officials already regularly do come election time. However, trust and confidence in elections has become ever more precarious over the last few election cycles. Especially considering public polling data since 2000 shows that confidence that votes were, or would be, counted as intended was in a consistent decline despite efforts towards bolstering election integrity and trustworthiness [@sances2015]. This is even more pronounced considering the role that partisanship has had on such confidence over accuracy of vote count [@sances2015; @stewart2022].
 
-There's also stark difference in public trust before the election has occurred compared to after, a phenomenon referred to as the "winner-loser gap"; the "winners" are those who supported the winning candidate and the "losers" are those who supported the losing candidate. Much research has been dedicated to analyzing the sentiment of electoral winners vs losers, and vice versa [@nadeau1993; @daniller2019]. Opinions of electoral trust gathered after the election has occurred are limited considering the well-recognized impact that the electoral outcome itself has on feelings of public trust in elections [@daniller2019].  
+There's also stark difference in public trust before the election has occurred compared to after, a phenomenon referred to as the "winner-loser gap"; the "winners" are those who supported the winning candidate and the "losers" are those who supported the losing candidate. Much research has been dedicated to analyzing the sentiment of electoral winners vs losers, and vice versa [@nadeau1993; @daniller2019]. Opinions of electoral trust gathered after the election has occurred are limited considering the well-recognized impact that the electoral outcome itself has on feelings of public trust in elections [@daniller2019].
 
-As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out[^3]. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *evaluative*---a judgement discerned empirically in hindsight after the election event has occurred. The evaluative form of trust lends to inquiries interested in public opinion on regime legitimacy, satisfaction with democracy, and perceived responsiveness [@daniller2019]. This study focuses primarily on that *anticipatory* kind of trust and confidence, which speaks more to electoral anxieties over the institution of election administration. Not to mention that by definition, one feels anxiety over impending uncertainties located in the future[^4]. 
+As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out[^3]. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *evaluative*---a judgement discerned empirically in hindsight after the election event has occurred. The evaluative form of trust lends to inquiries interested in public opinion on regime legitimacy, satisfaction with democracy, and perceived responsiveness [@daniller2019]. This study focuses primarily on that *anticipatory* kind of trust and confidence, which speaks more to electoral anxieties over the institution of election administration. Not to mention that by definition, one feels anxiety over impending uncertainties located in the future[^4].
 
-[^3]: There's little that could justify a conceptual distinction between public trust pre-election and public trust post-election. The temporal element renders the difference between pre- and post-election operative rather than conceptual.
+The primary interest of this study concerns *election anxieties*, which is distinguished into two categories: fairness and accuracy, and voter safety. Of course, the direction of electoral outcomes are a particular source of electoral anxiety, but only the election outcome itself can resolve any nail-biting stress over its anticipated direction. In contrast, the anxieties of interest here are able to be relaxed to some extent prior to the election given some intervention.
 
-[^4]: Note that *anxiety* is taken to be the inverse of *trust and confidence*, as in, one who is less confident in this or that is thereby more anxious over the matter in question. As such, anxiety may equivalently be discussed as trust/confidence without issue except for framing of said discussion. Electoral anxiety is used in place of electoral trust/confidence simply to emphasize the anticipatory nature of the attitudes in question.  
+Interventions aimed at improving public trust, or rather, aimed at easing election anxieties may not be within the usual repertoire election officials draw upon. Regardless of the measures taken by election officials to boost public confidence in the *trustworthiness* of election administration (e.g., conducting audits, testing election machines), public *trust* and confidence in elections more generally is apt to shift dramatically post-election based on factors such as partisanship, elite rhetoric, particular state policies, and more [@nadeau1993; @carter2024; @coll2024a]. Moreover, prior research has found that evaluation of election workers themselves are an important factor when it comes to levels of public confidence in the electoral process [@hall2007; @hall2009; @claassen2008]. Such studies focused on the quality of the voter experience with reference to the interaction between voter and election worker.
 
-The primary interest of this study concerns *election anxieties*, which is distinguished into two categories: fairness and accuracy, and voter safety. Of course, the direction of electoral outcomes are a particular source of electoral anxiety, but only the election outcome itself can resolve any nail-biting stress over its anticipated direction. In contrast, the anxieties of interest here are able to be relaxed to some extent prior to the election given some intervention. 
-
-Interventions aimed at improving public trust, or rather, aimed at easing election anxieties may not be within the usual repertoire election officials draw upon. Regardless of the measures taken by election officials to boost public confidence in the *trustworthiness* of election administration (e.g., conducting audits, testing election machines), public *trust* and confidence in elections more generally is apt to shift dramatically post-election based on factors such as partisanship, elite rhetoric, particular state policies, and more [@nadeau1993; @carter2024; @coll2024a]. Moreover, prior research has found that evaluation of election workers themselves are an important factor when it comes to levels of public confidence in the electoral process [@hall2007; @hall2009; @classen2008]. Such studies focused on the quality of the voter experience with reference to the interaction between voter and election worker. 
-
-Beyond the general competence of election workers, however, the quality of the voter experience may be influenced merely by impressions about *who* comprises election staff and volunteers. Political and other social science researchers have recognized for some time the power that group identity can have over attitudes and perception [@xiao2016; @xiao2012; @vanbavel2021]. As such, we can expect that information identifying the particular groups being recruited to serve as election staff will be enough to improve trust and confidence in election administration, i.e., ease election anxieties. It was hypothesized that information on recruitment efforts targeting military veterans to work as election staff would ease election anxieties. The next section elaborates further on why military veterans are of particular interest. 
-
+Beyond the general competence of election workers, however, the quality of the voter experience may be influenced merely by impressions about *who* comprises election staff and volunteers. Political and other social science researchers have recognized for some time the power that group identity can have over attitudes and perception [@xiao2016; @xiao2012; @vanbavel2021]. As such, we can expect that information identifying the particular groups being recruited to serve as election staff will be enough to improve trust and confidence in election administration, i.e., ease election anxieties. It was hypothesized that information on recruitment efforts targeting military veterans to work as election staff would ease election anxieties. The next section elaborates further on why military veterans are of particular interest.
 
 ## Why Veterans
 
 Election officials are likely to be agnostic as to who dedicates their time to civil service such as election work. Staffing issues have been an issue since at least the 1990s [@maidenberg1996; @ferrer2024]. In 2020, such efforts were made far more difficult by the COVID-19 pandemic [@mena2020; @abbate2020a]. Sure, it makes sense to recruit veterans, but no more than any other group. After all, ensuring election offices are adequately staffed is everyone's problem. So there's no special reason to target veterans for recruitment above other groups. Indeed, there's no reason to discriminate recruitment efforts at all if the point is purely to fill staffing vacancies. However the interest in veterans as a special group to consider arose in light of increased and sudden efforts to recruit veterans into election work.
 
-The reason why veterans arose as a special subset of the population to consider for this inquiry is because there was a sudden push to target veterans for recruitment efforts that arose shortly after the events on Capitol Hill on January 6th, 2021. After the 2020 election, large efforts were made to recruit military veterans and their families to work or volunteer as election staff [@wetheveterants2022; @nflfootballoperations2022]. Prior to that point, young people were sometimes given special mention as targets of election worker recruitment efforts[^4] [@powerthepolls2020; @herndon2020]. Generally, however, recruitment efforts cast a wide net, indiscriminate of who applies [@ross2020; @conde2020]. Recruitment efforts in 2022 targeted young students, lawyers, and military veterans [@wang2022].
+The reason why veterans arose as a special subset of the population to consider for this inquiry is because there was a sudden push to target veterans for recruitment efforts that arose shortly after the events on Capitol Hill on January 6th, 2021. After the 2020 election, large efforts were made to recruit military veterans and their families to work or volunteer as election staff [@wetheveterans2022; @nflfootballoperations2022]. Prior to that point, young people were sometimes given special mention as targets of election worker recruitment efforts[^5] [@powerthepolls2020; @herndon2020]. Generally, however, recruitment efforts cast a wide net, indiscriminate of who applies [@ross2020; @conde2020].
 
-One can speculate that the motivation to associate military veterans with civic engagement and democracy may be intended to counter negative perceptions and impressions given by the proportion of veteran service members arrested for taking part in the events on January 6th [@milton2021; @loewenson2023; @jensen2022a]. Especially with regard to research demonstrating that willingness to support violent efforts to overturn election results[^5] (in support of Trump) is, on average, more common among veterans than among matched samples of non-veterans [@pape2024]. This is in addition to a strengthened association portrayed in media outlets between military veterans and militias [@steinhauer2020]. Although such media output reeks of the contemporary political context, prior research has substantiated such a connection between veterans and militia groups. @cooter2024 notes from her 3-year ethnographic fieldwork among Michigan militia members that, "...approximately 40% of militia leaders and 30% of members had previous military experience. Most of these veterans actively sought out such groups, as opposed to being recruited by them" [-@cooter2024; see also @cooter2013]. Thus, countering such associations by promoting a different image of veterans to the mass public and veterans alike seems like a reasonable motivation. Yet such speculation is just that.  
+One can speculate that the motivation to associate military veterans with civic engagement and democracy may be intended to counter negative perceptions and impressions given by the proportion of veteran service members arrested for taking part in the events on January 6th [@milton2021; @loewenson2023; @jensen2022a]. Especially with regard to research demonstrating that willingness to support violent efforts to overturn election results[^6] (in support of Trump) is, on average, more common among veterans than among matched samples of non-veterans [@pape2024]. This is in addition to a strengthened association portrayed in media outlets between military veterans and militias [@steinhauer2020]. Although such media output reeks of the contemporary political context, prior research has substantiated such a connection between veterans and militia groups. @cooter2024 notes from her 3-year ethnographic fieldwork among Michigan militia members that, "...approximately 40% of militia leaders and 30% of members had previous military experience. Most of these veterans actively sought out such groups, as opposed to being recruited by them" [-@cooter2024; see also @cooter2013]. Thus, countering such associations by promoting a different image of veterans to the mass public and veterans alike seems like a reasonable motivation. Yet such speculation is just that.
 
 That being said, the general public perception, attitudes, or even stereotypes about military veterans are significant to consider. Although military recruitment shows a downward trend as of late, public perception of veterans are overwhelmingly positive [@kleykamp2023]. Veterans are a particularly potent group where mention of veteran status seems to have a positive, calming, or nullifying effect on attitudes. For instance, recent research shows that, during his campaign in the 2020 Democratic Primaries, Pete Buttigieg's military background mitigated discrimination against him when he was presented as a veteran married to man [@magni2024]. Similar research has also found that a candidate's veteran status affords them better evaluations regarding competency in particular issue areas (e.g., war competence) [@hardy2019]. Moreover, veteran status seems to mitigate or nullify usual stigmas associated with mental illness. That is to say, there is negative stigma associated with mental illness [@corrigan2002] and such stigma incurs labor market discrimination [@hipes2016], but evidence suggests that veteran status overrides such stigma and discrimination [@maclean2014]. Or, in another light, mental illness is seemingly more *understandable* (i.e., permissible) for veterans given the presumptive reasons for their mental strife. And media framing as such plays an important role on public perception [@kleykamp2015].
 
-[^4]: Prior to 2021, I found one online recruitment brochure intent on recruiting veterans to serve as election workers [@studentveteransofamerica2020].
-
-[^5]: The cited study defined "insurrectionist sentiments" as, "...willingness to support violent efforts to overturn the results of an election in favor of another, unelected political leader." [@pape2024, 7]. It should be noted, however, that despite the general definition, the operative items used to measure such sentiments ask about Donald Trump specifically, not an "unelected political leader".
-
-
 ## Research Design and Method
 
-To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would ease election anxieties, a recent survey experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland (UMD). The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Survey participants were randomly assigned to read one of two fabricated news articles (i.e., vignettes) about recruitment efforts for election jobs.
+To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would ease election anxieties, a recent survey experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland (UMD). The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older.
 
-Participants read either a treatment or control vignette, which was a fabricated news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election. The vignettes were identical save for mention of the group targeted for election work recruitment efforts. The treatment vignette focused on the announcement of a program by county election officials designed to recruit military veterans and their family members from the community, whereas the control vignette omitted mention of "military veterans and their family members", leaving in place "members of the community"[^6]. It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignettes due to the increased scrutiny levied toward election administration there after the 2020 election [@giles2021; @maricopacountyelectionsdepartment2022]. In addition, the survey includes a series of items which ask specifically about Maricopa County, AZ and a comparable series of questions about one's local area[^7].
+The primary independent variable is the prospect of military veterans as poll workers. It was considered that veterans would elicit high degrees of approval and support for whatever cause or issue presented. For example, I'd expect high approval and support for recruiting veterans to baseball teams just as much as for recruiting them to work as election staff. Asking participants whether they supported programs intent on recruiting veterans to work as election staff would garner support regardless of the target group. Considering that support and admiration for veterans is generally high among the population [@kleykamp2023], then discerning the impact on one's confidence would require a survey experiment and questions designed to determine whether veterans have any special effect on electoral confidence and voter safety distinct from the generally high admiration observed most often.
 
-[^6]: Complete text of treatment and control vignettes are included in the Appendix
+Survey participants were randomly assigned to read one of two fabricated news articles (i.e., vignettes) about recruitment efforts for election jobs. Participants read either a treatment or control vignette, which was a fabricated news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election. The treatment vignette referred to a program designed to recruit veterans and their family members and describes an interviewee "Jordan Braxton" as an Army veteran; whereas the control vignette simply omitted any mention of veterans and their family members, and didn't describe "Jordan Braxton" as an Army veteran. Beyond those small differences and the headlines, the article vignettes are identical. Any effects can be attributed to the information about veterans in the treatment vignette[^7].
 
-[^7]: The setting of the vignettes and inclusion of duplicate questions in the survey are highlighted and discussed later as a potential limitation.
+It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignettes due to the increased scrutiny levied toward election administration there after the 2020 election [@giles2021; @maricopacountyelectionsdepartment2022]. In addition, the survey includes a series of items which ask specifically about Maricopa County, AZ and a comparable series of questions about one's local area[^8].
 
-Over the past two decades it became commonplace for national polls to gauge public confidence in election administration by asking some variety of the question, "How confident are you that your vote [will be/was] counted as you intended in the most recent election?" [@hall2009; @sances2015; @stewart2022]. In addition, since 2008, the Survey of the Performance of American Elections (SPAE) has included a good number of relevant questions to more thoroughly assess trust and confidence in election administration. Such questions inquire into the voter experience with the institution more directly. This study borrows, modifies, or takes inspiration from certain questions found within the 2022 SPAE and other survey items used by the Pew Research Center [@dunn2018]. These survey items comprise the dependent variables[^8].
+Over the past two decades it became commonplace for national polls to gauge public confidence in election administration by asking some variety of the question, "How confident are you that your vote \[will be/was\] counted as you intended in the most recent election?" [@hall2009; @sances2015; @stewart2022]. In addition, since 2008, the Survey of the Performance of American Elections (SPAE) has included a good number of relevant questions to more thoroughly assess trust and confidence in election administration. Such questions inquire into the voter experience with the institution more directly. This study borrows, modifies, or takes inspiration from certain questions found within the 2022 SPAE and other survey items used by the Pew Research Center [@dunn2018]. These survey items comprise the dependent variables[^9].
 
-[^8]: All survey items are included in the Appendix. 
+The outcomes of interest (i.e., dependent variables) are broadly referred to as *election anxieties*, but more specifically refer to confidence over fairness and accuracy of the election administration; expectations of fraudulent activity intent on manipulating the electoral outcomes; and concern for voter safety, i.e., comfort voting in-person as it relates to expectations of violence, threats, or intimidation. The following presents multiple one-sided directional hypotheses. Previous research on public perception and regard for U.S. military veterans gives credence to the directional hypotheses [@kleykamp2018; @kleykamp2023].
 
-The outcomes of interest (i.e., dependent variables) are broadly referred to as *election anxieties*, but more specifically refer to concern over fairness and accuracy of the election administration; expectations of fraudulent activity intent on manipulating the electoral outcomes; and concern for voter safety, i.e., comfort voting in-person as it relates to expectations of violence, threats, or intimidation.
+The first outcome of interest regards *trust and confidence* in election administration, which includes the integrity and security of the electoral process, administration, technology, and people or organizations to fairly and accurately conduct elections. Survey items measured the degree of confidence that votes will be counted as voters intend, confidence that electoral systems are secure from technological threats, perceived commitment of election staff, confidence that outcomes will be fair, as well as confidence that the voting process will be fair.
 
-The first outcome of interest regards trust and confidence in the electoral process, which refers to trust and confidence in the integrity and security of the electoral systems, administration, technology, and people or organizations to fairly and accurately conduct elections. Survey items  measured the degree of confidence that votes will be counted as voters intend, confidence that electoral systems are secure from technological threats. The first hypothesis is as follows: 
+The first hypothesis is as follows:
 
-::: {#hyp-1}
+$H_{1}:$ Trust and confidence in election administration will be higher among those who were presented information about efforts to recruit veterans as election workers compared to those who were not
 
-### Hypothesis 1
+In total, six survey items measure different aspects of trust and confidence in election administration. These items were analyzed individually but were also transformed into a composite scale of trust and confidence.
 
-Trust and confidence in election administration will be higher among those who were presented information about efforts to recruit veterans as election workers compared to those who were not
+The literature concerning public regard for veterans gives substantial reason to expect that publicized efforts to recruit veterans to work as election staff and volunteers would have the effect of easing election anxieties. As such, survey participants also responded to a series of questions that inquired into expectations of electoral fraud---i.e., fraudulent activity intent on manipulating the electoral outcome. 
 
-:::
+Note, however, that an *expectation* of electoral fraud implies a degree of distrust more so than an agitated state of anxiety over the *potential* for electoral fraud. Conceptually, this may be considered a particular kind of 'anxiety' given that is it pre-election (hence, an expectation), however, not necessarily. A person may be rather confident with regard to how much they distrust the integrity of electoral administration, resulting in such expectations. 
 
-Survey participants also responded to questions asking about expectations of fraudulent activity intent on manipulating the electoral outcome. 
+For instance, the first item of the 5-item series asks participants to report their expectation that "There will be voter fraud, that is, people who are not eligible to vote will vote or vote more than once" on a 4-option response scale ranging from "Not likely at all" to "very likely". This statement, as well as the rest in the series, asserts an expected compromise of election integrity, which speaks to the trustworthiness of the institution. What the individual expects, more or less, is that electoral fraud will occur, implying that fraudulent attempts will be successful. 
 
+It was expected that the experimental stimulus would result in lower expectation for electoral fraud among those who read the treatment vignette compared to those who read the control vignette. The second hypothesis is,
 
-The second outcome of interest regards an individual's personal safety concerns about the prospect of voting in-person at a polling site. That is, the extent people feel safe enough to cast a vote at polling sites free from violence, threats of violence, or intimidation.
-
-The primary independent variable is the prospect of military veterans as poll workers. It was considered that veterans would elicit high degrees of approval and support for whatever cause or issue presented. For example, I'd expect high approval and support for recruiting veterans to baseball teams just as much as for recruiting them to work as election staff. Asking participants whether they supported programs intent on recruiting veterans to work as election staff would garner support regardless of the target group. Considering that support and admiration for veterans is generally high among the population [@kleykamp2023], then discerning the impact on one's confidence would require survey questions designed to determine whether veterans have any special effect on electoral confidence and voter safety distinct from the generally high admiration observed most often.
-
+$H_{2}:$ Expectations of electoral fraud will be lower among those who were presented information about efforts to recruit veterans as election workers compared to those who were not
 
 
-The literature concerning public regard for veterans gives substantial reason to expect that publicized efforts to recruit veterans to work as election staff and volunteers would have the effect of easing election anxieties. 
+Another outcome of interest regards concerns about voting in-person at a polling site, i.e., voter safety. That is, the extent people feel that voters are safe enough to cast a vote at polling sites free from violence, threats of violence, or intimidation. Two survey items use slightly different questions to inquire about the same essential issue—i.e., perceptions of physical safety at the polls. The third hypothesis follows,
+
+
+$H_{3}:$ Concerns for voter safety be lower among those who are presented information about efforts to recruit veterans as election workers compared to those who are not
+
+Another outcome of interest concerned how particular actions of election officials, or circumstances at polling sites, would impact the confidence of election integrity as well as voter safety *from the perspective of survey respondents*. Survey participants responded to a series of six statements, all prefaced with the same question, "Regardless of whether any of these are actually the case, how would the following impact your confidence in the fairness and accuracy of elections conducted this November?" The six statements were,
+
+1.  Election officials test every machine used in the election to ensure they are secure.
+2.  Election officials conduct audits of ballots after every election to confirm the results were accurate.
+3.  Poll watchers affiliated with the political parties or candidates observe the election.
+4.  Election staff and volunteers include military veterans and their family members from the community.
+5.  Election staff and volunteers include lawyers from the community.
+6.  Election staff and volunteers include college students from the community.
+
+For each statement, survey participants responded by selecting one of five response options:
+
+1.  Decrease confidence a lot
+2.  Decrease confidence somewhat
+3.  No impact on confidence
+4.  Increase confidence somewhat
+5.  Increase confidence a lot
+
+It was expected that respondents would estimate stronger impact on their confidence given they were assigned to read the treatment vignette compared to those who were not. Thus, the hypothesis is,
+
+
+$H_{4}:$ Respondents who read the treatment vignette will report stronger impact on their personal confidence in fairness and accuracy of election administration when veterans are stated to be included among election staff and volunteers compared to those who read the control vignette.
+
+
+The extent people believe veterans are more trustworthy as election workers than non-veterans in general is difficult without comparable groups to consider. Recruitment efforts in 2022 targeted young students, lawyers, and military veterans [@wang2022]. Thus, lawyers and college students were selected as two groups for which responses could be compared between different statement versions.
+
+The goal was to determine whether there is anything special in having veterans volunteer as election staff (i.e., poll workers) compared to other groups. That is, does it make any difference in terms of concerns over election security, fairness, and voter safety to include veterans as election staff and volunteers compared to other groups? The fourth hypothesis, irrespective of the experimental stimulus, reads,
+
+$H_{5}:$ Respondents who read the treatment vignette will report stronger impact on their personal confidence in fairness and accuracy of election administration when veterans are stated to be included among election staff and volunteers compared to identical statements about lawyers or college students.
 
 
 
-
-This is a one-sided directional hypothesis. Previous research on public perception and regard for U.S. military veterans gives credence to the directional hypothesis [@kleykamp2018; @kleykamp2023].
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Simply put, anything special about veterans that influences people's trust and confidence in election administration is expected to be observable in participants' survey responses. However, exactly what makes veterans special in this regard will not; this study did not inquire into details of public perception about veterans specifically (e.g., positive stereotypes, typical characteristics). 
-
-
- 
-
- 
-
-
-The goal was to determine whether there is anything special in having veterans volunteer as election staff (i.e., poll workers). That is, does it make any difference in terms of concerns over election security, fairness, and voter safety to include veterans as election staff and volunteers compared to other groups? The extent people believe veterans are more trustworthy as election workers than non-veterans in general is difficult without comparable groups to consider.
-
-
-A series of survey questions sought to determine whether support for veterans as election staff would be notably higher when compared to other relatively neutral groups.   
-
-
-It was hypothesized that different versions of statements in a series of survey questions would result in consistent response effects.  
-
+## Results
 
 \pagebreak
 
-# Appendix {.appendix}
+## Conclusion
+
+### Limitations
+
+-   limitations: interpretations of the treatment effect are limited.
+-   The sample may not be generalizable to the population.
+-   It's hard to say whether merely mentioning veterans is enough, as compared to explicitly naming veterans as the target of particular recruitment efforts.
+-   Interpretation is also limited considering that no other particular group, or groups are compared directly against the veteran treatment vignette, i.e., additional vignettes for other comparable groups.
+-   Moreover, results are limited by the survey questions, questionnaire design, and experimental stimulus (i.e., vignette) for two reasons. - First, the vignettes and many survey questions ask about Maricopa County, AZ specifically. Adding a specific county in the vignette adds in a factor that cannot be accounted for without additional treatments that eliminate the setting as a potential influence. Moreover, the specificity of the setting adds in even more unexplained error---some people may have attitudes about the county in question, others won't, while others may be muffed to consider a random county in the U.S. they've know nothing about. Adding the county undermines the confidence that treatment effects are solely attributable to veterans to an unknown degree. - Second, questions ask about one's own local community in addition to identical questions which asked about Maricopa County, AZ. Consequently, many questions within the questionnaire were duplicates with that one differences. This isn't uncommon in surveys, however in this case, it lengthened the survey to a degree that likely resulted in a higher drop off rate. More importantly, the quality of responses were likely diminished to some unknown extent. Although it is possible to compare questions asked about Maricopa County, AZ to questions about one's local area, the quality of that comparison is limited by the unknown extent of fatigue induced by answering the same questions twice. It wasn't just that some questions were asked multiple times, almost all of the questions were duplicated; after completing a long series on Maricopa County, participants then answered the same questions about the local community. The rate to which participants dropped from the survey is \_\_\_, which suggests fatigue as an important factor. Survey fatigue is a known issue that should be taken into consideration. Comparison of treatment effects between the MC series and the local area series is undermined by the unknown influence that fatigue would have on response choices. Any differences couldn't confidently be attributed to "my area" vs Maricopa county. We also can't determine whether treatment effects are sustained when comparing the Maricopa County series to the local area series asked subsequently. We would have to assume the setting as irrelevant, which we can't reasonably do.
+
+\pagebreak
+
+## Appendix A: Survey Experiment Vignettes {#sec-appendix-a}
+
+::::: {#fig-vignettes .content-visible layout-ncol="2" when-format="html" unless-format="pdf"}
+::: {#fig-treatment}
+### Treatment Vignette
+
+| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+::: {#fig-control}
+### Control Vignette
+
+| **Local Residents Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+Fabricated Article Vignettes utilized as Experimental Stimulus
+:::::
+
+::::: {.content-hidden layout-ncol="2" unless-format="pdf"}
+<div>
+
+### Treatment Vignette
+
+| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+
+</div>
+
+<div>
+
+### Control Vignette
+
+| **Local Residents Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
+
+Text of the Control Condition: Recruitment of Community Members
+
+</div>
+:::::
+
+## Appendix B: Sample Demographics {#sec-appendix-b}
 
 ::: {.content-visible when-format="html" unless-format="pdf"}
-
 ```{r}
 #| label: tbl-desc
 #| tbl-cap: "Description of Sample Demographics"
@@ -275,22 +308,18 @@ gtsummary::as_gt(tbl.desc) |>
 
 
 ```
-
-
 :::
-
 
 There should be nothing below here
 
 ::: {.content-hidden unless-format="pdf"}
-
 ```{r}
 #| label: tbl-desc-pdf
 #| tbl-cap: "Description of Sample Demographics"
 #| tbl-cap-location: top
 
 frqs <- data |> 
-  select(qset, age_cat, gender_3cat, educ_4cat, race, partyid_3cat) |>
+  select(group, qset, age_cat, gender_3cat, educ_4cat, race, partyid_3cat) |> 
   map(count_prop)
 
 demog_df <- purrr::reduce(frqs, dplyr::full_join)
@@ -300,12 +329,13 @@ kableExtra::kbl(demog_df,
                 booktabs = T, 
                 digits = 2,
                 col.names = c("Name", "n", "Pct")) |> 
-  kableExtra::pack_rows("Qset", 1, 2) |> 
-  kableExtra::pack_rows("Age", 3, 10) |> 
-  kableExtra::pack_rows("Gender", 11, 13) |> 
-  kableExtra::pack_rows("Education", 14, 17) |> 
-  kableExtra::pack_rows("Race", 18, 22) |> 
-  kableExtra::pack_rows("Party ID", 23, 25) |> 
+  kableExtra::pack_rows("Experiment Condition", 1, 2) |>
+  kableExtra::pack_rows("Question Set", 3, 4) |>
+  kableExtra::pack_rows("Age", 5, 12) |> 
+  kableExtra::pack_rows("Gender", 13, 15) |> 
+  kableExtra::pack_rows("Education", 16, 19) |> 
+  kableExtra::pack_rows("Race", 20, 24) |> 
+  kableExtra::pack_rows("Party ID", 25, 27) |> 
   kableExtra::kable_styling(
     latex_options = c("striped", "scale_down"),
     full_width = F,
@@ -316,152 +346,24 @@ kableExtra::kbl(demog_df,
 ```
 
 
-```{r}
-#| label: tbl-desc-pdf-2
-
-tbl.desc <- data |> 
-  mutate(across(where(is.factor), ~forcats::fct_recode(., NULL = "-99"))) |> 
-  labelled::set_variable_labels(
-    age_cat = "Age group, in years",
-    gender_3cat = "Gender",
-    race = "Race",
-    educ_4cat = "Highest level of education completed",
-    milserv1 = "Prior service in the Armed Forces",
-    milserv2 = "Currently serving in the Armed Forces",
-    milservfam = "Member of immediate family served or is currently serving",
-    voted2020 = "Turnout in 2020",
-    choice2020 = "Vote Choice 2020",
-    voteintent = "Vote Intent 2024",
-    ideo = "Political Ideology",
-    ideolean = "Political Ideology, lean",
-    partyid_3cat = "Party ID"
-  ) |>
-  gtsummary::tbl_summary(
-    by = qset,
-    include = c(
-      age_cat,
-      gender_3cat,
-      race,
-      educ_4cat,
-      partyid_3cat,
-      ideo,
-      ideolean,
-      voted2020,
-      choice2020,
-      voteintent,
-      milserv1,
-      milserv2,
-      milservfam
-    ),
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
-    type = list(
-      milserv1 ~ "categorical",
-      
-      milserv2 ~ "categorical",
-      milservfam ~ "categorical"
-    ),
-    missing = "no"
-  ) |>
-  gtsummary::add_n() |>
-  gtsummary::add_overall() |>
-  gtsummary::modify_header(label = "**Variable**") |>
-  gtsummary::bold_labels()
-
-
-gtsummary::as_kable_extra(
-  tbl.desc, 
-  booktabs = T,
-  digits = 2,
-  addtl_fmt = T,
-  linesep = ""
-) |> 
-  kableExtra::kable_styling(
-    latex_options = c("striped", "scale_down"),
-    font_size = 9)
-
-```
-
-
 :::
-
-
-
-
-
-
-
-
-
-
-## Conclusion
-
-### Limitations
-
--   limitations: interpretations of the treatment effect are limited.
-  -   The sample may not be generalizable to the population.
-  -   It's hard to say whether merely mentioning veterans is enough, as compared to explicitly naming veterans as the target of particular recruitment efforts. 
-  -   Interpretation is also limited considering that no other particular group, or groups are compared directly against the veteran treatment vignette, i.e., additional vignettes for other comparable groups. 
-  -   Moreover, results are limited by the survey questions, questionnaire design, and experimental stimulus (i.e., vignette) for two reasons. 
-    -   First, the vignettes and many survey questions ask about Maricopa County, AZ specifically. Adding a specific county in the vignette adds in a factor that cannot be accounted for without additional treatments that eliminate the setting as a potential influence. Moreover, the specificity of the setting adds in even more unexplained error---some people may have attitudes about the county in question, others won't, while others may be muffed to consider a random county in the U.S. they've know nothing about. Adding the county undermines the confidence that treatment effects are solely attributable to veterans to an unknown degree.
-    -   Second, questions ask about one's own local community in addition to identical questions which asked about Maricopa County, AZ. Consequently, many questions within the questionnaire were duplicates with that one differences. This isn't uncommon in surveys, however in this case, it lengthened the survey to a degree that likely resulted in a higher drop off rate. More importantly, the quality of responses were likely diminished to some unknown extent. Although it is possible to compare questions asked about Maricopa County, AZ to questions about one's local area, the quality of that comparison is limited by the unknown extent of fatigue induced by answering the same questions twice. It wasn't just that some questions were asked multiple times, almost all of the questions were duplicated; after completing a long series on Maricopa County, participants then answered the same questions about the local community. The rate to which participants dropped from the survey is ___, which suggests fatigue as an important factor. Survey fatigue is a known issue that should be taken into consideration. Comparison of treatment effects between the MC series and the local area series is undermined by the unknown influence that fatigue would have on response choices. Any differences couldn't confidently be attributed to "my area" vs Maricopa county. We also can't determine whether treatment effects are sustained when comparing the Maricopa County series to the local area series asked subsequently. We would have to assume the setting as irrelevant, which we can't reasonably do.
 
 \pagebreak
 
-# Appendix A: Survey Experiment Vignettes {#sec-appendix-a}
+[^1]: I adopt a distinction made between *trustworthiness* and *trust* in elections [@stewart2022]. The "*worthiness*" of one's trust in the conduct and administration of elections is based on the extent that outcomes of an election reasonably follow the rules prescribed and can be adjudicated as such. "If the process is conducted fairly and competently, and the results are determined by the actions of voters...we can call this a trustworthy election" [@stewart2022, 237]. *Trustworthiness* is distinguished from *trust* as a psychological construct, "...the conclusion reached by the public about the functioning of the process" [@stewart2022, 237]. To put in other terms, trustworthiness is built by the structure, procedures, and practices of the institution, in this case election administration. The public's trust in elections, however, is amendable to an indefinite number of factors that may be seemingly unrelated to the formal procedures of election administration. To illustrate, my car is trustworthy because I've known it to function quite well as a car should; it passes whatever criteria upon inspection, its sufficiently fueled, and is in generally good working order. I have every reason to deem it worthy of my trust. However, I don't trust my car because I am sure it is haunted.
 
-::::: {#fig-vignettes layout-ncol=2 .content-visible when-format="html" unless-format="pdf"}
-::: {#fig-treatment}
-### Treatment Vignette
+[^2]: It is important to point out here that election administration is just one institution that interacts with many other institutions and processes which form the electoral system *writ large* [@stewart2022]. The way in which I discuss the institution of election administration, as well as the way in which I discuss and distinguish public trust in elections from broader conceptions of public trust, is borrowed substantively from @stewart2022's conceptual framework of the same. Distinctions between *trust* and *trustworthiness* and the notion of election administration as an institution are already apparent inspirations convenient for situating the theory of this research inquiry.
 
-| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
-| 
-|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
-| 
-|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+[^3]: There's little that could justify a conceptual distinction between public trust pre-election and public trust post-election. The temporal element renders the difference between pre- and post-election operative rather than conceptual.
 
-Text of the Treatment Condition: Recruitment of Veterans and Military Family Members
-:::
+[^4]: Note that *anxiety* is taken to be the inverse of *trust and confidence*, as in, one who is less confident in this or that is thereby more anxious over the matter in question. As such, anxiety may equivalently be discussed as trust/confidence without issue except for framing of said discussion. Electoral anxiety is used in place of electoral trust/confidence simply to emphasize the anticipatory nature of the attitudes in question.
 
-::: {#fig-control}
-### Control Vignette
+[^5]: The cited study defined "insurrectionist sentiments" as, "...willingness to support violent efforts to overturn the results of an election in favor of another, unelected political leader." [@pape2024, 7]. It should be noted, however, that despite the general definition, the operative items used to measure such sentiments ask about Donald Trump specifically, not an "unelected political leader".
 
-| **Local Residents Recruited for Election Jobs in Maricopa County**
-| 
-|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
-| 
-|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
+[^6]: Prior to 2021, I found one online recruitment brochure intent on recruiting veterans to serve as election workers [@studentveteransofamerica2020].
 
-Text of the Control Condition: Recruitment of Community Members
-:::
+[^7]: Complete text of treatment and control vignettes are included in the Appendix
 
-Fabricated Article Vignettes utilized as Experimental Stimulus
-:::::
+[^8]: The setting of the vignettes and inclusion of duplicate questions in the survey are highlighted and discussed later.
 
-
-::::: {#fig-vignettes layout-ncol=2 .content-hidden unless-format="pdf"}
-::: {#fig-treatment}
-### Treatment Vignette
-
-| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
-| 
-|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
-| 
-|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
-
-Text of the Treatment Condition: Recruitment of Veterans and Military Family Members
-:::
-
-::: {#fig-control}
-### Control Vignette
-
-| **Local Residents Recruited for Election Jobs in Maricopa County**
-| 
-|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
-| 
-|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
-
-Text of the Control Condition: Recruitment of Community Members
-:::
-
-Fabricated Article Vignettes utilized as Experimental Stimulus
-:::::
+[^9]: All survey items are included in the Appendix.
