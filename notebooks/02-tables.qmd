@@ -28,12 +28,49 @@ data_dict <- read.csv("data/data_dictionary.csv")
 # also load the raw data dict for comparison
 raw_spss_dict <- read.csv("data/raw_spss_dict.csv")
 
+```
+
+```{r}
+#| label: post_processing
+#| include: false
+
+# Some post-processing of the dataframe :::::::::::::::::::::::::::::::::::::###
+
+# code to recode levels "-99" in factor vars
+data <- data |> 
+  mutate(across(where(is.factor), ~forcats::fct_recode(., NULL = "-99")))
+
+# recode factor levels 
+data <- data |> 
+  # use `pewmethods` to preserve order of factor levels
+  mutate(across(c(q19, q20, q21, q22, q23,q24, q25, q26,
+                  q30, q31, q32, q33, q34, q35, q36, q37), 
+                ~pewmethods::fct_case_when(
+    .x == "Not at all confident" |
+      .x == "Not at all committed" ~ "Not at all",
+    .x == "Not too confident" |
+      .x == "Not too committed"|
+      .x == "Not too concerned"|
+      .x == "Somewhat unconcerned" ~ "Not that much",
+    .x == "Somewhat confident" |
+      .x == "Somewhat committed" ~ "Somewhat",
+    .x == "Very confident" |
+      .x == "Very committed" ~ "Very",
+    TRUE ~ NA
+  )))
 
 ```
 
+```{r}
+#| label: fns
+#| include: false
 
+source(here::here('src', 'funs.R'))
 
-## Descriptive table
+```
+
+## Demographics
+
 ```{r}
 #| label: tbl-1
 #| tbl-cap: "Description of Sample Demographics"
@@ -131,6 +168,146 @@ kableExtra::kbl(demog_df,
 
 
 ```
+
+## Summary Tables
+
+```{r}
+#| label: tbl-tc
+#| tbl-cap: "Trust and Confidence in Election Administration"
+
+# Likert table summary of Trust and confidence variables
+tbl_tc <- data |> 
+  select(q19:q24) |>
+  gtsummary::tbl_likert(
+    statistic = ~"{n} ({p}%)", 
+    label = list(q19 = "Votes will be counted as intended",
+                 q20 = "Election officials will do good job",
+                 q21 = "Election workers will be committed",
+                 q22 = "Voting process will be fair",
+                 q23 = "Voting outcome will be fair",
+                 q24 = "Election technology will be secure"))
+  
+# add continuous summary of Likert scores. Merge tables into one
+tbl_tc_summary <- list(
+  tbl_tc,
+  gtsummary::tbl_wide_summary(
+    data |>
+      select(q19:q24) |> mutate(across(where(is.factor), as.numeric)),
+    statistic = c("{mean}", "{sd}"),
+    label = list(
+      q19 = "Votes will be counted as intended",
+      q20 = "Election officials will do good job",
+      q21 = "Election workers will be committed",
+      q22 = "Voting process will be fair",
+      q23 = "Voting outcome will be fair",
+      q24 = "Election technology will be secure"
+    ),
+    type = ~ "continuous"
+  )
+) |>
+  gtsummary::tbl_merge(tab_spanner = F) |> 
+  gtsummary::modify_header(label="")
+
+# print as huxtable and modify using `huxtable` R package
+gtsummary::as_hux_table(tbl_tc_summary) |>
+  huxtable::set_width(0.6) |> 
+  huxtable::set_col_width(rep(c(0.4))) |> 
+  huxtable::theme_article() |> 
+  huxtable::set_position("center")
+
+
+
+```
+
+
+```{r}
+#| label: tbl-eef
+#| tbl-cap: "Expectation of Electoral Fraud"
+
+# Likert table summary of Expectation of electoral fraud :::::::::::::::::::####
+tbl_eef <- data |> 
+  select(contains("q28_")) |>
+  gtsummary::tbl_likert(
+    statistic = ~"{n} ({p}%)", 
+    label = list(q28_1 = "There will be voter fraud",
+                 q28_2 = "Many votes will not be counted",
+                 q28_3 = "Voters will be turned away",
+                 q28_4 = "Foreign Interference",
+                 q28_5 = "Election officials will discourage some voters"))
+  
+# add continuous summary of Likert scores
+tbl_eef_summary <- list(
+  tbl_eef,
+  gtsummary::tbl_wide_summary(
+    data |>
+      select(contains("q28_")) |> mutate(across(where(is.factor), as.numeric)),
+    statistic = c("{mean}", "{sd}"), 
+    label = list(q28_1 = "There will be voter fraud",
+                 q28_2 = "Many votes will not be counted",
+                 q28_3 = "Voters will be turned away",
+                 q28_4 = "Foreign Interference",
+                 q28_5 = "Election officials will discourage some voters"),
+    type = ~ "continuous"
+  )
+) |>
+  gtsummary::tbl_merge(tab_spanner = F) |> 
+  gtsummary::modify_header(label="")
+
+
+# print as huxtable and modify using `huxtable` R package
+gtsummary::as_hux_table(tbl_eef_summary) |>
+  huxtable::set_width(0.6) |> 
+  huxtable::set_col_width(rep(c(0.4))) |> 
+  huxtable::theme_article() |> 
+  huxtable::add_footnote(border = 0.8,
+    "Note: Full survey question and statement wording can be found in the appendix") |> 
+  huxtable::set_position("center")
+
+
+
+
+```
+
+```{r}
+#| label: tbl-safe
+#| tbl-cap: "Concern for voter safety"
+
+# Likert table summary of Concerns for Voter Safety ::::::::::::::::::::::::####
+tbl_safe <- data |> 
+  select(q25, q26) |>
+  gtsummary::tbl_likert(
+    statistic = ~"{n} ({p}%)", 
+    label = list(q25 = "Potential for violence, threats, or intimidation",
+                 q26 = "Polling sites will be safe for voters"))
+  
+# add continuous summary of Likert scores
+tbl_safe_summary <- list(
+  tbl_safe,
+  gtsummary::tbl_wide_summary(
+    data |>
+      select(q25, q26) |> mutate(across(where(is.factor), as.numeric)),
+    statistic = c("{mean}", "{sd}"),  
+    label = list(q25 = "Potential for violence, threats, or intimidation",
+                 q26 = "Polling sites will be safe for voters"),
+    type = ~ "continuous"
+  )
+) |>
+  gtsummary::tbl_merge(tab_spanner = F) |> 
+  gtsummary::modify_header(label="**Concern**")
+
+
+# print as huxtable and modify using `huxtable` R package
+gtsummary::as_hux_table(tbl_safe_summary) |>
+  huxtable::set_width(0.6) |> 
+  huxtable::set_col_width(rep(c(0.4))) |> 
+  huxtable::theme_article() |> 
+  huxtable::add_footnote(border = 0.8,
+    "Note: Full survey question and statement wording can be found in the appendix") |> 
+  huxtable::set_position("center")
+
+```
+
+
 ## Crosstables
 
 ```{r}
@@ -138,7 +315,7 @@ kableExtra::kbl(demog_df,
 #| tbl-cap: "Confidence vote counts will be accurate in Maricopa County, AZ by Experiment Condition"
 
 # Crosstab of Q19 by treatment group
-df |> 
+data |> 
   janitor::tabyl(group, q19, show_na = F) |>
   janitor::adorn_percentages(denominator = 'row') |>
   janitor::adorn_pct_formatting(digits = 1, affix_sign = F) |>
@@ -206,7 +383,7 @@ df |>
 #| tbl-cap-location: top
 
 
-df |> 
+data |> 
   janitor::tabyl(group, q21, show_na = F) |> 
   # janitor::adorn_totals("both") |> 
   janitor::adorn_percentages("row") |> 
