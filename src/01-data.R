@@ -59,6 +59,7 @@ codebook <- raw_spss |>
 
 # save codebook as .csv file in data/ directory
 write.csv(codebook, file = "data/survey_codebook.csv")
+
 # clean up data set ::::::::::::::::::::::::::::::::::::::::::::::::::::::::####
 data <- raw_spss |> 
   janitor::clean_names() |> 
@@ -313,7 +314,7 @@ data_dict <- data |>
   labelled::generate_dictionary()
 
 #####
-# convert all labelled variables to factor
+# convert all labelled variables to factor :::::::::::::::::::::::::::::::::####
 
 data <- data |> 
   # make `group` and `qset` factors (because they are character class)
@@ -322,35 +323,17 @@ data <- data |>
   sjlabelled::set_labels(group, labels = c("Control" = 0, "Treatment" = 1)) |>
   sjlabelled::set_labels(qset, labels = c("A" = 0, "B" = 1)) |> 
   # convert all labelled variables to factors
-  haven::as_factor(only_labelled = T) |>
+  haven::as_factor(only_labelled = T, ordered = TRUE) |>
   # re-code any empty/blank levels to NA
   mutate(across(where(is.factor), ~ fct_recode(., NULL = ""))) |> 
+  
+  # code to recode levels "-99" in factor vars to NA
+  mutate(across(where(is.factor), ~forcats::fct_recode(., NULL = "-99"))) |>
+  
   # reverse order of identified factor levels for consist direction
-  mutate(across(c(q8, q20, q23, q24, q31, q34, q35, q49, q50), .fns = ~fct_rev(.))) |> 
+  mutate(across(c(q8, q20, q23, q24, q25, q31, q34, q35, q49, q50), .fns = ~fct_rev(.))) |> 
   # reverse order of group levels so control comes first. Better table display
   mutate(group = forcats::fct_rev(group))
-
-
-# add variable labels back into factorized data set ::::::::::::::::::::::::####
-
-# variable labels are nice to have for plenty of reasons
-# since SPSS data is labelled, usually, the variables are <dbl+lbl> instead of
-# factors <fct>. It's easier to analyze vars in data as factors, but losing the
-# variable labels (i.e., question text) is kind of a bummer. The following puts
-# the variable labels form the SPSS data set back into the 'factor-ized' dataset
-
-# To quickly assign the variable labels, first create a named vector via
-# deframe() with values as the variable labels and names as the variable names.
-data_labels <- data_dict |>
-  select(variable, label) |> 
-  deframe()
-
-# Now assign the labels using the splice operator. Using the splice operator,
-# labels are assigned via matching against the variable name, which means that
-# variable order does not matter.
-
-data <- data |> 
-  labelled::set_variable_labels(!!!data_labels)
 
 # construct variables ::::::::::::::::::::::::::::::::::::::::::::::::::::::####
 
@@ -377,7 +360,7 @@ data <- data |>
     partyid_3cat = "Party ID 3 categories, with true Independents")
 
 
-# create an age group variable
+# create an age group variable (groups align with CPS top coding)
 data <- data |>    
   mutate(age_cat = 
            forcats::fct_collapse(
@@ -389,13 +372,12 @@ data <- data |>
              "55-64" = c(55:64),
              "65-74" = c(65:74),
              "75-84" = c(75:82, 84),
-             "85-92" = c(85:86,88, 92)
+             "85+" = c(85:86,88, 92)
              ),
          .after = gender) |> 
   labelled::set_variable_labels(
     age_cat = "Age categorized into eight groups"
   )
-
 # create gender_3cat, collapsed version of voted2020, and set var label
 data <- data |> 
   dplyr::mutate(gender_3cat = forcats::fct_collapse(
@@ -421,16 +403,27 @@ data <- data |>
 
 
 # create education var with fewer categories
-data <- data |> 
-  mutate(educ_4cat = forcats::fct_collapse(
-    educ,
-    "H.S. or less" = c("Less than high school degree",
-                       "High school graduate (high school diploma or equivalent including GED)"),
-    "Some college no degree" = "Some college but no degree",
-    "Undergraduate level degree" = c("Associate degree in college (2-year)",
-                                     "Bachelor's degree in college (4-year)"),
-    "Graduate level degree" = c("Master's degree", "Doctoral degree", "Professional degree (JD, MD)")),
-    .after = educ)
+data <- data |>
+  mutate(
+    educ_4cat = forcats::fct_collapse(
+      educ,
+      "H.S. or less" = c(
+        "Less than high school degree",
+        "High school graduate (high school diploma or equivalent including GED)"
+      ),
+      "Some college no degree" = "Some college but no degree",
+      "College degree" = c(
+        "Associate degree in college (2-year)",
+        "Bachelor's degree in college (4-year)"
+      ),
+      "Postgraduate degree" = c(
+        "Master's degree",
+        "Doctoral degree",
+        "Professional degree (JD, MD)"
+      )
+    ),
+    .after = educ
+  )
 
 # Now do some heavy duty relocating of columns in the dataframe
 data <- data |>  
@@ -444,30 +437,89 @@ data <- data |>
     ideo_3cat, .before = ideo
   )
 
-# create dummy variables where 1 = 'Increase in confidence' and 0 = "No increase
-# in confidence".
-# add dummy variables to dataframe
-data <- data |>
-  mutate(across(
-    c(q41.1:q43.6),
-    ~ dplyr::case_when(
-      . == "Decrease confidence a lot" ~ "Decrease",
-      . == "Decrease confidence somewhat" ~ "Decrease",
-      . == "No impact on confidence" ~ "No impact",
-      . == "Increase confidence somewhat" ~ "Increase",
-      . == "Increase confidence a lot" ~ "Increase",
-      .default = as.character(.)), .names = "{.col}.clps")) |> 
-  mutate(across(c(q41.1.clps:q43.6.clps), 
-                ~ dplyr::case_when(
-                . == "Increase" ~ 1, 
-                . == "No impact" ~ 0,
-                . == 'Decrease' ~ 0),
-                .names = "{.col}.dum")) |> 
-  mutate(across(c(q41.1.clps, q41.2.clps, q41.3.clps, q41.4.clps,
-                  q41.5.clps, q41.6.clps, q43.1.clps, q43.2.clps,
-                  q43.3.clps, q43.4.clps, q43.5.clps, q43.6.clps),
-                ~ haven::as_factor(.)))
 
+
+# Some additional processing of the data frame :::::::::::::::::::::::::::::####
+
+# modifying some of the variable categories for ease of interpretation
+data <- data |>
+  mutate(
+    # adding Hispanic or Latino or Spanish origin to race variable
+    race2 = dplyr::case_when(
+      race == "White or Caucasian" ~ "White",
+      race == "Black or African American" ~ "Black",
+      hisp == "Yes" ~ "Hispanic",
+      .default = race
+    ),
+    
+    # combining race and hispanic variable
+    race_hisp = dplyr::case_when(
+      hisp == "Yes" & race == "White or Caucasian" ~ "White and Hispanic",
+      hisp == "Yes" &
+        race == "Black or African American" ~ "Black and Hispanic",
+      hisp == "Yes" &
+        race == "American Indian" ~ "American Indian and Hispanic",
+      hisp == "Yes" & race == "Asian" ~ "Asian and Hispanic",
+      hisp == "Yes" & race == "Other" ~ "Hispanic",
+      hisp == "No" &
+        race == "White or Caucasian" ~ "White or Caucasian",
+      hisp == "No" &
+        race == "Black or African American" ~ "Black or African American",
+      hisp == "No" & race == "American Indian" ~ "American Indian",
+      hisp == "No" & race == "Asian" ~ "Asian",
+      hisp == "No" & race == "Other" ~ "Other Non-hispanic",
+      hisp == "Prefer not to say" &
+        race == "White or Caucasian" ~ "White or Caucasian",
+      hisp == "Prefer not to say" &
+        race == "Black or African American" ~ "Black or African American",
+      hisp == "Prefer not to say" &
+        race == "American Indian" ~ "American Indian",
+      hisp == "Prefer not to say" & race == "Asian" ~ "Asian",
+      hisp == "Prefer not to say" & race == "Other" ~ "Other",
+      TRUE ~ NA
+    ),
+    
+    # relationship with military service members
+    milrelation = dplyr::case_when(
+      milserv1 == "Yes" & milserv2 == "Yes" | milserv2 == "No"
+      & milservfam == "No" ~ "Served",
+      milserv1 == "Yes" & milserv2 == "Yes" | milserv2 == "No"
+      & milservfam == "Yes" ~ "Served w/fam",
+      milserv1 == "Yes" &
+        milserv2 == "No" & milservfam == "No" ~ "Served",
+      is.na(milserv2) & milservfam == "Yes" ~ "Only family",
+      is.na(milserv2) & milservfam == "No" ~ "No relation",
+      TRUE ~ NA
+    ),
+    
+    # variable to show any relationship with military service members
+    mil_anyrelation = dplyr::case_when(
+      milrelation == "No relation" ~ "No relation",
+      milrelation == "Served"
+      | milrelation == "Served w/fam"
+      | milrelation == "Only family" ~ "Some relation",
+    )
+  ) |>
+  mutate(across(
+    c(race2, race_hisp, milrelation, mil_anyrelation),
+    ~ forcats::as_factor(.)
+  )) |>
+  
+  # adding a simple "White" or "Non-White" racial category
+  mutate(
+    race_wnw = dplyr::case_when(
+      race2 == "White" ~ "White",
+      race2 != "White" ~ "Non-White",
+      TRUE ~ NA
+    )
+  ) |>
+  
+  # relocate variables in data frame
+  dplyr::relocate(race2, .after = race) |>
+  dplyr::relocate(race_hisp, .after = race2) |>
+  dplyr::relocate(race_wnw, .after = race2) |> 
+  dplyr::relocate(milrelation, .after = milservfam) |>
+  dplyr::relocate(mil_anyrelation, .after = milrelation)
 
 # merge question sets ::::::::::::::::::::::::::::::::::::::::::::::::::::::####
 
@@ -517,8 +569,34 @@ data <- data |>
   ) |> 
   relocate(q41.1:q43.6, .after = q46_6)
 
+# create dummy variables where 1 = 'Increase in confidence' and 0 = "No increase
+# in confidence".
+# add dummy variables to dataframe
+data <- data |>
+  mutate(across(
+    c(q41.1:q43.6),
+    ~ dplyr::case_when(
+      . == "Decrease confidence a lot" ~ "Decrease",
+      . == "Decrease confidence somewhat" ~ "Decrease",
+      . == "No impact on confidence" ~ "No impact",
+      . == "Increase confidence somewhat" ~ "Increase",
+      . == "Increase confidence a lot" ~ "Increase",
+      .default = as.character(.)), .names = "{.col}.clps")) |> 
+  mutate(across(c(q41.1.clps:q43.6.clps), 
+                ~ dplyr::case_when(
+                . == "Increase" ~ 1, 
+                . == "No impact" ~ 0,
+                . == 'Decrease' ~ 0),
+                .names = "{.col}.dum")) |> 
+  mutate(across(c(q41.1.clps, q41.2.clps, q41.3.clps, q41.4.clps,
+                  q41.5.clps, q41.6.clps, q43.1.clps, q43.2.clps,
+                  q43.3.clps, q43.4.clps, q43.5.clps, q43.6.clps),
+                ~ haven::as_factor(.)))
 
-# Set variable labels for select variable columns
+
+
+# Set variable labels for select variable columns ::::::::::::::::::::::::::####
+
 data <- data |> 
   labelled::set_variable_labels(
     q1    = "Consent to Participate...",
@@ -536,9 +614,76 @@ data <- data |>
     lucid_rid = "Lucid respondent ID"
   )
 
-# create data dictionary using `labelled::generate_dictionary()`
-data_dict <- data |> 
-  labelled::generate_dictionary()
+# add state FIPS codes to dataframe ::::::::::::::::::::::::::::::::::::::::####
+
+# state and county fips codes are kept in tidycensus data
+# tidycensus::fips_codes$state_code |> unique() |> dput()
+# tidycensus::fips_codes$state_name |> unique() |> dput()
+
+# create temporary dataframe
+st <- data.frame(
+  state_fips = tidycensus::fips_codes$state_code |> unique() |> dput(),
+  state_name = tidycensus::fips_codes$state_name |> unique() |> dput()
+)
+
+# match that dataframe to states (q4) in primary dataframe
+st <- st |>
+  mutate(states2 = dplyr::case_when(
+    # if state_name is in any levels of q4 var, then state_fips codes
+    state_name %in% levels(data$q4) ~ state_fips,
+    TRUE ~ NA # else NA
+  )) |> 
+  # filter to exclude missing values
+  filter(!is.na(states2)) |> 
+  # arrange by alphabetical order of state name
+  arrange(state_name) |>  
+  # select only state_name and state_fips, renaming state_name to q4
+  select(q4=state_name, state_fips)
+
+# st
+
+# check to see what won't join. Should be 0
+# data |> anti_join(st, by = join_by(q4))
+
+# left_join keeps all obs in x, in this case, data. Whatever isn't in data will
+# be dropped from st (the temp dataframe)
+data <- data |> dplyr::left_join(st, by = dplyr::join_by(q4)) |> 
+  dplyr::relocate(state_fips, .after = q4) |> 
+  dplyr::mutate(state_fips = as.numeric(state_fips)) |> 
+  labelled::set_variable_labels(
+    state_fips = "State FIPS code"
+  )
+
+# remove temporary dataframe
+rm(st)
+
+
+
+# add variable labels back into factorized data set ::::::::::::::::::::::::####
+
+# variable labels are nice to have for plenty of reasons
+# since SPSS data is labelled, usually, the variables are <dbl+lbl> instead of
+# factors <fct>. It's easier to analyze vars in data as factors, but losing the
+# variable labels (i.e., question text) is kind of a bummer. The following puts
+# the variable labels form the SPSS data set back into the 'factor-ized' dataset
+
+# To quickly assign the variable labels, first create a named vector via
+# deframe() with values as the variable labels and names as the variable names.
+data_labels <- data_dict |>
+  select(variable, label) |> 
+  deframe()
+
+# Now assign the labels using the splice operator. Using the splice operator,
+# labels are assigned via matching against the variable name, which means that
+# variable order does not matter.
+
+data <- data |> 
+  labelled::set_variable_labels(!!!data_labels)
+
+# create data dictionary using `labelled::generate_dictionary()` :::::::::::####
+
+data_dict <- data |>
+   labelled::generate_dictionary()
 
 
 # arrange the dataframe in descending order according to 'end_date', survey
@@ -546,11 +691,206 @@ data_dict <- data |>
 # Notably, the start and end date variables are class datetime <dttm>, which
 # also includes the time of day the survey was taken. Later I can separate the
 # date and time into two columns for both start and end date.
-data |> arrange(desc(end_date))
+# data |> arrange(desc(end_date))
 
 # get a glimpse of the data
 # glimpse(data)
 
+# adding some more things:::::::::::::::::::::::::::::::::::::::::::::::::::####
+
+
+# using psych package to construct composite scores for each respondent ::: ####
+# psych::scoreItems()
+# These are just sum scores
+
+# get the question text (variable label) for each question
+# uncomment following line to get variable labels
+# data |> select(q19, q20, q21, q22, q23, q24) |> sjlabelled::get_label()
+
+# Q19: How confident are you that votes in Maricopa County, AZ will be counted
+# as voters intend in the elections this November ?
+
+# Q20: How confident are you that election officials, their staff, and
+# volunteers in Maricopa County, AZ will do a good job conducting the elections
+# this November?
+
+# Q21: Think about the election staff and volunteers who handle the
+# administration and conduct of elections in Maricopa County, AZ. How committed
+# do you think they will be to making sure the elections held this November are
+# fair and accurate?
+
+# Q22: How confident are you that the voting process will be fair in Maricopa
+# County, AZ?
+
+# Q23: How confident are you that the voting outcomes will be fair in Maricopa
+# County, AZ?
+
+# Q24: How confident are you that election systems in Maricopa County, AZ will
+# be secure from hacking and other technological threats?
+
+
+# make dataframe containing only items of interest
+trust <- data |> 
+  select(q19, q20, q21, q22, q23, q24) |> 
+  # convert class to numeric
+  mutate(across(everything(), ~as.numeric(.))) |> 
+  # shorten variable labels
+  sjlabelled::var_labels(
+    q19 ="accurate",
+    q20 = "goodjob",
+    q21 = "committed",
+    q22 = "fairprocess",
+    q23 = "fairoutcome",
+    q24 = "securetech")
+
+
+# create a list of scoring keys
+trust.keys <- list(trust = c("q19", "q20", "q21", "q22", "q23", "q24"))
+
+# compute average composite scores on trust from multi-item Likert scale
+data$trst.mean.scores <- psych::scoreItems(
+  keys = trust.keys, 
+  items = trust,
+  digits = 2,
+  missing = T, 
+  impute = "mean")$scores |> as.numeric()
+
+
+
+# can also use psych::scoreFast() but reliabilities are not included
+# trust.scores <- psych::scoreFast(keys, trust, missing = T, impute = "none")
+# class(trust.scores)
+
+# compute composite sum scores as well
+# add sum scores to dataframe
+data$trst.sum.scores <- psych::scoreItems(
+  keys = trust.keys,
+  items = trust, 
+  totals = T, # totals=TRUE to compute sum scores
+  missing = T,
+  impute = "mean")$scores |> as.numeric()
+
+# psych::describe(data.frame(data$trst.mean.scores, data$trst.sum.scores))
+
+# procedure to show that psych::scoreItems() simply computes sum or mean scores
+# data |> 
+#   # re-code any -99 levels to NA
+#   mutate(across(c(q19, q20, q21, q22, q23, q24), ~ fct_recode(., NULL = "-99"))) |>
+#   mutate(across(c(q19, q20, q21, q22, q23, q24), ~as.numeric(.))) |>
+#   select(rowID, q19, q20, q21, q22, q23, q24) |>
+#   # summarise_all(~sum(is.na(.)))
+#   # filter(if_any(everything(), ~!is.na(.))) |>
+#   mutate(
+#     trst_sum = rowSums(pick(q19, q20, q21, q22, q23, q24), na.rm = F),
+#     trst_rescaled = scales::rescale(trst_sum, to = c(0, 1)),
+#     trst_mean = rowMeans(pick(q19, q20, q21, q22, q23, q24), na.rm = F),
+#     trust.score = trst.scores
+#     # trust.score = as.numeric(trust.scales[["scores"]])
+#     ) |> 
+#   select(rowID, trst_sum, trst_rescaled, trst_mean, trust.score) |> 
+#   mutate(equiv = ifelse(trust.score == trst_mean, "M", "NM")) |> 
+#   filter(equiv == "M") |> 
+#   count(equiv)
+
+# This worked
+# Note that the number of "M" (for "Matches") = 1283 because there are 8 missing
+# values. These were imputed when calcuating the trust.scores, but missing in
+# the raw data.
+
+# creating composite scores for expectation of electoral fraud ::::::::::::####
+
+# How likely do you think any or all of the following will happen during this
+# year´s elections in Maricopa County, AZ?
+
+# q28_1: There will be voter fraud, that is, people who are not eligible to vote
+# will vote, or vote more than once
+
+# q28_2: Many votes will not actually be counted
+
+# q28_3: Many people will show up to vote and be told they are not eligible
+
+# q28_4: A foreign country will tamper with the votes cast in this area to
+# change the results
+
+# q28_5: Election officials in Maricopa County, Arizona will try to discourage
+# some people from voting
+
+eef <- data |> 
+  select(contains("q28_")) |> 
+  # convert class to numeric
+  mutate(across(everything(), ~as.numeric(.))) |> 
+  # shorten variable labels
+  sjlabelled::var_labels(
+    q28_1 ="voter fraud",
+    q28_2 = "votes not counted",
+    q28_3 = "voters turned away",
+    q28_4 = "foreign interference",
+    q28_5 = "discouraging voters")
+
+
+# create a list of scoring keys
+eef.keys <- list(expct_fraud = c("q28_1", "q28_2", "q28_3", "q28_4", "q28_5"))
+
+# compute average composite scores on trust from multi-item Likert scale
+data$eef.mean.scores <- psych::scoreItems(
+  keys = eef.keys, 
+  items = eef,
+  missing = T, 
+  impute = "mean")$scores |> as.numeric()
+
+# compute sum scores and add to dataframe
+data$eef.sum.scores <- psych::scoreItems(
+  keys = eef.keys, 
+  items = eef,
+  totals = TRUE, # compute sum scores
+  missing = T, 
+  impute = "mean")$scores |> as.numeric()
+
+# data |> 
+#   select(trst.mean.scores, trst.sum.scores, eef.mean.scores, eef.sum.scores) |> 
+#   psych::describe()
+
+# The distribution table shows that the trst_sum and trst_mean are negatively
+# skewed (i.e., skinny left-hand tail), whereas the dtrst_sum and dtrst_mean are
+# positively skewed but not nearly as strong. So, in other words, the
+# distribution of the trst scale shows that the sample is pretty confident in
+# the election admin, yet expectation of electoral fraud is distributed a bit
+# more normally across the sample.
+
+# adding re-scaled and z-scores to the data ::::::::::::::::::::::::::::::::####
+
+# rescale sum scores to range from 0 to 1
+# also add standardized z-scores
+# also dummify group variable
+data <- data |>
+  mutate(
+    trst.sum.rescaled = scales::rescale(trst.sum.scores, to = c(0, 1)),
+    trst.zscores = scale(trst.sum.scores, center = T, scale = T)[,1],
+    eef.sum.rescaled = scales::rescale(eef.sum.scores, to = c(0, 1)),
+    eef.zscores = scale(eef.sum.scores, center = T, scale = T)[,1],
+    group.dummy = dplyr::case_when(
+      group == "Treatment" ~ 1,
+      group == "Control" ~ 0,
+      TRUE ~ NA)) |>
+  dplyr::relocate(group.dummy, .after = group) |>
+  dplyr::relocate(c(trst.sum.rescaled, trst.zscores), .after = trst.sum.scores) |>
+  dplyr::relocate(c(eef.sum.rescaled, eef.zscores), .after = eef.sum.scores)
+
+
+
+# remove unnecessary things from global environment
+rm(eef, trust, eef.keys, trust.keys)
+
+
+# Q25: "Thinking about Maricopa County, AZ, how concerned should voters feel
+# about potential violence, threats of violence, or intimidation while voting in
+# person at their local polling place?"
+
+# Q26: How confident, if at all, are you that in person polling places in
+# Maricopa County, AZ will be safe places for voters to cast their ballots
+# during the upcoming elections in November?
+
+# So there is not enough items in the survey to get an alpha representing internal consistency of a supposed scale of concern for voter safety. That is, there are only two items that were posed to respondents (never mind the local area items). Thus, the best approach is to simply compare response patterns between treatment and control. 
 
 
 # save dataframe and data dictionary :::::::::::::::::::::::::::::::::::::::####
