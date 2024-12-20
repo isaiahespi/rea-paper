@@ -28,11 +28,8 @@ crossref:
 #| label: setup
 #| include: false
 
-set.seed(1234)
-
 # load packages
 library(tidyverse)
-library(easystats)
 
 # load data
 load("data/research-paper-data-20241029.Rdata")
@@ -162,7 +159,7 @@ That being said, the general public perception, attitudes, or even stereotypes a
 
 ## Design and Survey Measures
 
-To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would improve trust in elections and ease election anxieties, a recent survey experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland. The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment ($n =$ 650) control ($n =$ 637) conditions[^4].
+To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would improve trust in elections and ease election anxieties, a recent survey experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland. The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment (n = 650) control (n = 637) conditions[^4].
 
 Survey participants read either a treatment or control vignette, which was a fabricated news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election. The treatment vignette referred to a program designed to recruit veterans and their family members and describes an interviewee "Jordan Braxton" as an Army veteran. The control vignette simply omitted any mention of veterans and their family members, and didn't describe "Jordan Braxton" as an Army veteran. Beyond those small differences and the headlines, the article vignettes are identical. Any effects can be attributed to the information about veterans in the treatment vignette[^5].
 
@@ -172,7 +169,9 @@ It should be noted that Maricopa County, AZ was chosen as the setting of the sto
 
 Over the past two decades it became commonplace for national polls to gauge public confidence in election administration (i.e., voter confidence) by asking some variety of the question, "How confident are you that your vote \[will be/was\] counted as you intended in the most recent election?" [@hall2009; @sances2015; @stewart2022]. In addition, since 2008, the Survey of the Performance of American Elections (SPAE) has included a good number of relevant questions to more thoroughly assess trust and confidence in election administration. Such questions inquire into the voter experience with the institution more directly. This study borrows, modifies, or takes inspiration from certain question items found within the 2022 SPAE and other survey items from the Pew Research Center's 2018 American Trends Panel wave 38 [@dunn2018].
 
-Note that, except for the item assessing voter confidence (i.e., votes counted as voters intend), most other question items from the 2022 SPAE inquire into the voter experience after the election has occurred. The items in this study, however, all inquire into confidence over one's expectations in anticipation of upcoming elections. In addition, other survey questionnaires ask similar questions that specifically contrast between a respondent's own local community, their state, and nationwide; this is in addition, or complementary to, items that distinguish between local area officials, state election officials, state government, and the U.S. federal government. The survey of this study, instead, focused on attitudes regarding election workers such as election officials, staff, and volunteers. As such, the items are utilized to comprise a component[^6] I broadly refer to as *trust in elections*. 
+Note that, except for the item assessing voter confidence (i.e., votes counted as voters intend), most other question items from the 2022 SPAE inquire into the voter experience after the election has occurred. The items in this study, however, all inquire into confidence over one's expectations in anticipation of upcoming elections. In addition, other survey questionnaires ask similar questions that specifically contrast between a respondent's own local community, their state, and nationwide. This is in addition, or complementary to, items that distinguish between local area officials, state election officials, state government, and the U.S. federal government. The survey of this study, instead, focused on attitudes regarding election workers such as election officials, staff, and volunteers. As such, the items are utilized to comprise a component[^6] I broadly refer to as *trust in elections*. 
+
+
 
 A set of five survey items measured public trust in elections by inquiring into the degree of confidence that votes will be counted as voters intend, confidence that electoral systems are secure from technological threats, perceived commitment of election staff, confidence that outcomes will be fair, as well as confidence that the voting process will be fair. The items measuring trust and confidence in elections include:
 
@@ -186,6 +185,12 @@ A set of five survey items measured public trust in elections by inquiring into 
 | How confident are you that the voting process will be fair in Maricopa County, AZ? |
 | How confident are you that election systems in Maricopa County, AZ will be secure from hacking and other technological threats? |
 :::
+
+
+
+
+
+
 
 Each item in this series presented four response options from "Not at all [confident/committed]", "Not too [confident/committed]", "Somewhat [confident/committed]", and "Very [confident/committed]". In total, six survey items measure different aspects of trust and confidence in election administration. From these items, I generated a composite score for each respondent that represents their variable level of trust in elections.
 
@@ -208,16 +213,12 @@ Similar to the items capturing trust in elections (@tbl-1), I computed a composi
 
 ## Data Specification
 
-The outcome of interest concerns both public trust in election administration and the expectation of electoral fraud. Because these variables are assessed by multiple Likert items, conventional methods call for combining the items of each set into separate Likert scales, also known as a summated rating scales. However, many of the items comprising the trust scale directly oppose items capturing expectations of electoral fraud. For instance, one item has the respondent report their confidence that votes will be counted as voter's intend; whereas a separate item has the the respondent report their expectation that many votes will not be counted. These two items directly contrast each other. 
-
-Theoretically speaking, a person who is certain that electoral fraud will occur clearly lacks trust in the election. That is, expectation of electoral fraud does imply lack of trust in elections. However, the reverse isn't necessarily true; it is reasonable to hold a degree of trust in elections alongside expectations that electoral fraud will occur. Holding both considerations isn't necessarily an example of cognitive dissonance, as a lack of confidence in elections doesn't necessarily imply an expectation of electoral fraud. A lack of trust in elections might render one open to potentialities, but expectation of fraud is in no way necessitated by lacking trust in elections. When considered along a spectrum, both can be considered as degrees of *confidence*; and in the absence of confidence, insecure.
+The outcome of interest concerns both public trust in election administration and the expectation of electoral fraud. Because these variables are assessed by multiple Likert items, conventional methods call for combining the items of each set into separate Likert scales, also known as a summated rating scales.
+However, many of the items comprising the trust scale directly oppose items capturing expectations of electoral fraud. For instance, one item has the respondent report their confidence that votes will be counted as voter's intend; whereas a contrasting item has the the respondent report their expectation that many votes will not be counted. These two items directly oppose each other, but there's no guarantee that individual responded as such.
 
 Since many of the items are not symmetric---i.e., response options are not bipolar with contrasting positive and negative response options---then a "trust in elections" scale could only be understood as a measure of trust in the positive use of the term (i.e., unipolar). Likewise, the expectation of fraud items fit to a scale that corresponds to a unipolar measure of *confident distrust* so to speak. 
 
-I would expect composite sum or mean scores, and item responses, on these two measures to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Upon construction of the two multi-item composite scales of *trust in elections* and *expectation of fraud*, internal consistency reliability coefficient $\alpha$ were estimated for both and found to be adequate ($\alpha$ > 0.8); the trust in elections scale $\alpha$ = 0.93 and the expectation of electoral fraud scale $\alpha$ = 0.86. In other words, the items in each of the scales were intercorrelated well enough to compose a single scale presuming a unidimensional construct for each. 
-
-
-I then plotted separate histograms of scores across the sample to visualize the distribution for each seen in @fig-dist. Note that for both scales, higher values indicate less expectation of electoral fraud and greater trust in elections, respectively.
+I would expect composite sum or mean scores, and item responses, on these two measures to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Upon construction of the two multi-item composite scales of *trust in elections* and *expectation of fraud*, internal consistency reliability coefficient $\alpha$ were estimated for both and found to be adequate ($\alpha$ > 0.8); the trust in elections scale $\alpha$ = 0.93 and the expectation of electoral fraud scale $\alpha$ = 0.86. In other words, the items in each of the scales were intercorrelated well enough to compose a single scale of a (presumed) unidimensional construct. I then plotted separate histograms of scores across the sample to visualize the distribution for each seen in @fig-dist. Note that for both scales, higher values indicate less expectation of electoral fraud and greater trust in elections, respectively.
 
 
 ```{r}
@@ -257,7 +258,9 @@ eef.scores.hist <- ggplot(data, aes(eef.mean.scores))+
 gridExtra::grid.arrange(eef.scores.hist, trst.scores.hist, ncol = 2)
 ```
 
-Given the non-normal (or at least un-equal skew of the) distribution of the two scale scores and ordinal nature of the variable items, I conducted a Spearman's rank correlation test [@spearman1907] and found a negative correlation of $\rho$ -0.49 (Kendall's \tau = -0.39) between summated scores on the two scales. The negative correlation between the items and the composite scores makes sense. 
+Given the non-normal (or at least un-equal skew of the) distribution of the two scale scores and ordinal nature of the variable items, I conducted a Spearman's rank correlation test [@spearman1907] and found a negative correlation of $\rho$ -0.49 (Kendall's \tau = -0.39) between summated scores on the two scales.
+
+The negative correlation between the items and the composite scores makes sense. Theoretically speaking, a person who is certain that electoral fraud will occur clearly lacks trust in the election. That is, expectation of electoral fraud does imply lack of trust in elections. However, the reverse isn't also necessarily true; it is reasonable to hold a degree of trust in elections alongside expectations that electoral fraud will occur. Holding both considerations isn't necessarily an example of cognitive dissonance, as a lack of confidence in elections doesn't necessarily imply an expectation of electoral fraud. A lack of trust in elections might render one open to potentialities, but expectation of fraud is in no way necessitated by lacking trust in elections. When considered along a spectrum, both can be considered as degrees of *confidence*; and in the absence of confidence, insecure.
 
 Accordingly, those whose responses to the "trust in elections" items would be cancelled out by their responses to the "expectation of fraud" items. Those who are, or are close to being, equally confident in both directions would be the most *insecure* about their expectations[^Insecure in terms of their confidence. Not insecure as to imply some anxious or concerned affect.]. Having no trust in elections and no expectation that electoral fraud will occur is functionally equivalent to having equal degree of both. Quite literally, an uncertain feeling of "it could go one way or the other". Operationally, this would reflect a middling 0 on a scale of *confidence*. Seeing as how expectation of electoral fraud is also a level of confidence, then it is reasonable to place all items onto a symmetric scale where positive values represent trust in elections and negative values represent expectation of electoral fraud.
 
