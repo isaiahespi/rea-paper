@@ -752,196 +752,90 @@ data <- data |>
     .x == "Somewhat confident" | .x == "Somewhat safe" ~ 2,
     .x == "Very confident" | .x == "Very safe" ~ 3,
     TRUE ~ NA), 
-    .names = "{col}.r"))
-
-# using psych package to construct composite scores for each respondent ::: ####
-# psych::scoreItems()
-# These are just sum scores
-
-# get the question text (variable label) for each question
-# uncomment following line to get variable labels
-# data |> select(q19, q20, q21, q22, q23, q24) |> sjlabelled::get_label()
-
-# Q19: How confident are you that votes in Maricopa County, AZ will be counted
-# as voters intend in the elections this November ?
-
-# Q20: How confident are you that election officials, their staff, and
-# volunteers in Maricopa County, AZ will do a good job conducting the elections
-# this November?
-
-# Q21: Think about the election staff and volunteers who handle the
-# administration and conduct of elections in Maricopa County, AZ. How committed
-# do you think they will be to making sure the elections held this November are
-# fair and accurate?
-
-# Q22: How confident are you that the voting process will be fair in Maricopa
-# County, AZ?
-
-# Q23: How confident are you that the voting outcomes will be fair in Maricopa
-# County, AZ?
-
-# Q24: How confident are you that election systems in Maricopa County, AZ will
-# be secure from hacking and other technological threats?
-
-
-# make dataframe containing only items of interest
-trust <- data |> 
-  select(q19.r, q20.r, q21.r, q22.r, q23.r, q24.r) |> 
-  # shorten variable labels
-  sjlabelled::var_labels(
-    q19 ="accurate",
-    q20 = "goodjob",
-    q21 = "committed",
-    q22 = "fairprocess",
-    q23 = "fairoutcome",
-    q24 = "securetech")
-
-
-# create a list of scoring keys
-trust.keys <- list(trust = c("q19.r", "q20.r", "q21.r", "q22.r", "q23.r", "q24.r"))
-
-# compute average composite scores on trust from multi-item Likert scale
-data$trst.mean.scores <- psych::scoreItems(
-  keys = trust.keys, 
-  items = trust,
-  digits = 2,
-  missing = T, 
-  impute = "mean")$scores |> as.numeric()
-
-
-
-# can also use psych::scoreFast() but reliabilities are not included
-# trust.scores <- psych::scoreFast(keys, trust, missing = T, impute = "none")
-# class(trust.scores)
-
-# compute composite sum scores as well
-# add sum scores to dataframe
-data$trst.sum.scores <- psych::scoreItems(
-  keys = trust.keys,
-  items = trust, 
-  totals = T, # totals=TRUE to compute sum scores
-  missing = T,
-  impute = "median")$scores |> as.numeric()
-
-# psych::describe(data.frame(data$trst.mean.scores, data$trst.sum.scores))
-
-# procedure to show that psych::scoreItems() simply computes sum or mean scores
-# data |> 
-#   # re-code any -99 levels to NA
-#   mutate(across(c(q19, q20, q21, q22, q23, q24), ~ fct_recode(., NULL = "-99"))) |>
-#   mutate(across(c(q19, q20, q21, q22, q23, q24), ~as.numeric(.))) |>
-#   select(rowID, q19, q20, q21, q22, q23, q24) |>
-#   # summarise_all(~sum(is.na(.)))
-#   # filter(if_any(everything(), ~!is.na(.))) |>
-#   mutate(
-#     trst_sum = rowSums(pick(q19, q20, q21, q22, q23, q24), na.rm = F),
-#     trst_rescaled = scales::rescale(trst_sum, to = c(0, 1)),
-#     trst_mean = rowMeans(pick(q19, q20, q21, q22, q23, q24), na.rm = F),
-#     trust.score = trst.scores
-#     # trust.score = as.numeric(trust.scales[["scores"]])
-#     ) |> 
-#   select(rowID, trst_sum, trst_rescaled, trst_mean, trust.score) |> 
-#   mutate(equiv = ifelse(trust.score == trst_mean, "M", "NM")) |> 
-#   filter(equiv == "M") |> 
-#   count(equiv)
-
-# This worked
-# Note that the number of "M" (for "Matches") = 1283 because there are 8 missing
-# values. These were imputed when calcuating the trust.scores, but missing in
-# the raw data.
-
-# creating composite scores for expectation of electoral fraud ::::::::::::####
-
-# How likely do you think any or all of the following will happen during this
-# year´s elections in Maricopa County, AZ?
-
-# q28_1: There will be voter fraud, that is, people who are not eligible to vote
-# will vote, or vote more than once
-
-# q28_2: Many votes will not actually be counted
-
-# q28_3: Many people will show up to vote and be told they are not eligible
-
-# q28_4: A foreign country will tamper with the votes cast in this area to
-# change the results
-
-# q28_5: Election officials in Maricopa County, Arizona will try to discourage
-# some people from voting
-
-eef <- data |> 
-  select(q28_1.r, q28_2.r, q28_3.r, q28_4.r, q28_5.r) |>
-  # shorten variable labels
-  sjlabelled::var_labels(
-    q28_1 ="voter fraud",
-    q28_2 = "votes not counted",
-    q28_3 = "voters turned away",
-    q28_4 = "foreign interference",
-    q28_5 = "discouraging voters")
-
-
-# create a list of scoring keys
-eef.keys <- list(expct_fraud = c("q28_1.r", "q28_2.r", "q28_3.r", "q28_4.r", "q28_5.r"))
-
-# compute average composite scores on trust from multi-item Likert scale
-data$eef.mean.scores <- psych::scoreItems(
-  keys = eef.keys, 
-  items = eef,
-  missing = T, 
-  impute = "mean")$scores |> as.numeric()
-
-# compute sum scores and add to dataframe
-data$eef.sum.scores <- psych::scoreItems(
-  keys = eef.keys, 
-  items = eef,
-  totals = TRUE, # compute sum scores
-  missing = T, 
-  impute = "median")$scores |> as.numeric()
-
-# data |> 
-#   select(trst.mean.scores, trst.sum.scores, eef.mean.scores, eef.sum.scores) |> 
-#   psych::describe()
-
-# The distribution table shows that the trst_sum and trst_mean are negatively
-# skewed (i.e., skinny left-hand tail), whereas the dtrst_sum and dtrst_mean are
-# positively skewed but not nearly as strong. So, in other words, the
-# distribution of the trst scale shows that the sample is pretty confident in
-# the election admin, yet expectation of electoral fraud is distributed a bit
-# more normally across the sample.
-
-# adding re-scaled and z-scores to the data ::::::::::::::::::::::::::::::::####
-
-# rescale sum scores to range from 0 to 1
-# also add standardized z-scores
-# also dummify group variable
-data <- data |>
+    .names = "{col}.r")) |> 
+  # add in positively coded numeric variables for q28 and q40 series
+  mutate(across(c(q28_1:q28_5, q40_1:q40_5), ~ dplyr::case_when(
+    .x == "Not likely at all" ~ 0,
+    .x == "Not too likely" ~ 1,
+    .x == "Somewhat likely" ~ 2,
+    .x == "Very likely" ~ 3,
+    TRUE ~ NA),
+    .names = "{col}.n")) |> 
+  
+  # dummify partyid_3cat variable
   mutate(
-    trst.sum.rescaled = scales::rescale(trst.sum.scores, to = c(0, 1)),
-    trst.zscores = scale(trst.sum.scores, center = T, scale = T)[,1],
-    eef.sum.rescaled = scales::rescale(eef.sum.scores, to = c(0, 1)),
-    eef.zscores = scale(eef.sum.scores, center = T, scale = T)[,1],
-    group.dummy = dplyr::case_when(
-      group == "Treatment" ~ 1,
-      group == "Control" ~ 0,
-      TRUE ~ NA)) |>
-  dplyr::relocate(group.dummy, .after = group) |>
-  dplyr::relocate(c(trst.sum.rescaled, trst.zscores), .after = trst.sum.scores) |>
-  dplyr::relocate(c(eef.sum.rescaled, eef.zscores), .after = eef.sum.scores)
-
-
-
-# remove unnecessary things from global environment
-rm(eef, trust, eef.keys, trust.keys)
-
-
-# Q25: "Thinking about Maricopa County, AZ, how concerned should voters feel
-# about potential violence, threats of violence, or intimidation while voting in
-# person at their local polling place?"
-
-# Q26: How confident, if at all, are you that in person polling places in
-# Maricopa County, AZ will be safe places for voters to cast their ballots
-# during the upcoming elections in November?
-
-# So there is not enough items in the survey to get an alpha representing internal consistency of a supposed scale of concern for voter safety. That is, there are only two items that were posed to respondents (never mind the local area items). Thus, the best approach is to simply compare response patterns between treatment and control. 
+    dem.dum = dplyr::case_when(
+      partyid_3cat == "Democrat" ~ 1,
+      partyid_3cat != "Democrat" ~ 0,
+      TRUE ~ NA),
+    rep.dum = dplyr::case_when(
+      partyid_3cat == "Republican" ~ 1,
+      partyid_3cat != "Republican" ~ 0,
+      TRUE ~ NA),
+    ind.dum = dplyr::case_when(
+      partyid_3cat == "Independent" ~ 1,
+      partyid_3cat != "Independent" ~ 0,
+      TRUE ~ NA), .after = partyid_3cat
+    ) |> 
+  # created ordered numeric education variable
+  mutate(educ_4cat.num = dplyr::case_when(
+    educ_4cat == "H.S. or less" ~ 1,
+    educ_4cat == "Some college no degree" ~ 2,
+    educ_4cat == "College degree" ~ 3,
+    educ_4cat == "Postgraduate degree" ~ 4,
+    TRUE ~ NA
+  ), .after = educ_4cat) |> 
+  
+  # add and short variable labels
+  sjlabelled::var_labels(
+    rowID           = "Sequential Row ID",
+    dem.dum         = "PartyID dummy variable Democrat",
+    rep.dum         = "PartyID dummy variable Republican",
+    ind.dum         = "PartyID dummy variable Independent",
+    race2           = "Modified Race variable; indcludes Hispanic as race",
+    race_wnw        = "Race: White or Non-White",
+    educ_4cat       = "Educational Attainment in four categories",
+    educ_4cat.num   = "Educational Attainment in four categories, numeric",
+    mil_anyrelation = "relation or no relationship with military service",
+    milrelation     = "particular relationship with military service",
+    gender_3cat     = "gender: male, female, other or preferred not to say",
+    q19.r   = "[AZ] votes counted as intended",
+    q20.r   = "[AZ] Staff will do good job",
+    q21.r   = "[AZ] Staff will be committed",
+    q22.r   = "[AZ] fair voting process",
+    q23.r   = "[AZ] fair voting outcomes",
+    q24.r   = "[AZ] securetech",
+    q25.r   = "[AZ] concern about potential violence",
+    q26.r   = "[AZ] polling sites will be safe places to vote",
+    q28_1.r = "[AZ] double voting",
+    q28_2.r = "[AZ] votes not counted",
+    q28_3.r = "[AZ] voters turned away",
+    q28_4.r = "[AZ] foreign interference",
+    q28_5.r = "[AZ] EO discourage voters",
+    q30.r   = "[Local] votes counted as intended",
+    q31.r   = "[Local] Staff will do good job",
+    q32.r   = "[Local] Staff will be committed",
+    q33.r   = "[Local] fair voting process",
+    q34.r   = "[Local] fair voting outcomes",
+    q35.r   = "[Local] securetech",
+    q36.r   = "[Local] concern about potential violence, Local area",
+    q37.r   = "[Local] polling places in local area, AZ will be safe places to vote",
+    q38.r   = "[Local] personal safety voting in person in local area",
+    q40_1.r = "[Local] double voting",
+    q40_2.r = "[Local] votes not counted",
+    q40_3.r = "[Local] voters turned away",
+    q40_4.r = "[Local] foreign interference",
+    q40_5.r = "[Local] EO discourage voters",
+    q28_1.n = "[AZ] double voting",
+    q28_2.n = "[AZ] votes not counted",
+    q28_3.n = "[AZ] voters turned away",
+    q28_4.n = "[AZ] foreign interference",
+    q28_5.n = "[AZ] EO discourage voters",
+    q40_1.n = "[Local] double voting",
+    q40_2.n = "[Local] votes not counted",
+    q40_3.n = "[Local] voters turned away",
+    q40_4.n = "[Local] foreign interference",
+    q40_5.n = "[Local] EO discourage voters")
 
 
 
@@ -979,7 +873,20 @@ data_labels <- data_dict |>
 data <- data |> 
   labelled::set_variable_labels(!!!data_labels)
 
-
+data <- data |> 
+  # add and short variable labels
+  sjlabelled::var_labels(
+    rowID           = "Sequential Row ID",
+    dem.dum         = "PartyID dummy variable Democrat",
+    rep.dum         = "PartyID dummy variable Republican",
+    ind.dum         = "PartyID dummy variable Independent",
+    race2           = "Modified Race variable; indcludes Hispanic as race",
+    race_wnw        = "Race: White or Non-White",
+    educ_4cat       = "Educational Attainment in four categories",
+    educ_4cat.num   = "Educational Attainment in four categories, numeric",
+    mil_anyrelation = "relation or no relationship with military service",
+    milrelation     = "particular relationship with military service",
+    gender_3cat     = "gender: male, female, other or preferred not to say")
 
 # save dataframe and data dictionary :::::::::::::::::::::::::::::::::::::::####
 

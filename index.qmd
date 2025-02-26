@@ -19,6 +19,8 @@ date-modified: today
 knitr: 
   opts_chunk: 
     dev: "ragg_png" # same as knitr::opts_chunk$set(dev = "ragg_png")
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -30,9 +32,7 @@ set.seed(1234)
 # load packages
 library(tidyverse)
 library(easystats)
-
-
-options("huxtable.latex_use_fontspec" = TRUE) # if TRUE, uses the LaTeX “fontspec” package which lets you use the same fonts in TeX and HTML. You will need to use the xetex or xelatex engine for output.
+library(patchwork)
 
 # load data
 load("data/research-paper-df-20250203.Rdata") #df
@@ -190,17 +190,21 @@ Something may cause a person to have greater expectations that election fraud wi
 
 Those who are, or are close to being, equally confident in both directions would be the most *insecure* about their expectations. Having no trust in elections and no expectation that electoral fraud will occur is functionally equivalent to having equal degree of both. Quite literally, this reflects an uncertain feeling of "it could go one way or the other" with respect to the integrity of elections administration. Operationally, this would reflect a middling point on a scale of *confidence*.
 
-In light of this, I reverse coded positive expectations of electoral fraud and added responses from the distrust scale to the trust in elections scale. That is, item responses on the trust scale ranged from 0 ("Not confident at all") to 3 ("Very confident), whereas responses on the distrust scale ranged from 0 ("Not likely at all") to -3 ("Very likely"). Combining responses in this way resulted in an overall measure of *confidence in elections* to serve as the dependent variable. On this scale, positive values reflect higher confidence in elections, negative values reflect greater distrust, and values closer to zero correspond to an individual's degree of insecurity[^8].
+In light of this, I reverse coded positive expectations of electoral fraud and added responses from the distrust scale to the trust in elections scale. That is, item responses on the trust scale ranged from 0 ("Not confident at all") to 3 ("Very confident), whereas responses on the distrust scale ranged from 0 ("Not likely at all") to -3 ("Very likely"). Combining responses in this way resulted in an overall measure of *confidence in elections* to serve as the dependent variable[^8]. On this scale, positive values reflect higher confidence in elections, negative values reflect greater distrust, and values closer to zero correspond to an individual's degree of insecurity.
 
-The advantage is that this permits a better test of the treatment effect as theorized. Of course, it is easy enough to examine the effect of the treatment on both trust and distrust separately. However, the theory presents a hypothesis that the treatment will impose influence upon both variables *concurrently and in a positive direction* in light of the relationship between trust and distrust. Confidence increases insofar as trust in elections increases and distrust decreases; since distrust detracts from trust, then an accurate measure of confidence must take that constraint into account.
+The advantage is that this permits a better test of the treatment effect as theorized. Of course, it is easy enough to examine the effect of the treatment on both trust and distrust separately. However, the theory presents a hypothesis that the treatment will impose influence upon both variables *concurrently and in a positive direction* with respect to the relationship between trust and distrust. That is to say, confidence increases insofar as trust in elections increases and distrust decreases; since distrust detracts from trust, then an accurate measure of confidence must take that constraint into account.
 
 ## Results
 
-I first review responses to the survey items capturing trust and distrust, respectively. When distinguished by experiment condition, trust in elections admin is noticeably higher for those who read the treatment vignette. The difference is more pronounced for some items over others. That being said, there is a definite distinction between items pertaining to Maricopa County, AZ compared to items that pertain to a respondent's local area. In fact, the treatment appears to have hardly made a difference when the items concerned one's local area.
+I first review responses to the survey items capturing trust and distrust separately by treatment condition. When distinguished by experiment condition, trust in elections admin is noticeably higher for those who read the treatment vignette. The difference is more pronounced for some items over others. That being said, there is a definite distinction between items pertaining to Maricopa County, AZ compared to items that pertain to a respondent's local area. In fact, the treatment appears to have hardly made a difference when the items concerned one's local area.
+
+
 
 ```{r}
 #| label: fig-trustlikert
 #| fig-cap: "Trust in Election Administration by Experiment Condition"
+#| fig-height: 4.5
+#| fig-pos: "h"
 
 # Likert plot of trust and confidence in election admin comparing treatment and
 # control groups
@@ -288,7 +292,14 @@ ggpubr::ggarrange(
   common.legend = T,
   legend = "bottom", 
   font.label = list(family = "Palatino Linotype")
-)
+) +
+  # add figure footnote annotation
+  patchwork::plot_annotation(
+    caption = str_wrap("Missing values removed. Displays percent proportions of responses by experiment condition and combined percentage proportions for two categories.",
+               width = 85), theme = theme(text = element_text(family = "Palatino Linotype")))
+
+
+
 ```
 
 Reviewing item responses distinguished by treatment condition reveals particulars of the treatment effect (@fig-trustlikert). Among the items that asked about Maricopa County, AZ, it is a bit easier to see upon which items the treatment vignette had the greatest effect. It appears that the main effect of the treatment is upon responses to the item that measures confidence in the security of election technology.
@@ -300,6 +311,8 @@ What this does suggest, however, is that trust in the fairness and accuracy of t
 ```{r}
 #| label: fig-distrustlikert
 #| fig-cap: "Disrust in Election Administration by Experiment Condition"
+#| fig-height: 4.5
+#| fig-pos: "h"
 
 
 # distrust in elections in AZ by experimental condition
@@ -372,7 +385,13 @@ ggpubr::ggarrange(
   common.legend = T,
   legend = "bottom", 
   font.label = list(family = "Palatino Linotype")
-)
+) +
+  # add figure footnote annotation
+  patchwork::plot_annotation(
+    caption = str_wrap("Missing values removed. Displays percent proportions of responses by experiment condition and combined percentage proportions for two categories.",
+               width = 85), theme = theme(text = element_text(family = "Palatino Linotype")))
+  
+
 
 
 ```
@@ -381,14 +400,14 @@ Similar to the trust scale items, the items on the distrust scale were associate
 
 ### Confidence in elections
 
-Once trust and distrust were composed into unified variable of confidence in elections, I then examined distribution of the dependent variable followed by analysis of the effect of the treatment by comparison of mean differences for confidence in elections by experiment condition. Recall that on this scale, zero reflects insecurity (e.g., similar or equal values of trust and distrust), whereas values diverging from zero reflect confidence in either direction, trust or distrust respectively. Positive values reflect confidence as trust in elections administration (e.g., elections will be fair and accurate), whereas negative values reflect confidence as distrust in elections (i.e., expectation that election fraud will occur). To retain a meaningful zero, I rescaled the sum scores to range from -3 to 3[^9] and then superimposed two histograms of confidence scores: one derived from AZ items and another for scores derived from local area items. Doing this is illustrative of the relative distribution of confidence that differed depending on the location of elections referred to in the survey items (e.g., Maricopa County, AZ).
+Once trust and distrust were composed into unified variable of confidence in elections, I then examined distribution of the dependent variable followed by analysis of the effect of the treatment by comparison of mean differences between experiment conditions. Recall that on this scale, zero reflects insecurity (e.g., similar or equal values of trust and distrust), whereas values diverging from zero reflect confidence in either direction, trust or distrust respectively. Positive values reflect trust in elections administration (e.g., elections will be fair and accurate), whereas negative values reflect distrust in elections (i.e., expectation that election fraud will occur). To retain a meaningful zero, I rescaled the sum scores to range from -3 to 3[^9] and then superimposed two histograms of confidence scores: one derived from AZ items and another for scores derived from local area items. Doing this is illustrative of the relative distribution of confidence that differed depending on the location of elections referred to in the survey items (e.g., Maricopa County, AZ).
 
 As revealed by review of the item responses, the distribution of confidence differed depending on whether survey items pertained to elections in Maricopa County, AZ, or elections within one's local area.
 
 
 ```{r}
 #| label: fig-dist
-#| fig-cap: "Overlapping histograms of Confidence in Elections for AZ and Local Area"
+#| fig-cap: "Overlapping Distribution of Confidence in Elections for AZ and Local Area"
 #| fig-pos: "H"
 
 ggplot(df) +
@@ -448,55 +467,126 @@ ggplot(df) +
     x = str_wrap("Confidence", width = 85),
     y = "Density",
     caption = str_wrap(
-     "Mean (std.deviation). Difference = 0.20, CI [0.068, 0.33], t = 2.959, df=1283.733, p = 0.003",width = 95)) +
-  theme_bw()
+     "Mean (std.deviation). Mean difference = 0.33, CI [0.27, 0.38], t = 11.613, df = 1286, p < 0.01",
+     width = 95)) +
+  theme_bw(base_family = "Palatino Linotype")
 
 
 ```
 
-Overall, the sample expressed more trust in elections relative to distrust seeing as how the distribution of confidence is largely positive (@fig-dist). However, there's a clear difference between items that asked about elections in Maricopa county, AZ and those that asked about one's local area. Confidence in elections within one's local area positively differed from confidence in elections held in Maricopa County, AZ. A paired t-test suggests that this difference was statistically significant, though somewhat small (mean difference $= -0.33$, $95\%$ CI $[-0.38, -0.27]$, $t(1286) = -11.61$, $p < .001$; Cohen's $d = -0.32$, $95\%$ CI $[-0.38, -0.27]$). Nonetheless, respondents appeared less confident regarding elections in Maricopa County, AZ, but held more confidence in elections administration in their local area. This complements previous research that demonstrates a similar bias favorable to one's local area [@stewart2022].
+Overall, the sample expressed more trust in elections relative to distrust seeing as how the distribution of confidence is largely positive (@fig-dist). However, there's a clear difference between confidence in Maricopa county, AZ elections and elections within one's local area. A paired t-test confirms that this difference was statistically significant, though somewhat small (mean difference $= 0.325$, $95\%$ CI $[0.27, 0.38]$, $t(1286) = 11.61$, $p < .001$). Nonetheless, respondents appeared less confident regarding elections in Maricopa County, AZ, but held more confidence in elections administration in their local area. This complements previous research that demonstrates a similar bias favorable to one's local area [@stewart2022].
 
 Accordingly, when confidence levels are distinguished by experiment condition, the treatment vignette only had an effect upon survey items pertaining to elections in Maricopa County, AZ. Conducting an independent samples t-test (i.e., Welch Two Sample t-test) suggests that the effect of the treatment compared to the control condition is positive, statistically significant, yet substantially pretty small.
 
 ```{r}
 #| label: tbl-ttest
 #| tbl-cap: "Mean Difference Effect of Treatment Compared to Control Condition"
-#| fig-pos: "h"
-#| include: false
+#| tbl-pos: H
 
-
-df |> 
-  mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |> 
-  rstatix::t_test(formula = conf.az.rescaled ~ group, var.equal = F, detailed = T) |>
-  select(Difference = estimate, 
-         conf.low, conf.high, 
-         t = statistic, df, p, 
-         -alternative, -method, -.y., -estimate1, -estimate2, -group1, -group2,
-         -n1, -n2) |> 
-  # insight::format_table(stars = T) |> 
-  kableExtra::kbl(booktabs = T, digits = 4) |> 
+# conduct two t-tests using `rstatix::t_test`, bind results by row, and pipe
+# into table
+dplyr::bind_rows(
+  df |> mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |>
+  rstatix::t_test(formula = conf.az.rescaled ~ group,var.equal = F,detailed = T),
+  df |> mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |>
+  rstatix::t_test(formula = conf.lcl.rescaled ~ group,var.equal = F, detailed = T)
+  ) |> 
+  # specify columns and column names
+  select(
+    Diff = estimate,
+    treat_mean = estimate1,
+    control_mean = estimate2,
+    treat_n = n1,
+    control_n = n2,
+    t = statistic,
+    p, df, conf.low, conf.high) |> 
+  mutate(
+    Place = dplyr::case_when(
+      p <= 0.05 ~ "Maricopa County, AZ", 
+      p > 0.05 ~ "Local Area"), 
+    .before = Diff) |> 
+  insight::format_table(stars = T) |> 
+  # insight::export_table(format = "md") # alternate
+  # output table as `kable` for LaTeX pdf
+  kableExtra::kbl(
+    format = "latex", 
+    booktabs = T,
+    col.names = c("Place", "$\\bar{x}_{diff}$", "$\\bar{x}_{treat}$", "$\\bar{x}_{control}$",
+                  "$treat_{n}$", "$control_{n}$", "t", "p", "df", "CI"), 
+    escape = F) |> 
+  kableExtra::footnote(general = "Welch Two Sample t-tests of difference between Confidence in Elections by Treatment Condition.") |> 
   kableExtra::kable_styling(
-    full_width = T,
-    latex_options = c("hold_position"))
+    font_size = 9, 
+    protect_latex = T)
+  
+
 
 ```
 
 
-The results of @tbl-ttest show that, on a scale ranging from -3 to 3, the effect of the treatment is associated with a $0.20$ average difference in confidence in elections in Maricopa County, AZ, compared to average confidence among those in the control group. A simple difference of means test on this scale, however, does not lend itself well to interpretation; its hard to really grasp what a $0.20$ positive difference, on average, really amounts to. When the dependent variable is centered and scaled to have a mean = 0 and standard deviation = 1, standardized parameters permit interpretation of the treatment effect in terms of standard deviations.
+The results of @tbl-ttest show that, on a scale ranging from -3 to 3, the effect of the treatment is associated with a $0.20$ average difference in confidence in elections in Maricopa County, AZ, compared to the control group. When the dependent variable is centered to have a mean of $0$ and standard deviation of $1$, standardized parameters permit interpretation of the treatment effect in terms of standard deviations; the standardized difference in confidence between treatment and control is $0.16$ (CI $[0.06, 0.27]$). Nothing is more illustrative than graphs and lines, however.
 
-> "tbl-mod1" here
 
-The table above shows that effect of the treatment on confidence in elections is associated with a 0.16 standard deviation positive difference on average compared to confidence of those in the control group. I also include models where trust and distrust are regressed on the treatment condition separately in order to illustrate the divergent effect of the treatment. Nothing is more illustrative than graphs and lines, however.
+```{r}
+#| label: fig-coef1
+#| layout-nrow: 2
+#| fig-height: 3.5
+#| fig-cap: "Confidence in Elections by Experiment Condition"
+#| fig-subcap: 
+#|   - "Confidence by Treatment Condition"
+#|   - "Trust and Distrust by Treatment Condition"
 
-> "fig-coef1" and "fig-coef2" here
+# coef plot of treatment effect on confidence distinguished by location
+conf.coef1 <- jtools::plot_summs(
+  lm(conf.az.rescaled ~ group, data = df), 
+  lm(conf.lcl.rescaled ~ group, data = df), 
+  center = T, scale = T, transform.response = T,
+  model.names = c("Conf.AZ", "Conf.Local"),
+  coefs = c("Treatment" = "groupTreatment"), 
+  colors = c("red", "black"),
+  point.shape = c(8, 1))+
+  ggplot2::expand_limits(x = c(-0.25, 0.25))+
+  labs(y = "")+
+  theme_bw(base_family = "Palatino Linotype")
 
-Visualized in @fig-coef2, the treatment effect on both trust and distrust is clear. Although the effect is only there when questions pertained to Maricopa County, AZ. The treatment effect on trust and distrust is conditional on whether the survey questions inquired about elections in Maricopa County, AZ. Announcing efforts to recruit veterans and their families to work as election staff and volunteers increases confidence in elections administration in places outside of one's local area, but doesn't boost confidence in elections within one's local area. However, bear in mind that confidence in elections for one's local area is already higher than for those outside. Thus, there's already less insecurity concerning elections in one's local area, but publicized efforts to recruit veterans to work as election staff and volunteers is a small but positive step towards closing that gap in confidence for elections that occur elsewhere.
+
+# Coef plots of trust and distrust models for AZ and Local items
+conf.coef2 <- jtools::plot_summs(
+  lm(trust.scores.az ~ group, data = df),
+  lm(distrust.scores.az ~ group, data = df),
+  lm(trust.scores.lcl ~ group, data = df),
+  lm(distrust.scores.lcl ~ group, data = df),
+  center = T, scale = T, transform.response = T,
+  model.names = c("Trust.AZ", "Distrust.AZ", "Trust.Local", "Distrust.Local"),
+  coefs = c("Treatment" = "groupTreatment"),
+  colors = c("red", "red", "black", "black"),
+  point.shape = c(8, 8, 1, 1)
+)+
+  ggplot2::expand_limits(x = c(-0.25, 0.25))+
+  labs(y = "")+
+  theme_bw(base_family = "Palatino Linotype")
+
+
+conf.coef1
+conf.coef2
+
+
+
+```
+
+@fig-coef1 displays standard difference estimates of confidence in elections by treatment condition (control condition as reference). @fig-coef1-1 displays two models for confidence in elections in Maricopa County, AZ, and one's local area by treatment condition; @fig-coef1-2 displays four models for trust and distrust in elections in AZ or one's local area by treatment condition. These figures merely illustrate the effect of the treatment with respect to the relationship between trust and distrust; ultimately confidence improves. 
+
+Confidence in elections was higher among those who read the treatment vignette but remained conditional on whether the survey questions inquired about elections in Maricopa County, AZ. This evidence suggests that announcing efforts to recruit veterans and their families to work as election staff and volunteers may increase confidence in elections administration in places outside of one's local area, but may not boost confidence in elections within one's local area. 
 
 I now turn to results examining those who held onto the belief that the 2020 election results were illegitimate. I think check to see if recruiting veterans simply makes people feel safer at the polls.
 
 \pagebreak
 
 ## Conclusion
+
+Bear in mind that confidence in elections for one's local area is already higher than for those beyond. Thus, there's already more insecurity concerning elections elsewhere for whatever reason. In the anticipatory period prior to national elections, publicized efforts to recruit veterans to work as election staff and volunteers may be a small, but positive, step towards reducing insecurity in elections that occur elsewhere. Especially among those who maintained a steadfast degree of distrust in elections. Despite a lack of evidence that systematic electoral fraud had occurred in the 2020 election, a substantial proportion of the population were unwilling to affirm the legitimacy of the results. However, despite such legitimacy beliefs, most were not consistent as they expressed varying levels of trust in different aspects of elections administration. 
+
+      
 
 ### Limitations
 
