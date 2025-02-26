@@ -331,7 +331,7 @@ data <- data |>
   mutate(across(where(is.factor), ~forcats::fct_recode(., NULL = "-99"))) |>
   
   # reverse order of identified factor levels for consist direction
-  mutate(across(c(q8, q20, q23, q24, q25, q31, q34, q35, q49, q50), .fns = ~fct_rev(.))) |> 
+  mutate(across(c(q8, q20, q23, q24, q25, q31, q34, q35, q36, q49, q50), .fns = ~fct_rev(.))) |> 
   # reverse order of group levels so control comes first. Better table display
   mutate(group = forcats::fct_rev(group))
 
@@ -378,6 +378,22 @@ data <- data |>
   labelled::set_variable_labels(
     age_cat = "Age categorized into eight groups"
   )
+
+# create another age group variable with fewer age categories
+data <- data |>    
+  mutate(age_4cat = 
+           forcats::fct_collapse(
+             as_factor(q2),
+             "18-34" = c(18:34),
+             "35-54" = c(35:54),
+             "55-74" = c(55:74),
+             "75-85+" = c(75:82, 84, 85:86, 88, 92)
+             ),
+         .after = age_cat) |> 
+  labelled::set_variable_labels(
+    age_cat = "Age categorized into three groups"
+  )
+
 # create gender_3cat, collapsed version of voted2020, and set var label
 data <- data |> 
   dplyr::mutate(gender_3cat = forcats::fct_collapse(
@@ -696,8 +712,47 @@ data_dict <- data |>
 # get a glimpse of the data
 # glimpse(data)
 
-# adding some more things:::::::::::::::::::::::::::::::::::::::::::::::::::####
+# Re-code select variables :::::::::::::::::::::::::::::::::::::::::::::::::####
 
+# recode select factor variables as numeric
+data <- data |> 
+  mutate(across(c(q19, q20, q22, q23, q24, q30, q31, q33, q34, q35),
+                ~ dplyr::case_when(
+  .x == "Not at all confident" ~ 0,
+  .x == "Not too confident" ~ 1,
+  .x == "Somewhat confident" ~ 2,
+  .x == "Very confident" ~ 3,
+  TRUE ~ NA), 
+  .names = "{col}.r")) |>
+  mutate(across(c(q21, q32), ~ dplyr::case_when(
+    .x == "Very committed" ~ 3,
+    .x == "Somewhat committed" ~ 2,
+    .x == "Not too committed"  ~ 1,
+    .x == "Not at all committed" ~ 0,
+    TRUE ~ NA),
+    .names = "{col}.r")) |> 
+  mutate(across(c(q28_1:q28_5, q40_1:q40_5), ~ dplyr::case_when(
+    .x == "Not likely at all" ~ 0,
+    .x == "Not too likely" ~ -1,
+    .x == "Somewhat likely" ~ -2,
+    .x == "Very likely" ~ -3,
+    TRUE ~ NA), 
+    .names = "{col}.r")) |> 
+  # these are reverse scored, so that higher concern reflects negative safety
+  mutate(across(c(q25, q36), ~ dplyr::case_when(
+    .x == "Very concerned" ~ -3,
+    .x == "Somewhat concerned" ~ -2,
+    .x == "Not too concerned" | .x == "Somewhat unconcerned" ~ -1,
+    .x == "Not at all concerned" ~ 0,
+    TRUE ~ NA),
+    .names = "{col}.r")) |> 
+  mutate(across(c(q26, q37, q38), ~ dplyr::case_when(
+    .x == "Not at all confident" | .x == "Not safe at all" ~ 0,
+    .x == "Not too confident" | .x == "Not too safe" ~ 1,
+    .x == "Somewhat confident" | .x == "Somewhat safe" ~ 2,
+    .x == "Very confident" | .x == "Very safe" ~ 3,
+    TRUE ~ NA), 
+    .names = "{col}.r"))
 
 # using psych package to construct composite scores for each respondent ::: ####
 # psych::scoreItems()
@@ -731,9 +786,7 @@ data_dict <- data |>
 
 # make dataframe containing only items of interest
 trust <- data |> 
-  select(q19, q20, q21, q22, q23, q24) |> 
-  # convert class to numeric
-  mutate(across(everything(), ~as.numeric(.))) |> 
+  select(q19.r, q20.r, q21.r, q22.r, q23.r, q24.r) |> 
   # shorten variable labels
   sjlabelled::var_labels(
     q19 ="accurate",
@@ -745,7 +798,7 @@ trust <- data |>
 
 
 # create a list of scoring keys
-trust.keys <- list(trust = c("q19", "q20", "q21", "q22", "q23", "q24"))
+trust.keys <- list(trust = c("q19.r", "q20.r", "q21.r", "q22.r", "q23.r", "q24.r"))
 
 # compute average composite scores on trust from multi-item Likert scale
 data$trst.mean.scores <- psych::scoreItems(
@@ -768,7 +821,7 @@ data$trst.sum.scores <- psych::scoreItems(
   items = trust, 
   totals = T, # totals=TRUE to compute sum scores
   missing = T,
-  impute = "mean")$scores |> as.numeric()
+  impute = "median")$scores |> as.numeric()
 
 # psych::describe(data.frame(data$trst.mean.scores, data$trst.sum.scores))
 
@@ -816,9 +869,7 @@ data$trst.sum.scores <- psych::scoreItems(
 # some people from voting
 
 eef <- data |> 
-  select(contains("q28_")) |> 
-  # convert class to numeric
-  mutate(across(everything(), ~as.numeric(.))) |> 
+  select(q28_1.r, q28_2.r, q28_3.r, q28_4.r, q28_5.r) |>
   # shorten variable labels
   sjlabelled::var_labels(
     q28_1 ="voter fraud",
@@ -829,7 +880,7 @@ eef <- data |>
 
 
 # create a list of scoring keys
-eef.keys <- list(expct_fraud = c("q28_1", "q28_2", "q28_3", "q28_4", "q28_5"))
+eef.keys <- list(expct_fraud = c("q28_1.r", "q28_2.r", "q28_3.r", "q28_4.r", "q28_5.r"))
 
 # compute average composite scores on trust from multi-item Likert scale
 data$eef.mean.scores <- psych::scoreItems(
@@ -844,7 +895,7 @@ data$eef.sum.scores <- psych::scoreItems(
   items = eef,
   totals = TRUE, # compute sum scores
   missing = T, 
-  impute = "mean")$scores |> as.numeric()
+  impute = "median")$scores |> as.numeric()
 
 # data |> 
 #   select(trst.mean.scores, trst.sum.scores, eef.mean.scores, eef.sum.scores) |> 
@@ -893,6 +944,43 @@ rm(eef, trust, eef.keys, trust.keys)
 # So there is not enough items in the survey to get an alpha representing internal consistency of a supposed scale of concern for voter safety. That is, there are only two items that were posed to respondents (never mind the local area items). Thus, the best approach is to simply compare response patterns between treatment and control. 
 
 
+
+# whoops, I ordered factors that shouldn't have been ordered :::::::::::::::####
+
+# these should not be ordered, but are
+need_no_order <- c("finished", "gender", "gender_3cat", "race", "race_wnw",
+                   "hisp", "milserv1", "milserv2", "milservfam", "voted2020",
+                   "voted2020.clps", "choice2020", "voteintent", "partyid",
+                   "partystr_rep", "partystr_dem", "partylean", "ideo", 
+                   "ideolean", "q1", "q3", "q9", "q10", "q14", "q17")
+
+# these should be ordered, but are not
+need_order <- c("q19", "q20", "q21", "q22", "q23", "q24", "q25", "q26",
+                "q30", "q31", "q32", "q33", "q34", "q35", "q36", "q37",
+                "q41.1.clps", "q41.2.clps", "q41.3.clps", "q41.4.clps",
+                "q41.5.clps", "q41.6.clps", "q43.1.clps", "q43.2.clps",
+                "q43.3.clps", "q43.4.clps", "q43.5.clps", "q43.6.clps")
+
+data <- data |> 
+  mutate(across(all_of(need_no_order), ~ factor(., ordered = F))) |> 
+  mutate(across(all_of(need_order), ~ factor(., ordered = T)))
+
+
+# re-assign var labels to variables
+# To quickly assign the variable labels, first create a named vector via
+# deframe() with values as the variable labels and names as the variable names.
+data_labels <- data_dict |>
+  select(variable, label) |> 
+  deframe()
+
+# Now assign the labels using the splice operator. Using the splice operator,
+# labels are assigned via matching against the variable name, which means that
+# variable order does not matter.
+data <- data |> 
+  labelled::set_variable_labels(!!!data_labels)
+
+
+
 # save dataframe and data dictionary :::::::::::::::::::::::::::::::::::::::####
 
 # save df processed data set.
@@ -910,5 +998,5 @@ write.csv(data_dict, file = "data/data_dictionary.csv")
 
 
 # remove uneeded dataframes from global environment ::::::::::::::::::::::::####
-rm(raw_spss, raw_spss_dict, data_labels)
+rm(raw_spss, raw_spss_dict, data_labels, need_no_order, need_order)
 

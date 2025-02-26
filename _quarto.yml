@@ -11,7 +11,7 @@ project:
 manuscript:
   article: index.qmd
   resources:
-    - data/research-paper-data-20241029.Rdata
+    - data/research-paper-df-20250203.Rdata
     - data/survey_codebook.csv
     - data/data_dictionary.csv
     - data/raw_spss_dict.csv
@@ -30,6 +30,7 @@ csl: american-political-science-association.csl
 mainfont: Palatino Linotype
 date-modified: last-modified
 date-format: "YYYY-M-D"
+notebook-links: false
 
 format:
   bookup-html: 
@@ -40,6 +41,7 @@ format:
     link-citations: true
     smooth-scroll: true
     link-external-newwindow: true
+    notebook-links: global
     citations-hover: true
     footnotes-hover: false
     theme: 
@@ -53,14 +55,17 @@ format:
     pdf-engine: xelatex
     documentclass: scrartcl
     keep-tex: false
+    # mainfont: Palatino Linotype
     mainfont: TeX Gyre Termes
     mathfont: TeX Gyre Termes Math
     fontsize: 11pt
     indent: true # indented paragraphs (indent=true) vs space between paragraphs
-    linestretch: 2
+    linestretch: 1.5
     number-sections: false
     citecolor: RoyalBlue
     cap-location: top
+    fig-height: 4
+    fig-width: 7.5
     link-citations: true
     papersize: a4
     geometry:
@@ -79,13 +84,27 @@ format:
     template-partials:
       - title.tex
       - before-body.tex
+      
+  #     
   aog-article-pdf:
     keep-tex: false
-    mainfont: Palatino Linotype
+    papersize: letter
+    # mainfont: Palatino Linotype
+    mainfont: TeX Gyre Termes
+    mathfont: TeX Gyre Termes Math
     colorlinks: true
     urlcolor: RoyalBlue
     link-citations: true
+    geometry: margin=1in
+    cap-location: top
+    fig-height: 4  # smaller fig heights make floating easier
+    fig-width: 7.5 # set to the (full width - margins) of letter 
+    fig-pos: '!t'
+    hyperrefoptions:
+      - pdfwindowui
+      - pdfpagemode=FullScreen
     reference-location: document
+
   submittable-pdf:
     keep-tex: false
     endnotes: false
@@ -96,6 +115,7 @@ format:
     link-citations: true
     colorlinks: true
     urlcolor: RoyalBlue
+
   submittable-docx:
     keep-md: false
   # preprint-typst: 

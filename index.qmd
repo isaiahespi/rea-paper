@@ -16,12 +16,9 @@ authors:
 reference-section-title: References
 date: "2024-10-16"
 date-modified: today
-crossref:
-  custom: 
-    - key: hyp
-      kind: float
-      reference-prefix: H
-      latex-env: hypothesis # required for PDF format
+knitr: 
+  opts_chunk: 
+    dev: "ragg_png" # same as knitr::opts_chunk$set(dev = "ragg_png")
 ---
 
 ```{r}
@@ -34,65 +31,15 @@ set.seed(1234)
 library(tidyverse)
 library(easystats)
 
+
+options("huxtable.latex_use_fontspec" = TRUE) # if TRUE, uses the LaTeX “fontspec” package which lets you use the same fonts in TeX and HTML. You will need to use the xetex or xelatex engine for output.
+
 # load data
-load("data/research-paper-data-20241029.Rdata")
+load("data/research-paper-df-20250203.Rdata") #df
 
 # load data dictionary/codebook
 codebook <- read.csv("data/survey_codebook.csv")
-data_dict <- read.csv("data/data_dictionary.csv")
-
-# also load the raw data dict for comparison
-raw_spss_dict <- read.csv("data/raw_spss_dict.csv")
-```
-
-
-```{r}
-#| label: post_processing
-#| include: false
-
-# Some post-processing of the dataframe :::::::::::::::::::::::::::::::::::::###
-
-# recode factor levels 
-data <- data |> 
-  # use `pewmethods` to preserve order of factor levels
-  mutate(across(c(q19, q20, q21, q22, q23,q24, q25, q26,
-                  q30, q31, q32, q33, q34, q35, q36, q37), 
-                ~pewmethods::fct_case_when(
-    .x == "Not at all confident" |
-      .x == "Not at all committed" ~ "Not at all",
-    .x == "Not too confident" |
-      .x == "Not too committed"|
-      .x == "Not too concerned"|
-      .x == "Somewhat unconcerned" ~ "Not that much",
-    .x == "Somewhat confident" |
-      .x == "Somewhat committed" ~ "Somewhat",
-    .x == "Very confident" |
-      .x == "Very committed" ~ "Very",
-    TRUE ~ NA
-  )))
-
-
-# re-assign var labels to variables
-# To quickly assign the variable labels, first create a named vector via
-# deframe() with values as the variable labels and names as the variable names.
-data_labels <- data_dict |>
-  select(var, label_var) |> 
-  deframe()
-
-# Now assign the labels using the splice operator. Using the splice operator,
-# labels are assigned via matching against the variable name, which means that
-# variable order does not matter.
-data <- data |> 
-  labelled::set_variable_labels(!!!data_labels)
-
-
-```
-
-```{r}
-#| label: fns
-#| include: false
-
-source(here::here('src', 'funs.R'))
+df_dict <- read.csv("data/df_dictionary.csv")
 
 ```
 
@@ -104,23 +51,17 @@ Election administration officials make efforts to sustain public trust and confi
 
 Although election officials undertake great efforts to enhance the trustworthiness of election administration, public *trust* in elections is a psychological construct influenced by many things outside of election official control such as partisanship or elite rhetoric [@hooghe2018; @sances2015]. Moreover, a person's evaluation of the election in hindsight is often influenced by the election outcome itself [@daniller2019; @stewart2022]. Thus, measures taken by election officials can be undermined, trivialized, or made irrelevant depending on how one feels after the election results have come out.
 
-Such volatile attitudes and evaluations post-election can leave a lasting impression that election officials must contend with upon the next election cycle [@levendusky2024; @bowler2024]. For instance, we have witnessed many people's outright refusal to accept the 2020 U.S. election results as legitimate despite consistent review of the evidence confirming the results as fair and accurate. Such a case demonstrates that public trust in elections is, at best, only partial to trustworthiness of election administration in the United States[^2]. 
+Such volatile attitudes and evaluations post-election can leave a lasting impression that election officials must contend with upon the next election cycle [@levendusky2024; @bowler2024]. For instance, we have witnessed many people's outright refusal to accept the 2020 U.S. election results as legitimate despite consistent review of the evidence confirming the results as fair and accurate. Such a case demonstrates that public trust in elections is, at best, only partial to trustworthiness of election administration in the United States[^2].
 
-Even though election officials can do a lot to secure election integrity, there's not much they can do to cement public confidence after election night passes. At best, election officials can ease public anxieties prior to election night.
+Even though election officials can do a lot to secure election integrity, there's not much they can do to cement public confidence after election night passes. At best, election officials can ease public insecurities prior to election night.
 
-One point of contention that election officials have faced in the past regard evaluation of election workers. Previous literature has focused on how voter interaction with election workers [@claassen2008], or the voter experience generally [@atkeson2007], influences evaluations of election administration. As such, election worker competency has been examined as a factor significant to evaluations of performance of elections [@hall2007; @hall2009]. However, considering that individual perceptions and preconceived notions play a huge role in cognition [@cikara2014; @vanbavel2021], it is reasonable to expect that the group an election worker hails from would be an important influence upon the voter's evaluation of the electoral process. 
+One point of contention that election officials have faced in the past regard evaluation of election workers. Previous literature has focused on how voter interaction with election workers [@claassen2008], or the voter experience generally [@atkeson2007], influences evaluations of election administration. As such, election worker competency has been examined as a factor significant to evaluations of performance of elections [@hall2007; @hall2009]. However, considering that individual perceptions and preconceived notions play a huge role in cognition [@cikara2014; @vanbavel2021], it is reasonable to expect that the group an election worker hails from would be an important influence upon the voter's evaluation of the electoral process.
 
-Supposing such is the case, we can expect that information about *who* (i.e., which groups) election officials are targeting in publicized recruitment efforts would lessen particular election anxieties. That is to say, it is reasonable to expect that telling people *who* will be working as election staff and volunteers would ease election anxieties, therefore improve confidence that the election will be conducted fairly, accurately, and safe for all involved.
+Supposing such is the case, we can expect that information about *who* (i.e., which groups) election officials are targeting in publicized recruitment efforts would lessen particular election insecurity, and concurrently, boost confidence. That is to say, it is reasonable to expect that telling people *who* will be working and volunteering as election staff would ease election insecurity, and therefore improve confidence that the election will be conducted fairly, accurately, and safe for all involved.
 
-In this paper, I report results from a recent survey experiment administered to test whether publicized efforts to recruit veterans to work as election staff and volunteers would improve public trust in elections and ease election anxieties. Results of the survey experiment support the hypothesis that emphasizing veterans as the target of election worker recruitment efforts eases pre-elections anxieties to an extent. In particular, among those in the treatment condition, confidence that the elections would be fair and accurate was higher in comparison to those in the control. In addition, expectations of electoral fraud were lower, as were concerns for voter safety compared to those who read a control vignette. Notable is that there was a significant difference in confidence, and lower expectations of fraud, among those in the treatment condition who believe that the 2020 election was illegitimate.
+In this paper, I report results from a recent survey experiment administered to test whether publicized efforts to recruit veterans to work as election staff and volunteers would improve public trust in elections and ease election insecurity. Results of the survey experiment support the notion that emphasizing veterans as the target of election worker recruitment efforts eases pre-election insecurity to a limited extent. Expectations of electoral fraud and concerns for voter safety were lower among those who read a fabricated announcement that veterans are being recruited to work as election staff and volunteers compared to those who read a control vignette where veterans were not mentioned. Notable is that there was a significant difference in confidence among those in the treatment condition who believe that results of the 2020 election were illegitimate.
 
-[Insert why this is an important contribution]
-
-This paper is structured as follows. First, I provide a brief background on public trust in election administration. Second, I synthesize a review of relevant literature with a focus on how political and social science has conceptualized and ascertained public trust in elections. Next, I supply reasoning for why military veterans are singled out as the relevant subset of the population in this study.    
-
--   when distinguished by partisanship...
--   moreover, broken down by other demographic variables such as race, gender, education, etc.
--   holding these factors constant demonstrates a \[increased/decreased\] likelihood that a respondent's confidence would likely \[increase/decrease\], expectations of fraud would likely \[increase/decrease\], and concerns for safety would lessen among those in the treatment group compared to those in the control. These results allow us to attribute the differences to the treatment stimulus, namely, the prospect of having veterans serve as election staff or volunteers.
+This paper is structured as follows. First, I provide a brief background on public trust in election administration. I synthesize a review of relevant literature with a focus on how political and social science has conceptualized and ascertained public trust in elections. Next, I supply reasoning for why military veterans are singled out as the relevant subset of the population in this study. I then explicitly provide the simple theory and testable hypotheses of the study before moving on to describe the design of the survey, the measurement instruments therein, and the conceptual and operational definitions of the variables of interest. I explain my reasoning and method for constructing the primary dependent variable, which I broadly refer to as *confidence in elections*. I preview the different methods of analysis alongside presentation of the results. Before concluding, I dedicate time to discuss the limitations of the study and lessons learned. I close by offering my interpretation of the results and suggest potential avenues for future inquiry.
 
 ## Background: Election Administration and Public Confidence
 
@@ -128,7 +69,7 @@ Election officials have tried hard to inspire confidence in the administration a
 
 Prior to the year 2000, one of the main issues facing election administration was recruiting enough election workers to volunteer at the polls (i.e., poll workers) [@maidenberg1996]. Election worker recruitment is still much of an issue in the current era as it was then, perhaps worse [@ferrer2024]. In addition to ensuring election admin offices were adequately staffed, the controversy of the 2000 general election made the public more attentive to issues concerning the conduct and administration of elections. In particular, voting technology [@herrnson2009] and election worker competence was a of interest in election studies [@claassen2008; @hall2009; @hall2007]. Following the passage of the Help America Vote Act in 2002, election officials efforts to boost public confidence in the conduct and administration of elections revolved primarily around the accuracy of vote counts, ballot tabulation equipment or voting machines, the commitment of election staff, and more [@atkeson2007].
 
-In 2024, election officials made valiant efforts to boost public confidence elections within an intensified political climate that appeared quite hostile to election officials [@edlin2024; @brennancenterforjustice2024]. Although polling around the time indicated that most people thought that U.S. elections would be run at least somewhat well [@nadeem2024], many election officials nationwide took efforts to assuage the worry of those most skeptical. 
+In 2024, election officials made valiant efforts to boost public confidence elections within an intensified political climate that appeared quite hostile to election officials [@edlin2024; @brennancenterforjustice2024]. Although polling around the time indicated that most people thought that U.S. elections would be run at least somewhat well [@nadeem2024], many election officials nationwide took efforts to assuage the worry of those most skeptical.
 
 Election anxiety was high in the lead up to the 2024 elections in the United States. Concerns for voter safety and the prospect of political violence remained prescient and compelled many local officials to prepare for the worst [@edlin2024; @doubek2024]. Election officials in Washoe County, Nevada, installed panic buttons for election staff that would alert a monitoring center to summon law enforcement [@lincoln2024]. Nevada also passed a law making it a felony to harass, threaten, or intimidate election workers [@nevadasecretaryofstate2023]. Leading up to election day, news outlets reported that election work had become a seemingly dangerous job [@wire2024]. A Brennan Center survey report stated that, "...large numbers of election officials report having experienced threats, abuse, or harassment for doing their jobs" [@edlin2024]. Concerns over the fairness of elections and accuracy of vote counts intensified, heightening concerns over the prospect of political violence and, in turn, increased worry for the safety of voters and election workers alike.
 
@@ -140,11 +81,11 @@ Trust and confidence in the conduct of elections concerns aspects of elections t
 
 Assessing the public's *trust* in elections has not been straightforward, however. Inquiry into public trust in elections has been approached by scholars of political science in many different ways [@cook2005; @hardin2004], often distinguishable by the scope of the research question and more or less constrained by the particular conception of public trust. Quite often, trust in election administration is conflated with trust in government *writ* large, government legitimacy, government or system responsiveness, or even satisfaction with democracy [@daniller2019]. At this level, not only is the level of public trust in elections sometimes vague, but there's little consideration over the difference between such attitudes pre-election and post-election. In contrast, a considerable amount of research tends to conceive of public trust in accordance with the institution in question [@atkeson2007; @hooghe2018].
 
-Election administration is just one institution a part of the larger set of institutions which form the electoral system. As such, the performance of the institution along with the rest "...lends credibility to the outcome of an election: whether it is considered by citizens and the international community to be fair and legitimate." [@stewart2022, 236]. Intuitively, enhancing public trust in elections would best be accomplished by enhancing the *trustworthiness* of the institution, i.e., consistently doing the things that election officials already regularly do come election time. However, trust and confidence in elections has become ever more precarious over the last few election cycles. Especially considering public polling data since 2000 shows that confidence that votes were, or would be, counted as intended was in a consistent decline despite efforts towards bolstering election integrity and trustworthiness [@sances2015]. This is even more pronounced considering the role that partisanship has had on such confidence over accuracy of vote count [@sances2015; @stewart2022].
+Elections administration is just one institution a part of the larger set of institutions which form the electoral system. As such, the performance of the institution along with the rest "...lends credibility to the outcome of an election: whether it is considered by citizens and the international community to be fair and legitimate." [@stewart2022, 236]. Intuitively, enhancing public trust in elections would best be accomplished by enhancing the *trustworthiness* of the institution, i.e., consistently doing the things that election officials already regularly do come election time. However, trust and confidence in elections has become ever more precarious over the last few election cycles. Especially considering public polling data since 2000 shows that confidence that votes were, or would be, counted as intended was in a consistent decline despite efforts towards bolstering election integrity and trustworthiness [@sances2015]. This is even more pronounced considering the role that partisanship has had on such confidence over accuracy of vote count [@sances2015; @stewart2022].
 
 There's also stark difference in public trust before the election has occurred compared to after, a phenomenon referred to as the "winner-loser gap"; the "winners" are those who supported the winning candidate and the "losers" are those who supported the losing candidate. Much research has been dedicated to analyzing the sentiment of electoral winners vs losers, and vice versa [@nadeau1993; @daniller2019]. Opinions of electoral trust gathered after the election has occurred are limited considering the well-recognized impact that the electoral outcome itself has on feelings of public trust in elections [@daniller2019].
 
-As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *empirical*---a judgement discerned in hindsight after the experience of the election event has occurred. Evaluations of one's own trust and confidence in election administration based on the experience of voting is influenced by that very experience. As discussed by @stewart2022, not only was confidence in vote count accuracy influenced by the voter experience, but so too were evaluations of election officials [-@stewart2022, 242-243]. Not to mention the influence that the election results would also have on such evaluations. In other words, evaluations of trust and confidence post-election are influenced by one's interpretation of their experience. The subtle difference is simply the degree of uncertainty one feels in anticipation of the next election event. This study focuses primarily on that *anticipatory* kind of trust and confidence, which speaks more to those anxieties[^3] based on perceptions of the institution's trustworthiness than upon the particular voter experience. 
+As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *empirical*---a judgement discerned in hindsight after the experience of the election event has occurred. Evaluations of one's own trust and confidence in election administration based on the experience of voting is influenced by that very experience. As discussed by @stewart2022, not only was confidence in vote count accuracy influenced by the voter experience, but so too were evaluations of election officials [-@stewart2022, 242-243]. Not to mention the influence that the election results would also have on such evaluations. In other words, evaluations of trust and confidence post-election are influenced by one's interpretation of their experience. The subtle difference is simply the degree of uncertainty one feels in anticipation of the next election event. This study focuses primarily on that *anticipatory* kind of confidence, which speaks more to those insecurities[^3] based on perceptions of the institution's trustworthiness than upon the particular voter experience.
 
 Regardless of the measures taken by election officials to boost public confidence in the *trustworthiness* of election administration (e.g., conducting audits, testing election machines), public *trust* and confidence in elections more generally is apt to shift dramatically post-election based on factors such as partisanship, elite rhetoric, particular state policies, and more [@nadeau1993; @carter2024; @coll2024a]. Moreover, prior research has found that evaluation of election workers themselves are an important factor when it comes to levels of public confidence in the electoral process [@hall2007; @hall2009; @claassen2008]. Such studies focused on the quality of the voter experience with reference to the interaction between voter and election worker.
 
@@ -160,132 +101,398 @@ One can speculate that the motivation to associate military veterans with civic 
 
 That being said, the general public perception, attitudes, or even stereotypes about military veterans are significant to consider. Although military recruitment shows a downward trend as of late, public perception of veterans are overwhelmingly positive [@kleykamp2023]. Veterans are a particularly potent group where mention of veteran status seems to have a positive, calming, or nullifying effect on attitudes. For instance, recent research shows that, during his campaign in the 2020 Democratic Primaries, Pete Buttigieg's military background mitigated discrimination against him when he was presented as a veteran married to man [@magni2024]. Similar research has also found that a candidate's veteran status affords them better evaluations regarding competency in particular issue areas (e.g., war competence) [@hardy2019]. Moreover, veteran status seems to mitigate or nullify usual stigmas associated with mental illness. That is to say, there is negative stigma associated with mental illness [@corrigan2002] and such stigma incurs labor market discrimination [@hipes2016], but evidence suggests that veteran status overrides such stigma and discrimination [@maclean2014]. Or, in another light, mental illness is seemingly more *understandable* (i.e., permissible) for veterans given the presumptive reasons for their mental strife. And media framing as such plays an important role on public perception [@kleykamp2015].
 
-## Design and Survey Measures
+## Theory and Hypotheses
 
-To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would improve trust in elections and ease election anxieties, a recent survey experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland. The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment ($n =$ 650) control ($n =$ 637) conditions[^4].
+Considering the generally positive perception afforded to veterans by the public, it is reasonable to suspect that efforts that promote recruitment of veterans and their family members to work as election staff and volunteers would boost public confidence in election administration. Indeed, that is the primary hypothesis of this study. Although citizens may vote in various ways across the country (e.g., by mail, ballot drop box, in-person), the simple announcement that election officials are engaging in efforts to recruit veterans to work as election staff may boost confidence in elections administration regardless of how, or whether, an individual plans to vote. Formally,
 
-Survey participants read either a treatment or control vignette, which was a fabricated news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election. The treatment vignette referred to a program designed to recruit veterans and their family members and describes an interviewee "Jordan Braxton" as an Army veteran. The control vignette simply omitted any mention of veterans and their family members, and didn't describe "Jordan Braxton" as an Army veteran. Beyond those small differences and the headlines, the article vignettes are identical. Any effects can be attributed to the information about veterans in the treatment vignette[^5].
+> H~1~: Announcements that election officials are recruiting miilitary service veterans to work as election staff and volunteers will be associated with greater confidence in elections administration compared to announcements that do not mention military veterans.
 
-It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignettes due to the increased scrutiny levied toward election administration there after the 2020 election [@giles2021; @maricopacountyelectionsdepartment2022]. A block of survey items asked specifically about Maricopa County, AZ, followed by an identical block of items that asked the same questions about one's local area. Results between the items where the setting differs are compared and discussed.
+I considered that veterans would elicit high degrees of approval and support for whatever cause or issue presented. For example, I'd expect high approval and support for recruiting veterans to baseball teams just as much as for recruiting them to work as election staff. Likewise, asking participants whether they supported programs intent on recruiting anyone to work as election staff would garner support regardless of the target group. Considering that support and admiration for veterans is generally high among the population [@kleykamp2023], then discerning the impact on one's confidence would require a survey experiment designed to determine whether publicized recruitment efforts targeting veterans as a group would have any special effect on confidence in elections administration.
 
-### Trust in Elections
+Since the results and events following the 2020 election loomed large in anticipation of the U.S. 2024 general elections, it is reasonable to take into account beliefs about legitimacy of the 2020 election. This group who denies the legitimacy of the 2020 election results were possibly the most distrusting of the 2024 election. However, given that veteran service members are held in high regard, generally speaking, announcing that veterans are being actively recruited to work as election staff and volunteers is expected to positively influence confidence in elections among those who remained firm in the belief that the 2020 election results were illegitimate. I take into account that legitimacy beliefs about the 2020 election and expectations of electoral fraud are related to partisanship and include partisanship as a control in the analysis.
+
+In addition, I expect that both expectations of electoral fraud and concerns for voter safety would lessen (shrink) when presented with information that veterans are being actively recruited to work and volunteer in election offices.
+
+Finally, prior research has shown that confidence that one's own vote would be counted as intended has been much stronger than confidence that votes nationwide would be treated likewise [@sances2015; @stewart2022]. In other words, the public is more trusting of elections closer to home. Taking into account that confidence is lower for elections conducted outside of one's local area, then information that veterans are being recruited to help conduct elections in locations beyond one's locale may close this gap between confidence in elections within one's local area and confidence in elections elsewhere. Although it may be difficult to discern whether recruiting veteran service members would improve confidence in elections near one's local area in light of such hometown favoritism, a positive effect on confidence in elections held beyond one's local area---where confidence is already expectedly lower---can help discern the impact of the group alone. Therefore, any observed disparity of confidence in elections (i.e., the "confidence gap") between elections within one's local area and elections beyond will be smaller when people are presented with information about election official recruitment efforts of veteran service members.
+
+## Experiment Design and Survey Measures
+
+To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would improve confidence in elections and ease insecurity, a recent experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland. The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment ($n =$ 650) control ($n =$ 637) conditions[^4].
+
+Survey participants read either a treatment or control vignette, which was a fabricated news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election. The treatment vignette referred to a program designed to recruit veterans and their family members and describes an interviewee "Jordan Braxton" as an Army veteran. The control vignette simply omitted any mention of veterans and their family members, and didn't describe "Jordan Braxton" as an Army veteran. Beyond those small differences and the headlines, the article vignettes are identical. Therefore, effects can be attributed to the information about veterans in the treatment vignette[^5].
+
+It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignette due to the increased scrutiny levied toward election administration there after the 2020 election [@giles2021; @maricopacountyelectionsdepartment2022]. Because of this, treatment effects are potentially limited or constrained to attitudes concerning the location specified in the vignette. A block of survey items asked specifically about Maricopa County, AZ, followed by an identical block of items that asked the same questions about one's local area. Later, I compare and discuss results between the items pertaining to different settings.
 
 Over the past two decades it became commonplace for national polls to gauge public confidence in election administration (i.e., voter confidence) by asking some variety of the question, "How confident are you that your vote \[will be/was\] counted as you intended in the most recent election?" [@hall2009; @sances2015; @stewart2022]. In addition, since 2008, the Survey of the Performance of American Elections (SPAE) has included a good number of relevant questions to more thoroughly assess trust and confidence in election administration. Such questions inquire into the voter experience with the institution more directly. This study borrows, modifies, or takes inspiration from certain question items found within the 2022 SPAE and other survey items from the Pew Research Center's 2018 American Trends Panel wave 38 [@dunn2018].
 
-Note that, except for the item assessing voter confidence (i.e., votes counted as voters intend), most other question items from the 2022 SPAE inquire into the voter experience after the election has occurred. The items in this study, however, all inquire into confidence over one's expectations in anticipation of upcoming elections. In addition, other survey questionnaires ask similar questions that specifically contrast between a respondent's own local community, their state, and nationwide; this is in addition, or complementary to, items that distinguish between local area officials, state election officials, state government, and the U.S. federal government. The survey of this study, instead, focused on attitudes regarding election workers such as election officials, staff, and volunteers. As such, the items are utilized to comprise a component[^6] I broadly refer to as *trust in elections*. 
+Note that, except for the item assessing voter confidence (i.e., votes counted as voters intend), most other question items from the 2022 SPAE inquire into the voter experience after the election has occurred. The items in this study, however, all inquire into confidence over one's expectations in anticipation of upcoming elections. In addition, other survey questionnaires ask similar questions that specifically contrast between a respondent's own local community, their state, and nationwide; this is in addition, or complementary to, items that distinguish between local area officials, state election officials, state government, and the U.S. federal government. The survey of this study, instead, focused on attitudes regarding election workers such as election officials, staff, and volunteers specific to the location mentioned in the vignette---Maricopa County, AZ---as well as specific to one's local area[^6].
 
-A set of five survey items measured public trust in elections by inquiring into the degree of confidence that votes will be counted as voters intend, confidence that electoral systems are secure from technological threats, perceived commitment of election staff, confidence that outcomes will be fair, as well as confidence that the voting process will be fair. The items measuring trust and confidence in elections include:
+The survey included items that assessed both trust in elections administration and expectations of electoral fraud, referred to simply as *trust* and *distrust*, respectively. Responses from these two sets of items were utilized to construct the primary dependent variable, *confidence in elections*.
 
+Prior to the reading the treatment or control vignette, participants responded to distinct survey items assessing one's favorability to local election officials ("In general, how favorable or unfavorable is your impression of local election officials?") and legitimacy of the 2020 election results ("Regardless of whom you supported in the 2020 election, do you think Joe Biden's election as president was legitimate, or was he not legitimately elected?"). The former presented five response options from "Strongly favorable" to "Strongly unfavorable"; the latter item presented a binary of either "Legitimate" or "Not Legitimate".
 
-::: {#tbl-1}
-| **Trust in Elections** |
-|---|
-| How confident are you that votes in Maricopa County, AZ will be counted as voters intend in the elections this November?[^7] |
-| How confident are you that election officials, their staff, and volunteers in Maricopa County, AZ will do a good job conducting the elections this November? |
-| Think about the election staff and volunteers who handle the administration and conduct of elections in Maricopa County, AZ. How committed do you think they will be to making sure the elections held this November are fair and accurate? |
-| How confident are you that the voting process will be fair in Maricopa County, AZ? |
-| How confident are you that election systems in Maricopa County, AZ will be secure from hacking and other technological threats? |
-:::
+The conventional multiple item assessment of partisanship was included and used to construct a variable of partisanship consisting of three categories: Democrat, Republican, and Independent. In this case, Independents are "true" Independents in that they do not identify with either political party and do not "lean" toward either Republican or Democratic parties. Self-described "Independent leaners" are re-coded as falling into the partisan category in which they lean e.g., Independents who expressly report that they lean Republican are denoted as Republican.
 
-Each item in this series presented four response options from "Not at all [confident/committed]", "Not too [confident/committed]", "Somewhat [confident/committed]", and "Very [confident/committed]". In total, six survey items measure different aspects of trust and confidence in election administration. From these items, I generated a composite score for each respondent that represents their variable level of trust in elections.
+Finally, a pair of survey items assessed concerns for potential violence and confidence in voter safety. The pair was asked once in regard to Maricopa County, AZ and again with respect to one's local area[^7].
 
-### Expecatation of Electoral Fraud
+### Trust and Distrust in Elections
 
-A series of five survey items captured *expectation of electoral fraud*. These items were prefaced with the question, "How likely do you think any or all of the following will happen during this year´s elections in Maricopa County, AZ?" Each item presented four response options: "Not likely at all", "Not too likely", "Somewhat likely", and "Very likely".
+A set of five survey items measured public trust in elections by inquiring into the degree of confidence that votes will be counted as voters intend, confidence that electoral systems are secure from technological threats, perceived commitment of election staff, confidence that outcomes will be fair, and confidence that the voting process will be fair. Each item in this series presented four response options from "Not at all \[confident/committed\]", "Not too \[confident/committed\]", "Somewhat \[confident/committed\]", and "Very \[confident/committed\]". In total, five survey items measure different aspects of trust in elections administration. The items measuring confidence in elections include:
 
-::: {#tbl-2}
-| **Expectation of Electoral Fraud** |
-|---|
-| There will be voter fraud, that is, people who are not eligible to vote will vote, or vote more than once |
-| Many votes will not actually be counted |
-| Many people will show up to vote and be told they are not eligible |
-| A foreign country will tamper with the votes cast in this area to change the results |
-| Election officials in Maricopa County, Arizona will try to discourage some people from voting |
-:::
+Another series of five survey items captured an individual's level of *distrust* in elections administration based on the extent to which they *expect electoral fraud* to occur. These items were prefaced with the question, "How likely do you think any or all of the following will happen during this year´s elections in \[Maricopa County, AZ/ your local area\]?" Each item presented four response options: "Not likely at all", "Not too likely", "Somewhat likely", and "Very likely".
 
 
-Similar to the items capturing trust in elections (@tbl-1), I computed a composite score for each respondent reflecting their expectations of electoral fraud.
+```{r}
+#| label: tbl-items
+#| tbl-cap: "Survey Items for Trust and Distrust in Elections"
+
+
+trust_txt <- df |> select(q19, q20, q21, q22, q24) |>
+  labelled::set_variable_labels(
+    q21 = "How commited do you think election staff and volunteers in Maricopa County, AZ will be to making sure the elections are fair and accurate?"
+  ) |> 
+  labelled::generate_dictionary() |> 
+  dplyr::as_tibble() |> 
+  select(Trust=label)
+
+distrust_txt <- df |> select(q28_1:q28_5) |>
+  labelled::generate_dictionary() |> 
+  dplyr::as_tibble() |> 
+  select(Distrust=label)
+
+conf_items_text <- trust_txt |> 
+  mutate(Distrust = pull(distrust_txt))
+
+kableExtra::kbl(conf_items_text, booktabs = T,
+                col.names = c("Trust", "Distrust"),
+                linesep = "\\addlinespace") |> 
+  kableExtra::kable_styling(full_width = T,
+                            font_size = 8,
+                            latex_options = c("HOLD_position")) |> 
+  kableExtra::column_spec(column = 1:2, width = "8cm")
+
+```
+
+
+Similar to the items capturing trust in elections (@tbl-items), I computed a summated score for each respondent reflecting the extent of their distrust in elections.
+
+Upon construction of the two summated scales of *trust* and *distrust*, internal consistency reliability coefficient $\alpha$ were estimated for both and found to be adequate ($\alpha$ \> 0.8); the trust in elections scale $\alpha$ = 0.93 and the distrust scale $\alpha$ = 0.86. In other words, the items in each of the scales were intercorrelated well enough for each to compose a single scale presuming a unidimensional construct for each.
+
+I expected item responses from these two scales to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Polychoric correlations between the trust and distrust items negatively correlate as expected\[\^See Appendix C\], as does the correlation between the two sum score scales. Given the ordinal nature of the variable items, I conducted a Spearman's rank correlation test [@spearman1907] and found a negative correlation of $\rho = -0.49$ ($95\%$ CI \[-0.53, -0.44\]; Kendall's $\tau = -0.39$) between scores on the two scales for the AZ items (For the local item scale score correlation: $\rho = -0.52$, $95\%$ CI \[-0.56, -0.48\]; Kendall's $\tau = -0.39$). The negative correlation between the trust and distrust items and scores makes intuitive sense.
 
 ## Data Specification
 
-The outcome of interest concerns both public trust in election administration and the expectation of electoral fraud. Because these variables are assessed by multiple Likert items, conventional methods call for combining the items of each set into separate Likert scales, also known as a summated rating scales. However, many of the items comprising the trust scale directly oppose items capturing expectations of electoral fraud. For instance, one item has the respondent report their confidence that votes will be counted as voter's intend; whereas a separate item has the the respondent report their expectation that many votes will not be counted. These two items directly contrast each other. 
+The primary outcome of interest concerns public confidence in elections administration compensated by one's distrust in elections, i.e., their expectations of electoral fraud. Because trust and distrust are assessed by multiple Likert items, conventional methods call for combining the items of each set into separate Likert scales (also known as summated rating scales). Since the item response options are not symmetric---i.e., not bipolar with contrasting positive and negative response options to include a neutral middle option---then the *trust in elections* scale could only be understood as a measure of trust in the positive use of the term (i.e., unipolar). Likewise, the expectation of fraud items fit to a scale that corresponds to a unipolar measure of confident *distrust*, so to speak. However, many of the items comprising the trust scale directly oppose items capturing distrust. For instance, one item from the trust scale has the respondent report their confidence that votes will be counted as voter's intend, whereas a separate item from the distrust scale has the the respondent report their expectation that many votes will not be counted. Positive responses to these two items directly contradict each other, and would thus cancel out.
 
-Theoretically speaking, a person who is certain that electoral fraud will occur clearly lacks trust in the election. That is, expectation of electoral fraud does imply lack of trust in elections. However, the reverse isn't necessarily true; it is reasonable to hold a degree of trust in elections alongside expectations that electoral fraud will occur. Holding both considerations isn't necessarily an example of cognitive dissonance, as a lack of confidence in elections doesn't necessarily imply an expectation of electoral fraud. A lack of trust in elections might render one open to potentialities, but expectation of fraud is in no way necessitated by lacking trust in elections. When considered along a spectrum, both can be considered as degrees of *confidence*; and in the absence of confidence, insecure.
+The relationship is that trust and distrust represent opposing degrees of confidence along the same spectrum. However, despite the inherent contrast, one can hold both positive degrees of trust and distrust, feeling similarly confident in both respects. Accordingly, equivalent degrees of trust and distrust cancel out, rendering one relatively more *insecure* about their expectations of the future despite the fact that they may feel confident in either direction. When trust and distrust are considered as reflective of one's confidence about future expectations, then both can be placed along the same spectrum. Therefore, a lack of confidence denotes insecurity.
 
-Since many of the items are not symmetric---i.e., response options are not bipolar with contrasting positive and negative response options---then a "trust in elections" scale could only be understood as a measure of trust in the positive use of the term (i.e., unipolar). Likewise, the expectation of fraud items fit to a scale that corresponds to a unipolar measure of *confident distrust* so to speak. 
+Something may cause a person to have greater expectations that election fraud will occur, which in turn will always lower their trust in elections administration. In contrast, a person may feel a bit more confident in the integrity of elections, but this confidence is constrained by the extent to which they expect election fraud to occur. This means that a person's baseline level of confidence in elections admin must take into account their present degree of distrust---i.e., their expectations of electoral fraud.
 
-I would expect composite sum or mean scores, and item responses, on these two measures to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Upon construction of the two multi-item composite scales of *trust in elections* and *expectation of fraud*, internal consistency reliability coefficient $\alpha$ were estimated for both and found to be adequate ($\alpha$ > 0.8); the trust in elections scale $\alpha$ = 0.93 and the expectation of electoral fraud scale $\alpha$ = 0.86. In other words, the items in each of the scales were intercorrelated well enough to compose a single scale presuming a unidimensional construct for each. 
+Those who are, or are close to being, equally confident in both directions would be the most *insecure* about their expectations. Having no trust in elections and no expectation that electoral fraud will occur is functionally equivalent to having equal degree of both. Quite literally, this reflects an uncertain feeling of "it could go one way or the other" with respect to the integrity of elections administration. Operationally, this would reflect a middling point on a scale of *confidence*.
+
+In light of this, I reverse coded positive expectations of electoral fraud and added responses from the distrust scale to the trust in elections scale. That is, item responses on the trust scale ranged from 0 ("Not confident at all") to 3 ("Very confident), whereas responses on the distrust scale ranged from 0 ("Not likely at all") to -3 ("Very likely"). Combining responses in this way resulted in an overall measure of *confidence in elections* to serve as the dependent variable. On this scale, positive values reflect higher confidence in elections, negative values reflect greater distrust, and values closer to zero correspond to an individual's degree of insecurity[^8].
+
+The advantage is that this permits a better test of the treatment effect as theorized. Of course, it is easy enough to examine the effect of the treatment on both trust and distrust separately. However, the theory presents a hypothesis that the treatment will impose influence upon both variables *concurrently and in a positive direction* in light of the relationship between trust and distrust. Confidence increases insofar as trust in elections increases and distrust decreases; since distrust detracts from trust, then an accurate measure of confidence must take that constraint into account.
+
+## Results
+
+I first review responses to the survey items capturing trust and distrust, respectively. When distinguished by experiment condition, trust in elections admin is noticeably higher for those who read the treatment vignette. The difference is more pronounced for some items over others. That being said, there is a definite distinction between items pertaining to Maricopa County, AZ compared to items that pertain to a respondent's local area. In fact, the treatment appears to have hardly made a difference when the items concerned one's local area.
+
+```{r}
+#| label: fig-trustlikert
+#| fig-cap: "Trust in Election Administration by Experiment Condition"
+
+# Likert plot of trust and confidence in election admin comparing treatment and
+# control groups
+trust.likert.treat.az <- df |>
+  # relabel factor labels for plotting
+  mutate(across(
+    c(q19, q20, q21, q22, q23, q24, q30, q31, q32, q33, q34, q35),
+    ~ pewmethods::fct_case_when(
+      .x %in% c("Not at all confident", "Not at all committed") ~ "Not at all confident",
+      .x %in% c("Not too confident", "Not too committed") ~ "Not too confident",
+      .x %in% c("Somewhat confident", "Somewhat committed") ~ "Somewhat confident",
+      .x %in% c("Very confident", "Very committed") ~ "Very confident",
+      TRUE ~ NA
+    )
+  )) |>
+  ggstats::gglikert(
+    include = c(q19, q20, q21, q22, q24),
+    y = 'group',
+    facet_rows = vars(.question),
+    symmetric = F,
+    labels_size = 2.5,
+    add_totals = T
+  ) +
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Maricopa County, Arizona", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_blank()
+  )
+
+# confidence in elections between experiment conditions for items concerning local area
+trust.likert.treat.lcl <- df |>
+  # relabel factor labels for plotting
+  mutate(across(
+    c(q19, q20, q21, q22, q23, q24, q30, q31, q32, q33, q34, q35),
+    ~ pewmethods::fct_case_when(
+      .x %in% c("Not at all confident", "Not at all committed") ~ "Not at all confident",
+      .x %in% c("Not too confident", "Not too committed") ~ "Not too confident",
+      .x %in% c("Somewhat confident", "Somewhat committed") ~ "Somewhat confident",
+      .x %in% c("Very confident", "Very committed") ~ "Very confident",
+      TRUE ~ NA
+    )
+  )) |>
+  ggstats::gglikert(
+    include = c(q30, q31, q32, q33, q35),
+    y = 'group',
+    facet_rows = vars(.question),
+    variable_labels = c(
+      q30 = "Votes counted as intended",
+      q31 = "Election officials will do good job",
+      q32 = "Election workers will be committed",
+      q33 = "Voting process will be fair",
+      q35 = "Election technology will be secure"
+    ),
+    facet_label_wrap = 10,
+    labels_size = 2.5,
+    symmetric = F,
+    add_totals = T
+  ) +
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Local Area", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.y.left = element_blank(), # remove y-axis text on 2nd plot
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_text(angle = 0, size = 8)
+  )
+
+# trust.likert.treat.az
+# trust.likert.treat.lcl
+
+# Instead of two separate plots, arrange into one plot while remaining separated
+# use `ggpubr` package to print multiple plots side-by-side (or alt. row-by-row)
+ggpubr::ggarrange(
+  trust.likert.treat.az,
+  trust.likert.treat.lcl,
+  ncol = 2,
+  common.legend = T,
+  legend = "bottom", 
+  font.label = list(family = "Palatino Linotype")
+)
+```
+
+Reviewing item responses distinguished by treatment condition reveals particulars of the treatment effect (@fig-trustlikert). Among the items that asked about Maricopa County, AZ, it is a bit easier to see upon which items the treatment vignette had the greatest effect. It appears that the main effect of the treatment is upon responses to the item that measures confidence in the security of election technology.
+
+Regarding confidence in the commitment of election staff and volunteers, a higher proportion of respondents in the treatment group selected "Very confident" over "Somewhat confident" compared to the control group, but only for items concerning Maricopa County, AZ. Although confidence in election workers was generally high across the board, the shift from "Somewhat" to "Very" confident for items pertaining to election worker *commitment* to fairness and accuracy seems to clearly speak to the group being recruited, i.e., veterans and family members. However, the same visible shift in proportion from "Somewhat" to "Very" confident isn't observed when items asked about one's local area, which undermines the suggestion that the treatment effect can be cleanly attributed to respondent's feelings about veteran service members and their families. It may be the case that respondents harbor particular attitudes or sentiment about Maricopa County, AZ itself, or there may be nothing uniquely special about Maricopa County, AZ supposing that elections anywhere beyond one's local area generally garner slightly less confidence.
+
+What this does suggest, however, is that trust in the fairness and accuracy of the electoral process is notably higher upon the notion that military veterans will be directly engaged as election staff and volunteers in places where such trust falters. The question turns to whether this also lowers distrust, or the extent to which one expects electoral fraud to occur.
+
+```{r}
+#| label: fig-distrustlikert
+#| fig-cap: "Disrust in Election Administration by Experiment Condition"
 
 
-I then plotted separate histograms of scores across the sample to visualize the distribution for each seen in @fig-dist. Note that for both scales, higher values indicate less expectation of electoral fraud and greater trust in elections, respectively.
+# distrust in elections in AZ by experimental condition
+distrust.likert.az <- df |>
+  # reverse levels of factor vars to show positive difference in "not likely"
+  mutate(across(c(q28_1:q28_5), ~forcats::fct_rev(.))) |> 
+  ggstats::gglikert(
+    include = c(q28_1:q28_5),
+    y = 'group',
+    facet_rows = vars(.question),
+    variable_labels = c(
+      q28_1 = "Voter fraud will occur",
+      q28_2 = "Many votes won't be counted",
+      q28_3 = "Many voters will be turned away",
+      q28_4 = "Foreign Interference",
+      q28_5 = "Election officials will discourage voting"),
+    facet_label_wrap = 10,
+    labels_size = 2.5,
+    symmetric = F,
+    add_totals = T
+  ) +
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Maricopa County, Arizona", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_blank()
+  )
+
+# distrust in elections in Local area by experimental condition
+distrust.likert.lcl <- df |>
+  # reverse levels of factor vars to show positive difference in "not likely"
+  mutate(across(c(q40_1:q40_5), ~forcats::fct_rev(.))) |> 
+  ggstats::gglikert(
+    include = c(q40_1:q40_5),
+    y = 'group',
+    facet_rows = vars(.question),
+    variable_labels = c(
+      q40_1 = "Voter Fraud will occur",
+      q40_2 = "Many Votes won't be counted",
+      q40_3 = "Many voters will be turned away",
+      q40_4 = "Foreign Interference",
+      q40_5 = "Election officials will discourage voting"),
+    facet_label_wrap = 10,
+    labels_size = 2.5,
+    symmetric = F,
+    add_totals = T
+  )+
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Local Area", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.y.left = element_blank(), # remove y-axis text on 2nd plot
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_text(angle = 0, size = 8)
+  )
+
+# Instead of two separate plots, arrange into one plot while remaining separated
+# use `ggpubr` package to print multiple plots side-by-side (or alt. row-by-row)
+ggpubr::ggarrange(
+  distrust.likert.az,
+  distrust.likert.lcl,
+  ncol = 2,
+  common.legend = T,
+  legend = "bottom", 
+  font.label = list(family = "Palatino Linotype")
+)
+
+
+```
+
+Similar to the trust scale items, the items on the distrust scale were associated with lower distrust in the treatment condition compared to the control. A quick glance at @fig-distrustlikert shows what appears to be a significant reduction in distrust, especially regarding the expectations that many votes wouldn't be counted, many voters would be turned away, and that election officials would discourage voters from casting a ballot. Interestingly, the expectation that there would be foreign interference in elections in Maricopa County, AZ were pretty resilient against the treatment. And again, responses for items pertaining to elections in one's local area are practically indistinguishable between treatment and control.
+
+### Confidence in elections
+
+Once trust and distrust were composed into unified variable of confidence in elections, I then examined distribution of the dependent variable followed by analysis of the effect of the treatment by comparison of mean differences for confidence in elections by experiment condition. Recall that on this scale, zero reflects insecurity (e.g., similar or equal values of trust and distrust), whereas values diverging from zero reflect confidence in either direction, trust or distrust respectively. Positive values reflect confidence as trust in elections administration (e.g., elections will be fair and accurate), whereas negative values reflect confidence as distrust in elections (i.e., expectation that election fraud will occur). To retain a meaningful zero, I rescaled the sum scores to range from -3 to 3[^9] and then superimposed two histograms of confidence scores: one derived from AZ items and another for scores derived from local area items. Doing this is illustrative of the relative distribution of confidence that differed depending on the location of elections referred to in the survey items (e.g., Maricopa County, AZ).
+
+As revealed by review of the item responses, the distribution of confidence differed depending on whether survey items pertained to elections in Maricopa County, AZ, or elections within one's local area.
 
 
 ```{r}
 #| label: fig-dist
-#| fig-cap: "Histograms of Composite (mean) Scores for Trust in Elections And Expectation of Electoral Fraud"
+#| fig-cap: "Overlapping histograms of Confidence in Elections for AZ and Local Area"
+#| fig-pos: "H"
 
-# trust scores are not normally distributed, bi-modal, neg skew
-trst.scores.hist <- ggplot(data, aes(trst.mean.scores))+
-  geom_histogram(aes(y = after_stat(density)), bins = 15,
-                 color = 1, fill = "grey")+
-  geom_density(lwd = 1.5, color = 1, fill = 1, alpha = 0.35)+
-  geom_segment(x = round(mean(data$trst.mean.scores), 2), y = 0, yend = 0.80, color = "red")+
+ggplot(df) +
+  geom_histogram(
+    aes(x = conf.az.rescaled , y = after_stat(density)),
+    bins = 15,
+    alpha = 0.2,
+    color = 1,
+    fill = "red"
+  ) +
+  geom_histogram(
+    aes(x = conf.lcl.rescaled , y = after_stat(density)),
+    bins = 15,
+    alpha = 0.2,
+    color = 1,
+    fill = "blue"
+  ) +
+  geom_segment(
+    x = round(mean(df$conf.az.rescaled), 2),
+    y = 0,
+    yend = 0.35,
+    color = "firebrick",
+    lwd = 1.4,
+    linetype = 2
+  ) +
+  geom_segment(
+    x = round(mean(df$conf.lcl.rescaled), 2),
+    y = 0,
+    yend = 0.35,
+    color = "darkblue",
+    lwd = 1.4,
+    linetype = 2
+  ) +
+  annotate(
+    "text",
+    x = round(mean(df$conf.az.rescaled), 2),
+    y = 0.40,
+    label = paste("AZ =", round(mean(
+      df$conf.az.rescaled
+    ), 2), "(", round(sd(
+      df$conf.az.rescaled
+    ), 2), ")"),
+    color = "firebrick"
+  ) +
+  annotate(
+    "text",
+    x = round(mean(df$conf.lcl.rescaled), 2),
+    y = 0.43,
+    label = paste("Local area =", round(mean(
+      df$conf.lcl.rescaled
+    ), 2), "(", round(sd(
+      df$conf.lcl.rescaled
+    ), 2), ")"),
+    color = "darkblue"
+  ) +
   labs(
-    x = "Trust in Elections Mean Scores",
+    x = str_wrap("Confidence", width = 85),
     y = "Density",
-    caption = "mean = 3.09, sd = 0.69, median = 3.0, skew = -0.67, kurtosis = 0.25"
-  )+
-  annotate("text", x = round(mean(data$trst.mean.scores), 2), y = 0.85,
-           label = paste("mean =", round(mean(data$trst.mean.scores), 2)), color = "red")
+    caption = str_wrap(
+     "Mean (std.deviation). Difference = 0.20, CI [0.068, 0.33], t = 2.959, df=1283.733, p = 0.003",width = 95)) +
+  theme_bw()
 
 
-# eef scores are not normally distributed, also bi-modal pos skew
-eef.scores.hist <- ggplot(data, aes(eef.mean.scores))+
-  geom_histogram(aes(y = after_stat(density)), bins = 15,
-                 color = 1, fill = "grey")+
-  geom_density(lwd = 1.5, color = 1, fill = 1, alpha = 0.35)+
-  geom_segment(x = round(mean(data$eef.mean.scores), 2), y = 0, yend = 0.80, color = "red")+
-  labs(
-    x = "Exp. of Electoral Fraud Mean Scores",
-    y = "Density",
-    caption = "mean = 2.27, sd = 0.75, median = 2.2, skew = 0.19, kurtosis = -0.55"
-  )+
-  annotate("text", x = round(mean(data$eef.mean.scores), 2), y = 0.85,
-           label = paste("mean =", round(mean(data$eef.mean.scores), 2)), color = "red")
-
-# place plots side by side
-gridExtra::grid.arrange(eef.scores.hist, trst.scores.hist, ncol = 2)
 ```
 
-Given the non-normal (or at least un-equal skew of the) distribution of the two scale scores and ordinal nature of the variable items, I conducted a Spearman's rank correlation test [@spearman1907] and found a negative correlation of $\rho$ -0.49 (Kendall's \tau = -0.39) between summated scores on the two scales. The negative correlation between the items and the composite scores makes sense. 
+Overall, the sample expressed more trust in elections relative to distrust seeing as how the distribution of confidence is largely positive (@fig-dist). However, there's a clear difference between items that asked about elections in Maricopa county, AZ and those that asked about one's local area. Confidence in elections within one's local area positively differed from confidence in elections held in Maricopa County, AZ. A paired t-test suggests that this difference was statistically significant, though somewhat small (mean difference $= -0.33$, $95\%$ CI $[-0.38, -0.27]$, $t(1286) = -11.61$, $p < .001$; Cohen's $d = -0.32$, $95\%$ CI $[-0.38, -0.27]$). Nonetheless, respondents appeared less confident regarding elections in Maricopa County, AZ, but held more confidence in elections administration in their local area. This complements previous research that demonstrates a similar bias favorable to one's local area [@stewart2022].
 
-Accordingly, those whose responses to the "trust in elections" items would be cancelled out by their responses to the "expectation of fraud" items. Those who are, or are close to being, equally confident in both directions would be the most *insecure* about their expectations[^Insecure in terms of their confidence. Not insecure as to imply some anxious or concerned affect.]. Having no trust in elections and no expectation that electoral fraud will occur is functionally equivalent to having equal degree of both. Quite literally, an uncertain feeling of "it could go one way or the other". Operationally, this would reflect a middling 0 on a scale of *confidence*. Seeing as how expectation of electoral fraud is also a level of confidence, then it is reasonable to place all items onto a symmetric scale where positive values represent trust in elections and negative values represent expectation of electoral fraud.
+Accordingly, when confidence levels are distinguished by experiment condition, the treatment vignette only had an effect upon survey items pertaining to elections in Maricopa County, AZ. Conducting an independent samples t-test (i.e., Welch Two Sample t-test) suggests that the effect of the treatment compared to the control condition is positive, statistically significant, yet substantially pretty small.
 
-The primary dependent variable is *confidence in elections*, which reflects one's trust in election administration minus their expectations of electoral fraud. Operationally, the dependent variable is a linear composite scale of item responses across items measuring trust in elections and expectations of electoral fraud re-scaled to range from -3 to 3. Items comprising trust in elections were positively coded to range from 0 "Not at all confident/committed" to 3 "Very confident/committed". Likewise, items capturing expectation of electoral fraud were coded negatively to range from 0 "Not likely at all" to -3 "Very likely".
-
-
-Computed mean or sum scores for multiple Likert items are commonly acceptable, as they are relatively robust in spite of violating assumptions of a normal distribution of data (or residuals).
-due to the somewhat non-normal distribution of the sum or mean scores and the ordinal nature of the variable items, an ordered regression analysis is preferred.
-
-
+```{r}
+#| label: tbl-ttest
+#| tbl-cap: "Mean Difference Effect of Treatment Compared to Control Condition"
+#| fig-pos: "h"
+#| include: false
 
 
+df |> 
+  mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |> 
+  rstatix::t_test(formula = conf.az.rescaled ~ group, var.equal = F, detailed = T) |>
+  select(Difference = estimate, 
+         conf.low, conf.high, 
+         t = statistic, df, p, 
+         -alternative, -method, -.y., -estimate1, -estimate2, -group1, -group2,
+         -n1, -n2) |> 
+  # insight::format_table(stars = T) |> 
+  kableExtra::kbl(booktabs = T, digits = 4) |> 
+  kableExtra::kable_styling(
+    full_width = T,
+    latex_options = c("hold_position"))
+
+```
 
 
+The results of @tbl-ttest show that, on a scale ranging from -3 to 3, the effect of the treatment is associated with a $0.20$ average difference in confidence in elections in Maricopa County, AZ, compared to average confidence among those in the control group. A simple difference of means test on this scale, however, does not lend itself well to interpretation; its hard to really grasp what a $0.20$ positive difference, on average, really amounts to. When the dependent variable is centered and scaled to have a mean = 0 and standard deviation = 1, standardized parameters permit interpretation of the treatment effect in terms of standard deviations.
 
+> "tbl-mod1" here
 
+The table above shows that effect of the treatment on confidence in elections is associated with a 0.16 standard deviation positive difference on average compared to confidence of those in the control group. I also include models where trust and distrust are regressed on the treatment condition separately in order to illustrate the divergent effect of the treatment. Nothing is more illustrative than graphs and lines, however.
 
+> "fig-coef1" and "fig-coef2" here
 
+Visualized in @fig-coef2, the treatment effect on both trust and distrust is clear. Although the effect is only there when questions pertained to Maricopa County, AZ. The treatment effect on trust and distrust is conditional on whether the survey questions inquired about elections in Maricopa County, AZ. Announcing efforts to recruit veterans and their families to work as election staff and volunteers increases confidence in elections administration in places outside of one's local area, but doesn't boost confidence in elections within one's local area. However, bear in mind that confidence in elections for one's local area is already higher than for those outside. Thus, there's already less insecurity concerning elections in one's local area, but publicized efforts to recruit veterans to work as election staff and volunteers is a small but positive step towards closing that gap in confidence for elections that occur elsewhere.
 
-The primary independent variable is the prospect of military veterans as election workers (i.e., staff or volunteers). 
-
-
-
-## Results
-
-The key question is whether trust in elections (or voter confidence) is response to the treatment vignette.
-
-Note that the question wording for the survey items derived from the 2022 SPAE are modified slightly but substantially. The question wording in this study is most similar to those in 2022 SPAE that assess confidence that votes will be counted as voters intend without specific reference to their own vote (e.g., in their county, state, or nationwide). In this study, two survey items ask about confidence in vote counts in one specific county in Arizona and another referencing their local community. Moreover, the 2022 SPAE includes "I don't know" as a response option, whereas the comparable item in this study did not include a "don't know" response option. Comparison between responses to the two similar items was conducted....
+I now turn to results examining those who held onto the belief that the 2020 election results were illegitimate. I think check to see if recruiting veterans simply makes people feel safer at the polls.
 
 \pagebreak
 
@@ -293,15 +500,17 @@ Note that the question wording for the survey items derived from the 2022 SPAE a
 
 ### Limitations
 
-* limitations: interpretations of the treatment effect are limited.
-  + The sample may not be generalizable to the population.
-  + It's hard to say whether merely mentioning veterans is enough, as compared to explicitly naming veterans as the target of particular recruitment efforts.
-* Interpretation is also limited considering that no other particular group, or groups are compared directly against the veteran treatment vignette, i.e., additional vignettes for other comparable groups.
-* Moreover, results are limited by the survey questions, questionnaire design, and experimental stimulus (i.e., vignette) for two reasons. - First, the vignettes and many survey questions ask about Maricopa County, AZ specifically. Adding a specific county in the vignette adds in a factor that cannot be accounted for without additional treatments that eliminate the setting as a potential influence. Moreover, the specificity of the setting adds in even more unexplained error---some people may have attitudes about the county in question, others won't, while others may be muffed to consider a random county in the U.S. they've know nothing about. Adding the county undermines the confidence that treatment effects are solely attributable to veterans to an unknown degree. - Second, questions ask about one's own local community in addition to identical questions which asked about Maricopa County, AZ. Consequently, many questions within the questionnaire were duplicates with that one differences. This isn't uncommon in surveys, however in this case, it lengthened the survey to a degree that likely resulted in a higher drop off rate. More importantly, the quality of responses were likely diminished to some unknown extent. Although it is possible to compare questions asked about Maricopa County, AZ to questions about one's local area, the quality of that comparison is limited by the unknown extent of fatigue induced by answering the same questions twice. It wasn't just that some questions were asked multiple times, almost all of the questions were duplicated; after completing a long series on Maricopa County, participants then answered the same questions about the local community. The rate to which participants dropped from the survey is \_\_\_, which suggests fatigue as an important factor. Survey fatigue is a known issue that should be taken into consideration. Comparison of treatment effects between the MC series and the local area series is undermined by the unknown influence that fatigue would have on response choices. Any differences couldn't confidently be attributed to "my area" vs Maricopa county. We also can't determine whether treatment effects are sustained when comparing the Maricopa County series to the local area series asked subsequently. We would have to assume the setting as irrelevant, which we can't reasonably do.
+As far as I'm aware, both the items, their wording, and their composition into measurement scales are unique to this study. This renders the composite scores for trust in elections sample dependent and limits comparability with other cross-sectional survey data.
+
+-   limitations: interpretations of the treatment effect are limited.
+    -   The sample may not be generalizable to the population.
+    -   It's hard to say whether merely mentioning veterans is enough, as compared to explicitly naming veterans as the target of particular recruitment efforts.
+-   Interpretation is also limited considering that no other particular group, or groups are compared directly against the veteran treatment vignette, i.e., additional vignettes for other comparable groups.
+-   Moreover, results are limited by the survey questions, questionnaire design, and experimental stimulus (i.e., vignette) for two reasons. - First, the vignettes and many survey questions ask about Maricopa County, AZ specifically. Adding a specific county in the vignette adds in a factor that cannot be accounted for without additional treatments that eliminate the setting as a potential influence. Moreover, the specificity of the setting adds in even more unexplained error---some people may have attitudes about the county in question, others won't, while others may be muffed to consider a random county in the U.S. they've know nothing about. Adding the county undermines the confidence that treatment effects are solely attributable to veterans to an unknown degree. - Second, questions ask about one's own local community in addition to identical questions which asked about Maricopa County, AZ. Consequently, many questions within the questionnaire were duplicates with that one differences. This isn't uncommon in surveys, however in this case, it lengthened the survey to a degree that likely resulted in a higher drop off rate. More importantly, the quality of responses were likely diminished to some unknown extent. Although it is possible to compare questions asked about Maricopa County, AZ to questions about one's local area, the quality of that comparison is limited by the unknown extent of fatigue induced by answering the same questions twice. It wasn't just that some questions were asked multiple times, almost all of the questions were duplicated; after completing a long series on Maricopa County, participants then answered the same questions about the local community. The rate to which participants dropped from the survey is \_\_\_, which suggests fatigue as an important factor. Survey fatigue is a known issue that should be taken into consideration. Comparison of treatment effects between the MC series and the local area series is undermined by the unknown influence that fatigue would have on response choices. Any differences couldn't confidently be attributed to "my area" vs Maricopa county. We also can't determine whether treatment effects are sustained when comparing the Maricopa County series to the local area series asked subsequently. We would have to assume the setting as irrelevant, which we can't reasonably do.
 
 \pagebreak
 
-## Appendix A: Survey Experiment Vignettes {#sec-appendix-a}
+## Appendix A: Survey Experiment Vignettes and Survey Items {#sec-appendix-a}
 
 ::::: {#fig-vignettes .content-visible layout-ncol="2" when-format="html" unless-format="pdf"}
 ::: {#fig-treatment}
@@ -327,9 +536,8 @@ Note that the question wording for the survey items derived from the 2022 SPAE a
 Fabricated Article Vignettes utilized as Experimental Stimulus
 :::::
 
-::::: {.content-hidden layout-ncol="2" unless-format="pdf"}
-<div>
-
+::::: {.content-hidden unless-format="pdf" layout="[0.45, -0.1, 0.45]"}
+::: {#first-column}
 ### Treatment Vignette
 
 | **Local Military Veterans Recruited for Election Jobs in Maricopa County**
@@ -337,11 +545,9 @@ Fabricated Article Vignettes utilized as Experimental Stimulus
 |   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
 | 
 |   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
 
-</div>
-
-<div>
-
+::: {#second-column}
 ### Control Vignette
 
 | **Local Residents Recruited for Election Jobs in Maricopa County**
@@ -349,93 +555,16 @@ Fabricated Article Vignettes utilized as Experimental Stimulus
 |   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
 | 
 |   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
-
-Text of the Control Condition: Recruitment of Community Members
-
-</div>
+:::
 :::::
+
+\pagebreak
 
 ## Appendix B: Sample Demographics {#sec-appendix-b}
 
 The median age was 46 (mean age was 47). There was 51.7% (n = 658) women, 47% (n = 598) men, and approximately 1.3% who identified as either Non-binary/third gender (n = 7) or preferred not to say (n = 9). A large proportion of the sample identified as White or Caucasian (n = 975, 76.65%), while all other non-White respondents comprised 27.83% of the sample. Those who held a graduate level degree (e.g., Master's, Doctorate, or Professional level) comprised 13% of the sample; those with either degree at the Associate or Bachelor's level comprised 36.24%, while 22.25% had some college but no degree; and 28.46% had either a high school level or equivalent education or less than high school. The largest proportion of the sample identified as Democrat at 44.64%, followed by Republicans at 42.59%. The proportion of true Independents was 12.78%.
 
-::: {.content-visible when-format="html" unless-format="pdf"}
-```{r}
-#| label: tbl-desc
-#| tbl-cap: "Demographics and Balance"
-#| tbl-cap-location: top
-
-# quick, informative, easy table of sample demographics w/ some other questions.
-# best method for html document
-tbl.desc <- data |>  
-  labelled::set_variable_labels(
-    age_4cat = "Age group, in years",
-    gender_3cat = "Gender",
-    race2 = "Race/Ethnicity",
-    educ_4cat = "Education",
-    partyid_3cat = "Party ID"
-  ) |> 
-  gtsummary::tbl_summary(
-    by = group,
-    include = c(
-    age_4cat, 
-    gender_3cat, 
-    race2, 
-    educ_4cat, 
-    partyid_3cat),
-    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
-    missing = "ifany",
-    missing_text = "NA") |> 
-  gtsummary::add_n() |> 
-  gtsummary::add_overall() |> 
-  gtsummary::modify_header(label = "**Variable**") |> 
-  gtsummary::bold_labels()
-
-
-gtsummary::as_gt(tbl.desc) |>  
-  gt::tab_footnote(
-    footnote = "Independents do not identify nor 'lean' toward either political party",
-    placement = "left"
-    ) |>  
-  gt::cols_align(align = 'left', columns = everything()) |> 
-  gt::tab_options(
-    table.font.size = "small",
-    data_row.padding = gt::px(1)
-  )
-
-```
-:::
-
-There should be nothing below here
-
-::: {.content-hidden unless-format="pdf"}
-```{r}
-#| label: tbl-desc-pdf
-#| tbl-cap: "Demographics and Balance"
-#| tbl-cap-location: top
-
-gtsummary::as_gt(tbl.desc) |>  
-  gt::tab_footnote(
-    footnote = "Independents do not identify nor 'lean' toward either political party",
-    placement = "left"
-    ) |>  
-  gt::cols_align(align = 'left', columns = everything()) |> 
-  gt::tab_options(
-    table.font.size = "small",
-    data_row.padding = gt::px(1)
-  )
-
-
-```
-
-
-:::
-
 \pagebreak
-
-
-
-
 
 \pagebreak
 
@@ -443,12 +572,16 @@ gtsummary::as_gt(tbl.desc) |>
 
 [^2]: There's little that could justify a conceptual distinction between public trust pre-election and public trust post-election. The temporal element renders the difference between pre- and post-election more operative than conceptual at a foundational level.
 
-[^3]: Note that *electoral anxiety* is used in place of electoral trust/confidence simply to emphasize the anticipatory nature of the attitudes in question. Election anxiety is not taken to be the inverse of trust and confidence. A lack of trust does not necessarily imply (a state of) anxiety.
+[^3]: Note that election insecurity is used in place of electoral confidence simply to emphasize the anticipatory nature of the attitudes in question. Election insecurity is taken to denote a lack of confidence.
 
 [^4]: Demographic breakdown of the sample are included in Appendix B.
 
 [^5]: Complete text of treatment and control vignettes are included in the Appendix
 
-[^6]: The methodological concerns between the use of (unit weighted) sum scores compared to the use of estimated factor scores for Likert scales composed of multiple Likert items are legion. The use of either computed sum scores or estimated factor scores as a general practice is continuously debated [@mcneish2020; @widaman2022; @mcneish2023; @widaman2024]. The use of either appears to largely depend on the researcher's particular research objective, theoretical suppositions, and necessity. Another common concern is the inappropriate treatment of ordinal variables as interval which levy strong assumptions, e.g., each item contributes equally to the variable being measured and that ordinal response categories are equidistant as though on an interval scale [@wang2013; for contrast, see @robitzsch2020]. 
+[^6]: Note that I refer to the items as either 'AZ items' or 'local items' in order to distinguish the location in which they pertain.
 
-[^7]: Note a lack of confidence that votes will be counted as voters intend does not imply an expectation of electoral fraud. The reason for one's lack of confidence is uncertain, which makes it suitable as a survey item to measure the presence of trust in election administration rather than an expectation of fraud.
+[^7]: Survey item wording and responses are included in Appendix A.
+
+[^8]: The methodological concerns between the use of (unit weighted) sum or mean scores compared to the use of estimated factor scores for Likert scales composed of multiple Likert items are legion. The use of either computed sum scores or estimated factor scores as a general practice is continuously debated [@mcneish2020; @widaman2022; @mcneish2023; @widaman2024], yet there is no general consensus on the most appropriate method generally. The use of either appears to largely depend on the researcher's particular research objective, theoretical suppositions, and necessity. Another common concern is the inappropriate treatment of ordinal variables as interval which levy strong assumptions, e.g., each item contributes equally to the variable being measured and that ordinal response categories are equidistant as though on an interval scale [@wang2013; for contrast, see @robitzsch2020].
+
+[^9]: This range is mostly arbitrary, as a range from -1 to 1 works much the same. When relying on simple sum total score, the scale ranges from -15 to 15. So a single point increase from 0 to 1 may reflect a combination of a single "Very confident" response on a trust item compensated by a single "Somewhat likely" response on a distrust item (i.e., 3-2 = 1), or some other equivalent combination. Although the use of mean scores would place scores back onto the response scale metric (e.g., from 0 to 3, reflective of "not at all" to "very"), this results in a unipolar scale (from 0 to 3). The bipolar scale resulting from the composition of positive trust and negative distrust engenders meaning to zero and negative values. As such, composite mean scores become inappropriate and interpretation of scores would no longer be feasible. In other words, negative values on the scale for confidence in elections hold substantive meaning (e.g., distrust, absent trust), which makes transforming scores to fit a unipolar scale inappropriate.
