@@ -27,7 +27,7 @@ conf.sum.scores <- psych::scoreItems(
 # The item by scale correlations for each item, corrected for item overlap by
 # replacing the item variance with the smc for that item.
 # Note that, when SMC < 0, SMC were set to .0
-item.cor.corrected <- conf.sum.scores$item.corrected
+# item.cor.corrected <- conf.sum.scores$item.corrected
 
 conf.mean.scores <- psych::scoreItems(
   keys = conf.keys,
@@ -120,4 +120,34 @@ df <- df |>
 
 # Delete unnecessary objects from global environment :::::::::::::::::::::::####
 
-rm(conf.mean.scores, conf.keys)
+rm(conf.sum.scores, conf.mean.scores, conf.keys)
+
+# Re-create df_dict (yes, again) :::::::::::::::::::::::::::::::::::::::::::####
+# Do this process again just to ensure that the variable labels for the sum and
+# composite scores are included in the dataframe.
+
+# create df dictionary
+df_dict <- labelled::generate_dictionary(df) |>
+  # this allows me to save dictionary as .csv file
+  labelled::convert_list_columns_to_character()
+
+
+# run these in case variable labels are removed
+df_labels <- df_dict |>
+  select(variable, label) |> 
+  deframe()
+
+# Now assign the labels using the splice operator. Using the splice operator,
+# labels are assigned via matching against the variable name, which means that
+# variable order does not matter.
+df <- df |> 
+  labelled::set_variable_labels(!!!df_labels)
+
+
+# save dataframe (df) to data folder :::::::::::::::::::::::::::::::::::::::####
+
+# save df processed data set.
+save(df, file = "data/research-paper-df-subset-20250203.Rdata")
+
+# save df dictionary
+write.csv(df_dict, file = "data/df_dictionary.csv")

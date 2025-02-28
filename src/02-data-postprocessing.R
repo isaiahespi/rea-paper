@@ -21,10 +21,11 @@ df <- data |>
     race_wnw,       # race dichotomous between White and Non-White
     educ_4cat,      # educational attainment in four categories
     educ_4cat.num,  # educational attainment in four categories, numeric
+    gender,         # male, female, Non-binary/Third gender, Pref. not to say
+    gender_3cat,    # male, female, other or preferred not to say
     age_4cat,       # age in years in 4 groups
     mil_anyrelation,# relation or no relationship with military service
     milrelation,    # particular relationship with military service
-    gender_3cat,    # gender: male, female, other or preferred not to say
     q5:q8,          # pre-treatment survey items
     q19:q24,        # trust in elections in Maricopa County, AZ
     q25:q26,        # concern for voter safety in Maricopa County, AZ
@@ -213,42 +214,3 @@ df <- df |>
 # variable order does not matter.
 df <- df |> 
   labelled::set_variable_labels(!!!df_labels)
-
-
-# Source R.script to generate scores :::::::::::::::::::::::::::::::::::::::####
-
-# source script that subsets dataframe (data -> df) and generates scores
-# generates sum and mean scores
-source(here::here('src', 'scores.R'))
-
-# Re-create df_dict (yes, again) :::::::::::::::::::::::::::::::::::::::::::####
-# Do this process again just to ensure that the variable labels for the sum and
-# composite scores are included in the dataframe.
-
-# create df dictionary
-df_dict <- labelled::generate_dictionary(df) |>
-  # this allows me to save dictionary as .csv file
-  labelled::convert_list_columns_to_character()
-
-
-# run these in case variable labels are removed
-df_labels <- df_dict |>
-  select(variable, label) |> 
-  deframe()
-
-# Now assign the labels using the splice operator. Using the splice operator,
-# labels are assigned via matching against the variable name, which means that
-# variable order does not matter.
-df <- df |> 
-  labelled::set_variable_labels(!!!df_labels)
-
-
-# save dataframe (df) to data folder :::::::::::::::::::::::::::::::::::::::####
-
-# save df processed data set.
-save(df, file = "data/research-paper-df-subset-20250203.Rdata")
-
-
-
-# save df dictionary
-write.csv(df_dict, file = "data/df_dictionary.csv")
