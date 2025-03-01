@@ -56,8 +56,8 @@ format:
     documentclass: scrartcl
     keep-tex: false
     # mainfont: Palatino Linotype
-    mainfont: TeX Gyre Termes
-    mathfont: TeX Gyre Termes Math
+    mainfont: TeX Gyre Pagella
+    mathfont: TeX Gyre Pagella Math
     fontsize: 11pt
     indent: true # indented paragraphs (indent=true) vs space between paragraphs
     linestretch: 1.5
@@ -90,8 +90,8 @@ format:
     keep-tex: false
     papersize: letter
     # mainfont: Palatino Linotype
-    mainfont: TeX Gyre Termes
-    mathfont: TeX Gyre Termes Math
+    mainfont: TeX Gyre Pagella
+    mathfont: TeX Gyre Pagella Math
     colorlinks: true
     urlcolor: RoyalBlue
     link-citations: true
@@ -104,6 +104,9 @@ format:
       - pdfwindowui
       - pdfpagemode=FullScreen
     reference-location: document
+    include-in-header: 
+      - text: |
+          \usepackage{dcolumn} 
 
   submittable-pdf:
     keep-tex: false

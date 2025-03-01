@@ -22,8 +22,8 @@
 \usepackage{lmodern}
 \ifPDFTeX\else  
     % xetex/luatex font selection
-    \setmainfont[]{TeX Gyre Termes}
-  \setmathfont[]{TeX Gyre Termes Math}
+    \setmainfont[]{TeX Gyre Pagella}
+  \setmathfont[]{TeX Gyre Pagella Math}
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -194,6 +194,9 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+\usepackage{caption}
+\usepackage{anyfontsize}
+\usepackage{dcolumn} 
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -639,21 +642,22 @@ non-veterans (\citeproc{ref-pape2024}{Pape et al. 2024}). This is in
 addition to a strengthened association portrayed in media outlets
 between military veterans and militias
 (\citeproc{ref-steinhauer2020}{Steinhauer 2020}). Prior research has
-substantiated such a connection between veterans and militia groups. A.
+substantiated such a connection between veterans and militia groups.
 Cooter (\citeproc{ref-cooter2024}{2024}) notes from her 3-year
 ethnographic fieldwork among Michigan militia members that,
 ``\ldots approximately 40\% of militia leaders and 30\% of members had
 previous military experience. Most of these veterans actively sought out
 such groups, as opposed to being recruited by them''
-(\citeproc{ref-cooter2024}{2024}; see also \citeproc{ref-cooter2013}{A.
-B. Cooter 2013}). Thus, countering such associations by promoting a
-different image of veterans to the mass public and veterans alike seems
-like a reasonable motivation. Yet such speculation is just that.
+(\citeproc{ref-cooter2024}{2024}; see also
+\citeproc{ref-cooter2013}{Cooter 2013}). Thus, countering such
+associations by promoting a different image of veterans to the mass
+public and veterans alike seems like a reasonable motivation. Yet such
+speculation is just that.
 
 That being said, the general public perception, attitudes, or even
 stereotypes about military veterans are significant to consider.
 Although military recruitment shows a downward trend as of late, public
-perception of veterans are overwhelmingly positive
+perceptions of veterans are overwhelmingly positive
 (\citeproc{ref-kleykamp2023}{Kleykamp, Schwam, and Wenig 2023}).
 Veterans are a particularly potent group where mention of veteran status
 seems to have a positive, calming, or nullifying effect on attitudes.
@@ -923,7 +927,7 @@ single scale presuming a unidimensional construct for each.
 I expected item responses from these two scales to be inversely
 correlated among the sample, but not mutually exclusive. Indeed, this is
 what I find. Polychoric correlations between the trust and distrust
-items negatively correlate as expected{[}\^{}See Appendix C{]}, as does
+items negatively correlate as expected\footnote{See Appendix C}, as does
 the correlation between the two sum score scales. Given the ordinal
 nature of the variable items, I conducted a Spearman's rank correlation
 test (\citeproc{ref-spearman1907}{Spearman 1907}) and found a negative
@@ -1184,8 +1188,8 @@ positive, statistically significant, yet substantially pretty small.
 
 \begin{table}[H]
 
-\caption{\label{tbl-ttest}Mean Difference Effect of Treatment Compared
-to Control Condition}
+\caption{\label{tbl-ttest}Mean Difference of Treatment Compared to
+Control Condition}
 
 \centering{
 
@@ -1253,31 +1257,177 @@ Figure~\ref{fig-coef1} displays standard difference estimates of
 confidence in elections by treatment condition (control condition as
 reference). Figure~\ref{fig-coef1-1} displays two models for confidence
 in elections in Maricopa County, AZ, and one's local area by treatment
-condition; Figure~\ref{fig-coef1-2} displays four models for trust and
-distrust in elections in AZ or one's local area by treatment condition
+condition; Figure~\ref{fig-coef1-2} displays the same except
+\emph{confidence} is decomposed into its two components, \emph{trust}
+and \emph{distrust}. These figures merely illustrate the effect of the
+treatment with respect to the relationship between trust and distrust;
+ultimately confidence improves.
 
-the treatment effect on both trust and distrust is clear. Although the
-effect is only there when questions pertained to Maricopa County, AZ.
-The treatment effect on trust and distrust is conditional on whether the
-survey questions inquired about elections in Maricopa County, AZ.
-Announcing efforts to recruit veterans and their families to work as
-election staff and volunteers increases confidence in elections
-administration in places outside of one's local area, but doesn't boost
-confidence in elections within one's local area. However, bear in mind
-that confidence in elections for one's local area is already higher than
-for those outside. Thus, there's already less insecurity concerning
-elections in one's local area, but publicized efforts to recruit
-veterans to work as election staff and volunteers is a small but
-positive step towards closing that gap in confidence for elections that
-occur elsewhere.
+Confidence in elections was higher among those who read the treatment
+vignette but remained conditional on whether the survey questions
+inquired about elections in Maricopa County, AZ. This evidence suggests
+that announcing efforts to recruit veterans and their families to work
+as election staff and volunteers may increase confidence in elections
+administration in places outside of one's local area, but may not boost
+confidence in elections within one's local area.
 
-I now turn to results examining those who held onto the belief that the
-2020 election results were illegitimate. I think check to see if
-recruiting veterans simply makes people feel safer at the polls.
+\subsubsection{2020 Election Legitimacy
+Beliefs}\label{election-legitimacy-beliefs}
 
-\pagebreak
+I now turn to results examining the effect of the treatment on those who
+held onto the belief that the 2020 election results were illegitimate.
+First, reviewing responses to items that capture trust in elections, it
+is easy to recognize the difference between the way 2020 election
+deniers responded with respect to where elections were held.
+
+\phantomsection\label{cell-fig-legit}
+\begin{figure}[!t]
+
+\caption{\label{fig-legit}Trust in elections by treatment among those
+who refute the 2020 election results}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-legit-1.png}}
+
+}
+
+\end{figure}%
+
+Among those who belief the 2020 election results were illegitimate,
+trust in Maricopa County, AZ elections was lower for each item compared
+to items pertaining to elections within one's local area, regardless of
+treatment condition. However, notably, trust that election technology
+would be secure received the lowest confidence endorsement overall.
+There was also a notable lack of trust that the voting process would be
+fair relative to the other items.\footnote{What is interesting to note
+  here is that the first three items regard the more human element of
+  the election administration process, e.g., ensuring accuracy of
+  counts, competence, and commitment of election workers. Although a
+  neat line can't really be drawn between the first three and latter two
+  items presented here, it is interesting to see a divergence of the
+  usual high confidence placed in local area elections.} Now the
+comparative difference in responses between those in the treatment group
+compared to those in the control group appears substantial for items
+pertaining to elections in Maricopa County, AZ.
+
+\phantomsection\label{cell-fig-legit2}
+\begin{figure}[!t]
+
+\caption{\label{fig-legit2}Distrust in elections by treatment among
+those who refute the 2020 election results}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-legit2-1.png}}
+
+}
+
+\end{figure}%
+
+Concerning distrust among those who refuted the 2020 election results,
+responses items assessing one's expectation that election fraud would
+occur reveal the same pattern. Although there is not as stark a
+disparity between responses of those in the treatment and those in the
+control, among those in the treatment group, there does appear to be
+less expectation that election fraud would occur in Maricopa County, AZ.
+Overall, review of responses to trust (Figure~\ref{fig-legit}) and
+distrust survey items (Figure~\ref{fig-legit2}) does lend credence to
+the impact of the treatment.
+
+In order to substantiate the overall influence of the treatment on
+confidence in elections, I regressed the dependent variable confidence
+on legitimacy beliefs while controlling for partisanship.
+
+\begin{table}[H]
+
+\caption{\label{tbl-legit}Confidence in Elections by Treatment and
+Legitimacy Beliefs}
+
+\centering{
+
+\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-2} D{.}{.}{-2} } 
+\\[-1.8ex]\hline \\[-1.8ex] 
+ & \multicolumn{1}{c}{Confidence in AZ Elections} & \multicolumn{1}{c}{w/Interaction} \\ 
+\hline \\[-1.8ex] 
+ Treatment & 0.18^{***}$ $(0.05) & 0.09$ $(0.06) \\ 
+  Not Legitimate & -0.72^{***}$ $(0.07) & -0.86^{***}$ $(0.09) \\ 
+  Republican & 0.11$ $(0.08) & 0.12$ $(0.08) \\ 
+  Democrat & 0.17^{*}$ $(0.09) & 0.17^{**}$ $(0.09) \\ 
+  Not Legitimate * Treatment &  & 0.27^{**}$ $(0.11) \\ 
+  Constant & 0.03$ $(0.08) & 0.07$ $(0.08) \\ 
+ N & \multicolumn{1}{c}{1,263} & \multicolumn{1}{c}{1,263} \\ 
+R$^{2}$ & \multicolumn{1}{c}{0.14} & \multicolumn{1}{c}{0.14} \\ 
+Adjusted R$^{2}$ & \multicolumn{1}{c}{0.13} & \multicolumn{1}{c}{0.14} \\ 
+Residual Std. Error & \multicolumn{1}{c}{0.93 (df = 1258)} & \multicolumn{1}{c}{0.93 (df = 1257)} \\ 
+F Statistic & \multicolumn{1}{c}{49.92$^{***}$ (df = 4; 1258)} & \multicolumn{1}{c}{41.24$^{***}$ (df = 5; 1257)} \\ 
+\hline \\[-1.8ex] 
+\multicolumn{3}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+\end{tabular}
+
+}
+
+\end{table}%
+
+The first model in \ref{tbl-legit} shows that overall confidence in
+elections (trust - distrust) among those who read the treatment vignette
+was significantly (statistically) greater than those who read the
+control, on average and netting out the effects of partisanship and
+legitimacy beliefs. Democratic partisanship remains marginally
+significant at \(90\%\) confidence level (\(p = 0.055\)). Not believing
+the 2020 election of Joe Biden was legitimate is negatively associated
+with confidence in elections. In order to assess the magnitude of this
+interaction effect of the treatment on those who refuted the 2020
+election results, I ran a model where confidence in elections was
+regressed on the interaction between the treatment and legitimacy
+beliefs, controlling for partisanship.
+
+There's a positive interaction effect of the treatment vignette among
+those who believe that the 2020 election was not legitimate, on average
+and controlling for partisanship. This shows that the treatment effect
+was most influential upon those who believe the 2020 election results
+were illegitimate. The treatment alone does not reverse such beliefs,
+but this shows where its influence is perhaps most potent.
 
 \subsection{Conclusion}\label{conclusion}
+
+Publicized announcements that election officials are actively recruiting
+former military service members to work as election staff and volunteers
+is associated with slightly greater confidence in elections compared to
+election worker recruitment announcements that do not explicitly mention
+targeted recruitment of former military service members. Moreover,
+increased levels of confidence is limited to elections beyond one's
+local area and, of course, in anticipation of election night. Whether
+the increase in confidence is sustained post-election night cannot be
+inferred from these results.
+
+Bear in mind that confidence in elections for one's local area is
+already higher than for those beyond. Thus, there's already more
+insecurity concerning elections elsewhere for whatever reason. In the
+anticipatory period prior to national elections, publicized efforts to
+recruit veterans to work as election staff and volunteers may be a
+small, but positive, step towards reducing insecurity in elections that
+occur elsewhere. Especially among those who maintained a steadfast
+degree of distrust in elections. Despite a lack of evidence that
+systematic electoral fraud had occurred in the 2020 election, a
+substantial proportion of the population were unwilling to affirm the
+legitimacy of the results. However, despite such legitimacy beliefs,
+most were not consistent as they expressed varying levels of trust in
+different aspects of elections administration.
+
+These results speaks more to the influence that military veterans have
+among those who distrust the electoral process and refute the legitimacy
+of prior outcomes than it does to the public more generally. In general,
+public confidence appears strongest when the elections under
+consideration regard those within one's local community. Yet, such
+strong confidence is not generalized outward to the institution of
+elections administration as a whole. Insecurity in the integrity of the
+electoral process and its administration may be naturally higher for
+elections that occur further from home. Whether that is due to some
+local favorability bias or some outward negativity bias is hard to say.
+And seeing as how insecurity presents vulnerability, it is perhaps far
+easier to inspire a general sense of distrust in the process and its
+administration in places not near and around one's local area.
 
 \subsubsection{Limitations}\label{limitations}
 
@@ -1305,41 +1455,44 @@ limits comparability with other cross-sectional survey data.
   group, or groups are compared directly against the veteran treatment
   vignette, i.e., additional vignettes for other comparable groups.
 \item
-  Moreover, results are limited by the survey questions, questionnaire
-  design, and experimental stimulus (i.e., vignette) for two reasons. -
-  First, the vignettes and many survey questions ask about Maricopa
-  County, AZ specifically. Adding a specific county in the vignette adds
-  in a factor that cannot be accounted for without additional treatments
-  that eliminate the setting as a potential influence. Moreover, the
-  specificity of the setting adds in even more unexplained error---some
-  people may have attitudes about the county in question, others won't,
-  while others may be muffed to consider a random county in the U.S.
-  they've know nothing about. Adding the county undermines the
-  confidence that treatment effects are solely attributable to veterans
-  to an unknown degree. - Second, questions ask about one's own local
-  community in addition to identical questions which asked about
-  Maricopa County, AZ. Consequently, many questions within the
-  questionnaire were duplicates with that one differences. This isn't
-  uncommon in surveys, however in this case, it lengthened the survey to
-  a degree that likely resulted in a higher drop off rate. More
-  importantly, the quality of responses were likely diminished to some
-  unknown extent. Although it is possible to compare questions asked
-  about Maricopa County, AZ to questions about one's local area, the
-  quality of that comparison is limited by the unknown extent of fatigue
-  induced by answering the same questions twice. It wasn't just that
-  some questions were asked multiple times, almost all of the questions
-  were duplicated; after completing a long series on Maricopa County,
-  participants then answered the same questions about the local
-  community. The rate to which participants dropped from the survey is
-  \_\_\_, which suggests fatigue as an important factor. Survey fatigue
-  is a known issue that should be taken into consideration. Comparison
-  of treatment effects between the MC series and the local area series
-  is undermined by the unknown influence that fatigue would have on
-  response choices. Any differences couldn't confidently be attributed
-  to ``my area'' vs Maricopa county. We also can't determine whether
-  treatment effects are sustained when comparing the Maricopa County
-  series to the local area series asked subsequently. We would have to
-  assume the setting as irrelevant, which we can't reasonably do.
+  Results are limited by the survey questions, questionnaire design, and
+  experimental stimulus (i.e., vignette) for two reasons:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    First, the vignettes and many survey questions ask about Maricopa
+    County, AZ specifically. Adding a specific county in the vignette
+    adds in a factor that cannot be accounted for without additional
+    treatments that eliminate the setting as a potential influence.
+    Moreover, the specificity of the setting adds in even more
+    unexplained error---some people may have attitudes about the county
+    in question, others won't, while others may be muffed to consider
+    any random county in the U.S. they know nothing about. Adding the
+    county undermines the confidence that treatment effects are solely
+    attributable to veterans to an unknown degree.
+  \item
+    Second, questions ask about one's own local community in addition to
+    identical questions which asked about Maricopa County, AZ.
+    Consequently, many questions within the questionnaire were
+    duplicates with but one difference. This isn't uncommon in surveys,
+    however in this case, it lengthened the survey to a degree that
+    potentially resulted in a higher drop off rate. More importantly,
+    the quality of responses were likely diminished to some unknown
+    extent. Although it is possible to compare questions asked about
+    Maricopa County, AZ to questions about one's local area, the quality
+    of that comparison is limited by the unknown extent of fatigue
+    induced by answering the same questions twice. It wasn't just that
+    some questions were asked multiple times, almost all of the
+    questions were duplicated. After completing a long series on
+    Maricopa County, participants then answered the same questions about
+    the local community. I haven't computed the rate to which
+    participants dropped from the survey, yet items contain more missing
+    values toward the end of the survey. Some participants dropped out,
+    but some simply skipped a few items. The extent to which this
+    occurred is minor, but it does suggest fatigue as a worthy of
+    consideration.
+  \end{itemize}
 \end{itemize}
 
 \pagebreak
@@ -1402,25 +1555,146 @@ the process and the outcome of the election.''
 
 \end{figure}%
 
-\pagebreak
+\newpage
 
 \subsection{Appendix B: Sample Demographics}\label{sec-appendix-b}
 
-The median age was 46 (mean age was 47). There was 51.7\% (n = 658)
-women, 47\% (n = 598) men, and approximately 1.3\% who identified as
-either Non-binary/third gender (n = 7) or preferred not to say (n = 9).
-A large proportion of the sample identified as White or Caucasian (n =
-975, 76.65\%), while all other non-White respondents comprised 27.83\%
-of the sample. Those who held a graduate level degree (e.g., Master's,
-Doctorate, or Professional level) comprised 13\% of the sample; those
-with either degree at the Associate or Bachelor's level comprised
-36.24\%, while 22.25\% had some college but no degree; and 28.46\% had
-either a high school level or equivalent education or less than high
-school. The largest proportion of the sample identified as Democrat at
-44.64\%, followed by Republicans at 42.59\%. The proportion of true
-Independents was 12.78\%.
+The median age was 46 (mean age was \(47\)), \(51.7\%\) (\(n = 658\))
+women, \(47\%\) (\(n = 598\)) men, and approximately \(1.3\%\) who
+identified as either Non-binary/third gender (\(n = 7\)) or preferred
+not to say (\(n = 9\)). A large proportion of the sample identified as
+White or Caucasian (\(n = 975, 76.65\%\)), while all other non-White
+respondents comprised \(27.83\%\) (\(n = 297\)) of the sample. Those who
+held a graduate level degree (e.g., Master's, Doctorate, or Professional
+level) comprised \(13\%\) of the sample; those with either degree at the
+Associate or Bachelor's level comprised \(36.24\%\), while \(22.25\%\)
+had some college but no degree; and \(28.46\%\) had either a high school
+level or equivalent education or less than high school. The largest
+proportion of the sample identified as Democrat at \(44.64\%\), followed
+by Republicans at \(42.59\%\). The proportion of true
+Independents\footnote{Independent `leaners' were grouped into the
+  respective party affiliation in which they lean.} was \(12.78\%\).
 
-\pagebreak
+\begin{table}
+
+\caption{\label{tbl-demog}Sample Demographics}
+
+\centering{
+
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lllll}
+\toprule
+\textbf{Demographic} & \textbf{N} & \textbf{Overall}  N = 1,287\textsuperscript{\textit{1}} & \textbf{Control}  N = 637\textsuperscript{\textit{1}} & \textbf{Treatment}  N = 650\textsuperscript{\textit{1}} \\ 
+\midrule\addlinespace[2.5pt]
+{\bfseries Age group} & 1,287 &  &  &  \\ 
+    18-34 &  & 350 (27\%) & 170 (27\%) & 180 (28\%) \\ 
+    35-54 &  & 480 (37\%) & 245 (38\%) & 235 (36\%) \\ 
+    55-74 &  & 390 (30\%) & 198 (31\%) & 192 (30\%) \\ 
+    75-85+ &  & 67 (5.2\%) & 24 (3.8\%) & 43 (6.6\%) \\ 
+{\bfseries Gender} & 1,272 &  &  &  \\ 
+    Male &  & 598 (47\%) & 289 (46\%) & 309 (48\%) \\ 
+    Female &  & 658 (52\%) & 330 (52\%) & 328 (51\%) \\ 
+    Other/Refused &  & 16 (1.3\%) & 10 (1.6\%) & 6 (0.9\%) \\ 
+    NA &  & 15 & 8 & 7 \\ 
+{\bfseries Race/Ethnicity} & 1,272 &  &  &  \\ 
+    White &  & 975 (77\%) & 478 (76\%) & 497 (77\%) \\ 
+    Asian &  & 51 (4.0\%) & 25 (4.0\%) & 26 (4.0\%) \\ 
+    Black &  & 164 (13\%) & 85 (14\%) & 79 (12\%) \\ 
+    Other &  & 24 (1.9\%) & 12 (1.9\%) & 12 (1.9\%) \\ 
+    Hispanic &  & 44 (3.5\%) & 24 (3.8\%) & 20 (3.1\%) \\ 
+    American Indian &  & 14 (1.1\%) & 5 (0.8\%) & 9 (1.4\%) \\ 
+    NA &  & 15 & 8 & 7 \\ 
+{\bfseries White or Non-White} & 1,272 &  &  &  \\ 
+    Non-White &  & 297 (23\%) & 151 (24\%) & 146 (23\%) \\ 
+    White &  & 975 (77\%) & 478 (76\%) & 497 (77\%) \\ 
+    NA &  & 15 & 8 & 7 \\ 
+{\bfseries Education} & 1,272 &  &  &  \\ 
+    H.S. or less &  & 362 (28\%) & 174 (28\%) & 188 (29\%) \\ 
+    Some college no degree &  & 283 (22\%) & 142 (23\%) & 141 (22\%) \\ 
+    College degree &  & 461 (36\%) & 236 (38\%) & 225 (35\%) \\ 
+    Postgraduate degree &  & 166 (13\%) & 77 (12\%) & 89 (14\%) \\ 
+    NA &  & 15 & 8 & 7 \\ 
+{\bfseries Party ID} & 1,268 &  &  &  \\ 
+    Independent &  & 162 (13\%) & 83 (13\%) & 79 (12\%) \\ 
+    Republican &  & 540 (43\%) & 262 (42\%) & 278 (43\%) \\ 
+    Democrat &  & 566 (45\%) & 283 (45\%) & 283 (44\%) \\ 
+    NA &  & 19 & 9 & 10 \\ 
+{\bfseries Military Relation} & 1,272 &  &  &  \\ 
+    No relation &  & 789 (62\%) & 394 (63\%) & 395 (61\%) \\ 
+    Only family &  & 362 (28\%) & 182 (29\%) & 180 (28\%) \\ 
+    Served w/fam &  & 64 (5.0\%) & 31 (4.9\%) & 33 (5.1\%) \\ 
+    Served &  & 57 (4.5\%) & 22 (3.5\%) & 35 (5.4\%) \\ 
+    NA &  & 15 & 8 & 7 \\ 
+\bottomrule
+\end{tabular*}
+\begin{minipage}{\linewidth}
+Independents do not identify nor 'lean' toward either political party\\
+\textsuperscript{\textit{1}}n (\%)\\
+\end{minipage}
+
+}
+
+\end{table}%
+
+\newpage
+
+\subsection{Appendix C: Trust and Distrust}\label{sec-appendix-c}
+
+Polychoric correlation is a measure of association between two ordered
+categorical variables each assumed to represent (i.e., indicate, be
+influenced by) two normally distributed, continuous, latent variables.
+Due to the fact that each item is an ordered categorical variable
+assumed to represent one of two latent constructs (i.e., trust or
+distrust, respectively), I examined polychoric correlations between the
+items used to construct each scale. In addition, one set of the trust
+and distrust items pertained to Maricopa County, AZ, whereas the other
+set of items were identical except that these items pertained to one's
+local area.
+
+Since the two sets of items (AZ items and Local items) are, in theory,
+supposed to capture the same normally distributed continuous latent
+variables, then the polychoric inter-item correlations should be
+significantly associated, strong, and in the same direction for the
+items that measure trust regardless of whether the items pertain to AZ
+or one's local area (likewise for distrust). Simply, trust/distrust in
+elections in AZ should strongly and positively be associated with
+trust/distrust in elections in one's local area.
+
+Additionally, the items that indicate trust should negatively correlate
+with items that indicate distrust. Furthermore, the strength of the
+negative correlations between trust and distrust should closely
+approximate if not match.
+
+\phantomsection\label{cell-fig-polycor}
+\begin{figure}[h]
+
+\caption{\label{fig-polycor}Polychoric Item Correlation Matrix}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-polycor-1.png}}
+
+}
+
+\end{figure}%
+
+Indeed, this is what is revealed by the correlation matrix
+(Figure~\ref{fig-polycor}). Trust items correlate positively, strongly,
+and are significant regardless of location at which the items pertain.
+The same goes for distrust items. Also, items meant to measure trust
+negatively correlate with the items that measure distrust. However, the
+positive correlations are not nearly as high as would be expected
+supposing that the items are nearly identical theoretical indicators of
+the same hypothetical constructs, i.e., trust and distrust respectively.
+
+If the items accurately measure trust/distrust in elections regardless
+of where those elections are said to take place, then positive
+correlations between the AZ and Local area items should approach perfect
+correlation as though the same exact questions were asked twice. This
+result, however, suggests that the location of which the survey items
+pertain (and perhaps other factors) makes a substantial difference in
+the pattern of responses, but also raises valid questions as to whether
+the items accurately measure the latent variable constructs in the first
+place.
 
 \pagebreak
 
@@ -1490,16 +1764,16 @@ Cook, Timothy E., and Paul Gronke. 2005. {``The {Skeptical American}:
 in {Institutions}.''} \emph{The Journal of Politics} 67(3): 784--803.
 doi:\href{https://doi.org/10.1111/j.1468-2508.2005.00339.x}{10.1111/j.1468-2508.2005.00339.x}.
 
+\bibitem[\citeproctext]{ref-cooter2013}
+Cooter, Amy. 2013. {``Americanness, {Masculinity}, and {Whiteness}: {How
+Michigan Militia Men Navigate Evolving Social Norms}.''} Thesis.
+\url{http://deepblue.lib.umich.edu/handle/2027.42/98077}.
+
 \bibitem[\citeproctext]{ref-cooter2024}
 Cooter, Amy. 2024. {``Veterans and {Extremism}: {From Militias} to
 {January} 6th and {Real Patriots} \textbar{} {Middlebury Institute} of
 {International Studies} at {Monterey}.''}
 \url{https://www.middlebury.edu/institute/academics/centers-initiatives/ctec/ctec-publications/veterans-and-extremism-militias-january-6th}.
-
-\bibitem[\citeproctext]{ref-cooter2013}
-Cooter, Amy B. 2013. {``Americanness, {Masculinity}, and {Whiteness}:
-{How Michigan Militia Men Navigate Evolving Social Norms}.''} Thesis.
-\url{http://deepblue.lib.umich.edu/handle/2027.42/98077}.
 
 \bibitem[\citeproctext]{ref-corrigan2002}
 Corrigan, Patrick W., David Rowan, Amy Green, Robert Lundin, Philip

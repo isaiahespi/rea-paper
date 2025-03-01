@@ -110,6 +110,7 @@ run_crab <- function(data, row, col){
 likert_plot <- function(data, x, ...,  
                         symmetric = FALSE,
                         variable_labels = NULL,
+                        label_size = 3.0,
                         vline = FALSE,
                         title = waiver(), 
                         subtitle = waiver(),
@@ -124,7 +125,7 @@ likert_plot <- function(data, x, ...,
     # customize color
     ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
     # custom theme
-    theme_bw(base_family = "Palatino Linotype")+
+    theme_bw(base_family = "TeX Gyre Pagella")+
     theme(
       legend.position = 'bottom',    # place legend on bottom
       axis.text.x = element_blank(), # remove percentage text along x-axis
