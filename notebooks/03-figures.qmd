@@ -1234,3 +1234,247 @@ ggstats::ggcoef_compare(
 
 ```
 
+
+
+```{r}
+#| label: fig-itemcor
+#| fig-cap: "Inter-item correlations between AZ and local area items"
+
+# Inter-item correlations between AZ and Local items
+# use the `easystats` correlation package
+item.cor <- df |>
+  dplyr::rename(
+    trustvote_az     = q19,
+    trustadmin_az    = q20,
+    truststaff_az    = q21,
+    trustprcss_az    = q22,
+    trusttech_az     = q24,
+    votefraud_az     = q28_1,
+    miscount_az      = q28_2,
+    turnedaway_az    = q28_3,
+    foreigntamp_az   = q28_4,
+    discourage_az    = q28_5,
+    trustvote_lcl    = q30,
+    trustadmin_lcl   = q31,
+    truststaff_lcl   = q32,
+    trustprcss_lcl   = q33,
+    trusttech_lcl    = q35,
+    votefraud_lcl    = q40_1,
+    miscount_lcl     = q40_2,
+    turnedaway_lcl   = q40_3,
+    foreigntamp_lcl  = q40_4,
+    discourage_lcl   = q40_5
+  ) |> 
+  correlation::correlation(
+    select = 
+      c("trustvote_az", "trustadmin_az", "truststaff_az", "trustprcss_az", "trusttech_az",
+        "votefraud_az", "miscount_az", "turnedaway_az", "foreigntamp_az", "discourage_az"),
+    select2 =
+      c("trustvote_lcl", "trustadmin_lcl", "truststaff_lcl", "trustprcss_lcl","trusttech_lcl",
+        "votefraud_lcl", "miscount_lcl", "turnedaway_lcl", "foreigntamp_lcl","discourage_lcl"),
+    method = "polychoric") |>
+  summary()
+
+layers <- correlation::visualisation_recipe(
+  item.cor, labs = list(title = "Polychoric Item Correlation Matrix"))
+layers
+
+plot(layers) + theme(axis.text.x = element_text(angle = 45, vjust = 0.6))
+
+
+```
+
+
+# Likert Plots
+
+
+```{r}
+#| label: fig-trustlikert
+#| fig-cap: "Trust in Election Administration by Experiment Condition"
+#| fig-height: 4.5
+#| fig-pos: "h"
+
+
+# Likert plot of trust and confidence in election admin comparing treatment and
+# control groups
+trust.likert.treat.az <- df |>
+  # relabel factor labels for plotting
+  mutate(across(
+    c(q19, q20, q21, q22, q23, q24, q30, q31, q32, q33, q34, q35),
+    ~ pewmethods::fct_case_when(
+      .x %in% c("Not at all confident", "Not at all committed") ~ "Not at all confident",
+      .x %in% c("Not too confident", "Not too committed") ~ "Not too confident",
+      .x %in% c("Somewhat confident", "Somewhat committed") ~ "Somewhat confident",
+      .x %in% c("Very confident", "Very committed") ~ "Very confident",
+      TRUE ~ NA
+    )
+  )) |>
+  ggstats::gglikert(
+    include = c(q19, q20, q21, q22, q24),
+    y = 'group',
+    facet_rows = vars(.question),
+    symmetric = F,
+    labels_size = 2.5,
+    add_totals = T
+  ) +
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Maricopa County, Arizona", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_blank()
+  )
+
+# confidence in elections between experiment conditions for items concerning local area
+trust.likert.treat.lcl <- df |>
+  # relabel factor labels for plotting
+  mutate(across(
+    c(q19, q20, q21, q22, q23, q24, q30, q31, q32, q33, q34, q35),
+    ~ pewmethods::fct_case_when(
+      .x %in% c("Not at all confident", "Not at all committed") ~ "Not at all confident",
+      .x %in% c("Not too confident", "Not too committed") ~ "Not too confident",
+      .x %in% c("Somewhat confident", "Somewhat committed") ~ "Somewhat confident",
+      .x %in% c("Very confident", "Very committed") ~ "Very confident",
+      TRUE ~ NA
+    )
+  )) |>
+  ggstats::gglikert(
+    include = c(q30, q31, q32, q33, q35),
+    y = 'group',
+    facet_rows = vars(.question),
+    variable_labels = c(
+      q30 = "Votes counted as intended",
+      q31 = "Election officials will do good job",
+      q32 = "Election workers will be committed",
+      q33 = "Voting process will be fair",
+      q35 = "Election technology will be secure"
+    ),
+    facet_label_wrap = 10,
+    labels_size = 2.5,
+    symmetric = F,
+    add_totals = T
+  ) +
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Local Area", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.y.left = element_blank(), # remove y-axis text on 2nd plot
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_text(angle = 0, size = 8)
+  )
+
+# trust.likert.treat.az
+# trust.likert.treat.lcl
+
+# Instead of two separate plots, arrange into one plot while remaining separated
+# use `ggpubr` package to print multiple plots side-by-side (or alt. row-by-row)
+ggpubr::ggarrange(
+  trust.likert.treat.az,
+  trust.likert.treat.lcl,
+  ncol = 2,
+  common.legend = T,
+  legend = "bottom", 
+  font.label = list(family = "Palatino Linotype")
+) +
+  # add figure footnote annotation
+  patchwork::plot_annotation(
+    caption = str_wrap("Missing values removed. Displays percent proportions of responses by experiment condition and combined percentage proportions for two categories.",
+               width = 85), theme = theme(text = element_text(family = "Palatino Linotype")))
+
+
+
+```
+
+```{r}
+#| label: fig-distrustlikert
+#| fig-cap: "Disrust in Election Administration by Experiment Condition"
+#| fig-height: 4.5
+#| fig-pos: "h"
+
+
+# distrust in elections in AZ by experimental condition
+distrust.likert.az <- df |>
+  # reverse levels of factor vars to show positive difference in "not likely"
+  mutate(across(c(q28_1:q28_5), ~forcats::fct_rev(.))) |> 
+  ggstats::gglikert(
+    include = c(q28_1:q28_5),
+    y = 'group',
+    facet_rows = vars(.question),
+    variable_labels = c(
+      q28_1 = "Voter fraud will occur",
+      q28_2 = "Many votes won't be counted",
+      q28_3 = "Many voters will be turned away",
+      q28_4 = "Foreign Interference",
+      q28_5 = "Election officials will discourage voting"),
+    facet_label_wrap = 10,
+    labels_size = 2.5,
+    symmetric = F,
+    add_totals = T
+  ) +
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Maricopa County, Arizona", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_blank()
+  )
+
+# distrust in elections in Local area by experimental condition
+distrust.likert.lcl <- df |>
+  # reverse levels of factor vars to show positive difference in "not likely"
+  mutate(across(c(q40_1:q40_5), ~forcats::fct_rev(.))) |> 
+  ggstats::gglikert(
+    include = c(q40_1:q40_5),
+    y = 'group',
+    facet_rows = vars(.question),
+    variable_labels = c(
+      q40_1 = "Voter Fraud will occur",
+      q40_2 = "Many Votes won't be counted",
+      q40_3 = "Many voters will be turned away",
+      q40_4 = "Foreign Interference",
+      q40_5 = "Election officials will discourage voting"),
+    facet_label_wrap = 10,
+    labels_size = 2.5,
+    symmetric = F,
+    add_totals = T
+  )+
+  ggplot2::scale_fill_grey(start = 0.5, end = 0.1)+
+  # ggplot2::scale_fill_brewer(palette = "Greys")+
+  labs(subtitle = str_wrap("Local Area", width = 95)) +
+  theme_bw() +
+  theme(
+    text = element_text(family = "Palatino Linotype"),
+    legend.position = 'bottom',
+    axis.text.y.left = element_blank(), # remove y-axis text on 2nd plot
+    axis.text.x = element_blank(), # remove percentage text along x-axis
+    strip.text.y.right = element_text(angle = 0, size = 8)
+  )
+
+# Instead of two separate plots, arrange into one plot while remaining separated
+# use `ggpubr` package to print multiple plots side-by-side (or alt. row-by-row)
+ggpubr::ggarrange(
+  distrust.likert.az,
+  distrust.likert.lcl,
+  ncol = 2,
+  common.legend = T,
+  legend = "bottom", 
+  font.label = list(family = "Palatino Linotype")
+) +
+  # add figure footnote annotation
+  patchwork::plot_annotation(
+    caption = str_wrap("Missing values removed. Displays percent proportions of responses by experiment condition and combined percentage proportions for two categories.",
+               width = 85), theme = theme(text = element_text(family = "Palatino Linotype")))
+  
+
+
+
+```

@@ -77,42 +77,37 @@ source(here::here('src', 'funs.R'))
 #| tbl-cap-location: top
 
 # quick, informative, easy table of sample demographics w/ some other questions.
-tbl1 <- data |>  
+
+
+# best method for html document
+tbl.desc <- data |>  
   labelled::set_variable_labels(
-    age_cat = "Age group, in years"
+    age_4cat = "Age group, in years",
+    gender_3cat = "Gender",
+    race2 = "Race/Ethnicity",
+    educ_4cat = "Education",
+    partyid_3cat = "Party ID"
   ) |> 
   gtsummary::tbl_summary(
-    by = qset,
+    by = group,
     include = c(
-    qset,
-    age_cat, 
+    age_4cat, 
     gender_3cat, 
-    race, 
+    race2, 
     educ_4cat, 
-    partyid_3cat,
-    ideo,
-    ideolean,
-    voted2020,
-    choice2020, 
-    voteintent,
-    milserv1,
-    milserv2,
-    milservfam),
-    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"),
-    type = list(milserv1 ~ "categorical",
-                
-                milserv2 ~ "categorical",
-                milservfam ~"categorical"), 
-    missing = "no") |> 
+    partyid_3cat),
+    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
+    missing = "ifany",
+    missing_text = "NA") |> 
   gtsummary::add_n() |> 
   gtsummary::add_overall() |> 
   gtsummary::modify_header(label = "**Variable**") |> 
   gtsummary::bold_labels()
 
 
-gtsummary::as_gt(tbl1) |>  
+gtsummary::as_gt(tbl.desc) |>  
   gt::tab_footnote(
-    footnote = "'true' Independents do not identify nor 'lean' toward either political party",
+    footnote = "Independents do not identify nor 'lean' toward either political party",
     placement = "left"
     ) |>  
   gt::cols_align(align = 'left', columns = everything()) |> 
@@ -120,6 +115,20 @@ gtsummary::as_gt(tbl1) |>
     table.font.size = "small",
     data_row.padding = gt::px(1)
   )
+
+gtsummary::as_kable_extra(
+  tbl.desc, 
+  booktabs = T,
+  digits = 2,
+  addtl_fmt = T,
+  linesep = ""
+) |> 
+  kableExtra::kable_styling(
+    latex_options = c("striped", "scale_down"),
+    font_size = 8)
+
+
+
 
 
 ```
@@ -176,44 +185,55 @@ kableExtra::kbl(demog_df,
 #| tbl-cap: "Trust and Confidence in Election Administration"
 
 # Likert table summary of Trust and confidence variables
-tbl_tc <- data |> 
-  select(q19:q24) |>
-  gtsummary::tbl_likert(
-    statistic = ~"{n} ({p}%)", 
-    label = list(q19 = "Votes will be counted as intended",
-                 q20 = "Election officials will do good job",
-                 q21 = "Election workers will be committed",
-                 q22 = "Voting process will be fair",
-                 q23 = "Voting outcome will be fair",
-                 q24 = "Election technology will be secure"))
-  
-# add continuous summary of Likert scores. Merge tables into one
-tbl_tc_summary <- list(
-  tbl_tc,
-  gtsummary::tbl_wide_summary(
-    data |>
-      select(q19:q24) |> mutate(across(where(is.factor), as.numeric)),
-    statistic = c("{mean}", "{sd}"),
-    label = list(
-      q19 = "Votes will be counted as intended",
-      q20 = "Election officials will do good job",
-      q21 = "Election workers will be committed",
-      q22 = "Voting process will be fair",
-      q23 = "Voting outcome will be fair",
-      q24 = "Election technology will be secure"
-    ),
-    type = ~ "continuous"
-  )
-) |>
-  gtsummary::tbl_merge(tab_spanner = F) |> 
-  gtsummary::modify_header(label="")
+# best method for html document
+tbl.desc <- data |>  
+  labelled::set_variable_labels(
+    age_4cat = "Age group, in years",
+    gender_3cat = "Gender",
+    race2 = "Race/Ethnicity",
+    educ_4cat = "Education",
+    partyid_3cat = "Party ID"
+  ) |> 
+  gtsummary::tbl_summary(
+    by = group,
+    include = c(
+    age_4cat, 
+    gender_3cat, 
+    race2, 
+    educ_4cat, 
+    partyid_3cat),
+    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
+    missing = "ifany",
+    missing_text = "NA") |> 
+  gtsummary::add_n() |> 
+  gtsummary::add_overall() |> 
+  gtsummary::modify_header(label = "**Variable**") |> 
+  gtsummary::bold_labels()
 
-# print as huxtable and modify using `huxtable` R package
-gtsummary::as_hux_table(tbl_tc_summary) |>
-  huxtable::set_width(0.6) |> 
-  huxtable::set_col_width(rep(c(0.4))) |> 
-  huxtable::theme_article() |> 
-  huxtable::set_position("center")
+
+gtsummary::as_gt(tbl.desc) |>  
+  gt::tab_footnote(
+    footnote = "Independents do not identify nor 'lean' toward either political party",
+    placement = "left"
+    ) |>  
+  gt::cols_align(align = 'left', columns = everything()) |> 
+  gt::tab_options(
+    table.font.size = "small",
+    data_row.padding = gt::px(1)
+  )
+
+gtsummary::as_kable_extra(
+  tbl.desc, 
+  booktabs = T,
+  digits = 2,
+  addtl_fmt = T,
+  linesep = ""
+) |> 
+  kableExtra::kable_styling(
+    latex_options = c("striped", "scale_down"),
+    font_size = 8)
+
+
 
 
 
