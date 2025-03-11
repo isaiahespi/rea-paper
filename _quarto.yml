@@ -16,15 +16,30 @@ manuscript:
     - data/data_dictionary.csv
     - data/raw_spss_dict.csv
   code-links: 
-    - text: Data Import Script
+    - text: Data Processing Script
       icon: file-code
-      href: src/01-data.R
+      href: src/01-data-clean-process.R
       url: https://github.com/isaiahespi/rea-paper/blob/0bd7138259d244e9a046828fdcf09f2a33837b95/src/01-data.R
-  # notebooks: 
-  #   - notebook: notebooks/01-data-import-clean-process.qmd
-  #     title: "Data Import and Clean"
-  #   - notebook: notebooks/02-tables.qmd
+  notebooks:
+    - notebook: notebooks/01-data-import-clean-process.qmd
+      title: "Data Import and Clean"
+    - notebook: notebooks/appendix_A.qmd
+      title: "Appendix A: Vignettes and Survey Items"
+    - notebook: notebooks/appendix_B.qmd
+      title: "Appendix B: Sample Demographics and Test of Random Assignment"
+    - notebook: notebooks/appendix_C.qmd
+      title: "Appendix C: Trust and Distrust"
 
+authors:
+  - name: Isaiah Espinoza
+    email: gespinoz@umd.edu
+    roles: author
+    affiliation:
+      - name: University of Maryland
+        department: Department of Government and Politics
+        city: College Park
+        state: MD
+        country: US
 bibliography: references.bib
 csl: american-political-science-association.csl
 mainfont: Palatino Linotype
@@ -44,6 +59,7 @@ format:
     notebook-links: global
     citations-hover: true
     footnotes-hover: false
+    include-in-header: in-line_math_mode.html
     theme: 
       light: [bookup.scss]
       dark: [bookup.scss, bookup_dark.scss]

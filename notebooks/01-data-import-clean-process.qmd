@@ -1,8 +1,7 @@
 ---
 title: Data Import, Clean, and Process
-author: Isaiah
 format: 
-  html: 
+  bookup-html:
     code-fold: false
     code-tools: true
     code-overflow: wrap
@@ -11,39 +10,67 @@ format:
 ---
 
 
+## Set up
+
 This document describes and executes the cleaning and processing of the survey data set downloaded from Qualtrics on 2024-10-23. Currently, this notebook is mainly to describe and explain the process undertaken in R to import, clean, wrangle, transform, and process the data set for later analysis. To see the process without all my explanatory text, see the relevant R script viewed [here](https://github.com/isaiahespi/rea-paper/blob/0bd7138259d244e9a046828fdcf09f2a33837b95/src/01-data.R).  
+
+```{r}
+#| label: setup
+#| include: true
+#| eval: true
+#| echo: true
+
+set.seed(1234)
+
+# load packages
+library(tidyverse)
+
+```
+
+
 
 ## Load data
 
 ```{r}
 #| label: load-data
 
-
 # load raw SPSS export (includes display order vars)
 # downloaded on 2024-10-29 at 12:02 PM
-raw_spss <- haven::read_sav("data-raw/VMF_Election_Worker_Recruitment_Survey_with_display_order_20241029_T12.02.sav")
+raw_spss <- haven::read_sav("data-raw/vmf_election_worker_recruitment_survey_raw_spss_sanitized_20241029_T12.02.sav")
+
+
 
 ```
 
 ## Create data dictionary and Survey Codebook
 
-A data dictionary contains metadata about the data. The `labelled::generate_dictionary` function is used to create a data dictionary. A dataframe is loaded into the R environment with the number of observations equal to number of variables in the original data set. One problem that I encountered was that I was unable to quickly save the data dictionary generated using the `labelled` R package. As an alternative, I utilized the `data_dict()` function from the R package `surveytoolbox` in order to save the dictionary as a `.csv` file. 
+A data dictionary contains metadata about the data. The `labelled::generate_dictionary` function is used to create a data dictionary (alternatively, use the `data_dict()` function from R package [surveytoolbox](https://martinctc.github.io/surveytoolbox/)). This function produces a dataframe into the R environment with the number of observations (rows) equal to number of variables (columns) in the original data set. For ease, I prefer to save the codebook/data dictionary as a `.csv` file. In order to do so, ensure that the function `labelled::convert_list_columns_to_character()` is run on the data dictionary which allows you to save the data dictionary as a `.csv` file. Alternatively, the
+function `surveytoolbox::data_dict()` permits saving as a .csv file without the
+additional step. 
+
+Also note that I use the native R pipe format ` |> ` (tip: try hotkey `CTRL + .`), which is essentially equivalent to the `magrittr` forward-pipe operator ` %>% `.
 
 ```{r}
 #| label: raw-data-dict
+#| echo: true
 
-# data dictionary from labelled package. Won't save as .csv file
-raw_spss_dict <- raw_spss |> labelled::generate_dictionary()
+# data dictionary from labelled package.
+raw_spss_dict <- raw_spss |> 
+  labelled::generate_dictionary() |> 
+  # this allows me to save dictionary as .csv file
+  labelled::convert_list_columns_to_character()
 
-# data dictionary from labelled package. Will save as .csv file
-raw_spss_dict <- raw_spss |> surveytoolbox::data_dict()
+# alternative
+# raw_spss_dict <- raw_spss |> surveytoolbox::data_dict()
+
 
 # save data dictionary of raw_spss dataset download
 write.csv(raw_spss_dict, file = "data/raw_spss_dict.csv")
 
 ```
 
-The data dictionary is the same as a codebook, but I also wanted to have a codebook that contained only the survey questions, variable labels (i.e., question text), responses (value labels), and associated values. So the saved `codebook` contains only the survey questions and the two grouping variables (`qset` and `group`).
+The data dictionary is the same as a codebook, but I also wanted to have a codebook that contained **only** the survey questions, variable labels (i.e., question text), responses (value labels), and associated values. So the saved `codebook` contains only the survey questions and the two grouping variables (`qset` and `group`).
+
 
 ```{r}
 #| label: survey_codebook
