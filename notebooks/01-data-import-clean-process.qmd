@@ -20,10 +20,16 @@ This document describes and executes the cleaning and processing of the survey d
 #| eval: true
 #| echo: true
 
+# set seed for reproducibility
 set.seed(1234)
 
 # load packages
 library(tidyverse)
+library(surveytoolbox)
+library(labelled)
+library(sjlabelled)
+library(pewmethods)
+library(fastDummies)
 
 ```
 
@@ -31,12 +37,15 @@ library(tidyverse)
 
 ## Load data
 
+Note that the 'raw' data set here has been sanitized of respondent's potentially sensitive information.
+
 ```{r}
 #| label: load-data
+#| echo: true
 
-# load raw SPSS export (includes display order vars)
+# load SPSS export from Qualtrics (includes display order vars)
 # downloaded on 2024-10-29 at 12:02 PM
-raw_spss <- haven::read_sav("data-raw/vmf_election_worker_recruitment_survey_raw_spss_sanitized_20241029_T12.02.sav")
+raw_spss_sanitized <- haven::read_sav("vmf_election_worker_recruitment_survey_raw_spss_sanitized_20241029_T12.02.sav")
 
 
 
@@ -44,9 +53,9 @@ raw_spss <- haven::read_sav("data-raw/vmf_election_worker_recruitment_survey_raw
 
 ## Create data dictionary and Survey Codebook
 
-A data dictionary contains metadata about the data. The `labelled::generate_dictionary` function is used to create a data dictionary (alternatively, use the `data_dict()` function from R package [surveytoolbox](https://martinctc.github.io/surveytoolbox/)). This function produces a dataframe into the R environment with the number of observations (rows) equal to number of variables (columns) in the original data set. For ease, I prefer to save the codebook/data dictionary as a `.csv` file. In order to do so, ensure that the function `labelled::convert_list_columns_to_character()` is run on the data dictionary which allows you to save the data dictionary as a `.csv` file. Alternatively, the
-function `surveytoolbox::data_dict()` permits saving as a .csv file without the
-additional step. 
+A data dictionary contains metadata about the data.
+The the `data_dict()` function from R package [surveytoolbox](https://martinctc.github.io/surveytoolbox/) is used to create a *data dictionary* (i.e., codebook).
+(alternatively, one can use the `generate_dictionary` from the [labelled](https://larmarange.github.io/labelled/) R package  to create a data dictionary with slightly different output.). This function produces a dataframe into the R environment with the number of observations (rows) equal to number of variables (columns) in the original data set. For ease, I prefer to save the codebook/data dictionary as a `.csv` file.
 
 Also note that I use the native R pipe format ` |> ` (tip: try hotkey `CTRL + .`), which is essentially equivalent to the `magrittr` forward-pipe operator ` %>% `.
 
@@ -55,22 +64,14 @@ Also note that I use the native R pipe format ` |> ` (tip: try hotkey `CTRL + .`
 #| echo: true
 
 # data dictionary from labelled package.
-raw_spss_dict <- raw_spss |> 
-  labelled::generate_dictionary() |> 
-  # this allows me to save dictionary as .csv file
-  labelled::convert_list_columns_to_character()
-
-# alternative
-# raw_spss_dict <- raw_spss |> surveytoolbox::data_dict()
-
-
-# save data dictionary of raw_spss dataset download
-write.csv(raw_spss_dict, file = "data/raw_spss_dict.csv")
+raw_spss_sanitized_data_dict <- raw_spss_sanitized |> 
+  surveytoolbox::data_dict()
 
 ```
 
-The data dictionary is the same as a codebook, but I also wanted to have a codebook that contained **only** the survey questions, variable labels (i.e., question text), responses (value labels), and associated values. So the saved `codebook` contains only the survey questions and the two grouping variables (`qset` and `group`).
+The data dictionary is the same as a codebook, but I also wanted to have a codebook that contained **only** the survey questions, variable labels (`var`, i.e., question text), responses (`label_var`, i.e., value labels), and associated values (simply, `value`). So the saved `codebook` contains only the survey questions and the two grouping variables `qset` and `group`. The latter refers to the Experiment condition where `1 = Treatment` and `0 = Control`. The other grouping variable `qset` refers to two distinct question sets (A or B) which aren't as important to cover at the moment. 
 
+I run the code below to generate a codebook that contains only the survey question items (`var`), the question test (`label_var`), value labels (`label_val`) and corresponding numeric codes (`value`). 
 
 ```{r}
 #| label: survey_codebook
@@ -79,11 +80,11 @@ The data dictionary is the same as a codebook, but I also wanted to have a codeb
 
 # this includes only the survey questions: question number (var), the question
 # text (label_var), the value labels (label_val), and the numeric codes (value)
-codebook <- raw_spss |> 
+codebook <- raw_spss_sanitized |> 
   janitor::clean_names() |> 
   # get rid of superfluous Qualtrics columns
   # Keep Qualtrics `response_id`
-  select(!1:8 & !10:17 & !265) |>
+  select(!1:7, !9:11, -q_data_policy_violations) |>
   # subset spss data set to omit the display order variables
   select(!contains("_do_")
          & !contains("_ado_")
@@ -92,8 +93,6 @@ codebook <- raw_spss |>
   select(contains("q"), group) |>
   surveytoolbox::data_dict()
 
-# save codebook as .csv file in data/ directory
-write.csv(codebook, file = "data/survey_codebook.csv")
 
 
 ```
@@ -102,14 +101,14 @@ write.csv(codebook, file = "data/survey_codebook.csv")
 
 ## Filter Raw data
 
-From the raw data set, there are `r dim(raw_spss)[1]` observations in the data set (each observation is a row). The survey was programmed in such a way to automatically drop participants who, 
+From the raw data set, there are `r dim(raw_spss_sanitized)[1]` observations in the data set (each observation is a row). The survey was programmed in such a way to automatically drop participants who, 
 
 1.    Didn't consent to take part in the survey. 
 2.    Were under 18 years of age[^1]
 3.    Self-identified as not being a U.S. citizen
 4.    Failed two attention checks embedded within the survey
 
-Although the survey was programmed in this way, however, any responses of these participants were still recorded and included in the data. Survey participants may not have been dropped from participating in the survey until after they had already entered in a few responses. For instance, a respondent failing both attention checks would not have been dropped from the survey until the tenth question (Q10) within the survey, but their responses prior to being dropped would still be included in a row within the data set. This results in a lot of missing data (i.e., NA values) filling up observations (rows) in the data. The following code filters the data set to exclude any respondent who met the aforementioned exclusion criteria.
+Although the survey was programmed in this way, however, any responses of these participants were still recorded and included in the data. Survey participants may not have been dropped from participating in the survey until after they had already entered in a few responses, or at least responded to the first question requesting consent (Q1). Additionally, a respondent failing both attention checks would not have been dropped from the survey until the tenth question (Q10) within the survey, but their responses prior to being dropped would still be included in a row within the data set. This results in a lot of missing data (i.e., NA values) filling up observations (rows) in the data. The following code filters the data set to exclude any respondent who met the aforementioned exclusion criteria.
 
 [^1]: The panel of participants gathered by Lucid already excluded anyone under 18 years of age, however a number of discrepancies were found between the age of respondents included in the Lucid embedded data and the age reported by the respondents themselves. However, the survey question asking the respondent's age was programmed so that respondents selected their age from a drop down menu. Since the lowest available option in the drop down list of ages was 18, there was no way for respondents who may have been under 18 to report their actual age from the drop down menu. Of course, it is always possible for any respondent to simply lie about their age, but this footnote is added for posterity.
 

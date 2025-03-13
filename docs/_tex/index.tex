@@ -9,6 +9,7 @@
 ]{article}
 
 \usepackage{amsmath,amssymb}
+\usepackage{setspace}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -287,6 +288,7 @@ Politics \\%
 %\noindent \rule{\linewidth}{.5pt}
 
 
+\setstretch{1.25}
 \pagebreak
 
 \subsection{Introduction}\label{introduction}
@@ -491,9 +493,9 @@ candidate. Much research has been dedicated to analyzing the sentiment
 of electoral winners vs losers, and vice versa
 (\citeproc{ref-daniller2019}{Daniller and Mutz 2019};
 \citeproc{ref-nadeau1993}{Nadeau and Blais 1993}). Opinions of electoral
-trust gathered after the election has occurred are limited considering
-the well-recognized impact that the electoral outcome itself has on
-feelings of public trust in elections
+trust gathered after the election has occurred, however, are limited
+considering the well-recognized impact that the electoral outcome itself
+has on feelings of public trust in elections
 (\citeproc{ref-daniller2019}{Daniller and Mutz 2019}).
 
 As such, it is questionable whether we can characterize public trust in
@@ -532,11 +534,11 @@ Such studies focused on the quality of the voter experience with
 reference to the interaction between voter and election worker.
 
 Beyond the general competence of election workers, however, the quality
-of the voter experience may be influenced merely by \emph{a priori}
-impressions about \emph{who} comprises election staff and volunteers.
-Political and other social science researchers have recognized for some
-time the power that group identity can have over attitudes and
-perception (\citeproc{ref-vanbavel2021}{Van Bavel and Packer 2021};
+of the voter experience may be influenced merely by prior impressions
+about \emph{who} comprises election staff and volunteers. Political and
+other social science researchers have recognized for some time the power
+that group identity can have over attitudes and perception
+(\citeproc{ref-vanbavel2021}{Van Bavel and Packer 2021};
 \citeproc{ref-xiao2016}{Xiao, Coppin, and Van Bavel 2016};
 \citeproc{ref-xiao2012}{Xiao and Van Bavel 2012}). As such, we can
 expect that information identifying the particular groups being
@@ -660,19 +662,19 @@ Since the results and events following the 2020 election loomed large in
 anticipation of the U.S. 2024 general elections, it is reasonable to
 take into account beliefs about legitimacy of the 2020 election. This
 group who denies the legitimacy of the 2020 election results were
-possibly the most distrusting of the 2024 election. However, given that
-veteran service members are held in high regard, generally speaking,
-announcing that veterans are being actively recruited to work as
-election staff and volunteers is expected to positively influence
-confidence in elections among those who remained firm in the belief that
-the 2020 election results were illegitimate. I take into account that
-legitimacy beliefs about the 2020 election and expectations of electoral
-fraud are related to partisanship and include partisanship as a control
-in the analysis\footnote{To be clear, I conducted an auxiliary
-  regression analysis to examine the relationship between legitimacy
-  beliefs and partisanship. Results revealed a statistically significant
-  relationship between the two variables and thus omitting either would
-  result in biased estimates.}.
+possibly the most apprehensive (distrusting) of the 2024 election.
+However, given that veteran service members are held in high regard,
+generally speaking, announcing that veterans are being actively
+recruited to work as election staff and volunteers is expected to
+positively influence confidence in elections among those who remained
+firm in the belief that the 2020 election results were illegitimate. I
+take into account that legitimacy beliefs about the 2020 election and
+expectations of electoral fraud are related to partisanship and include
+partisanship as a control in the analysis\footnote{To be clear, I
+  conducted an auxiliary regression analysis to examine the relationship
+  between legitimacy beliefs and partisanship. Results revealed a
+  statistically significant relationship between the two variables and
+  thus omitting either would result in biased estimates.}.
 
 In addition, I expect that both expectations of electoral fraud and
 concerns for voter safety would lessen (shrink) when presented with
@@ -694,11 +696,11 @@ recruiting veteran service members would improve confidence in elections
 near one's local area in light of such hometown favoritism, a positive
 effect on confidence in elections held beyond one's local area---where
 confidence is already expectedly lower---can help discern the impact of
-the group alone. Therefore, any observed disparity of confidence in
-elections (i.e., the ``confidence gap'') between elections within one's
-local area and elections beyond will be smaller among those who are
-presented with information about election official recruitment efforts
-of veteran service members.
+the group alone on public opinion. Therefore, any observed disparity of
+confidence in elections (i.e., the ``confidence gap'') between elections
+within one's local area and elections beyond will be smaller among those
+who are presented with information about election official recruitment
+efforts of veteran service members.
 
 \subsection{Experiment Design and Survey
 Measures}\label{experiment-design-and-survey-measures}
@@ -853,21 +855,8 @@ were estimated for both and found to be adequate (\(\alpha\)
 \textgreater{} 0.8); the trust in elections scale \(\alpha\) = 0.93 and
 the distrust scale \(\alpha\) = 0.86. In other words, the items in each
 of the scales were intercorrelated well enough for each to compose a
-single scale presuming a unidimensional construct for each\footnote{I
-  expected item responses from the trust and distrust scales to be
-  inversely correlated among the sample, but not mutually exclusive.
-  Indeed, this is what I find. Polychoric correlations between the trust
-  and distrust items negatively correlate as expected, as does the
-  correlation between the two sum score scales. Given the ordinal nature
-  of the variable items, I conducted a Spearman's rank correlation test
-  (\citeproc{ref-spearman1907}{Spearman 1907}) and found a negative
-  correlation of \(\rho = -0.49\) (\(95\%\) CI {[}-0.53, -0.44{]};
-  Kendall's \(\tau = -0.39\)) between scores on the two scales for the
-  AZ items (For the local item scale score correlation:
-  \(\rho = -0.52\), \(95\%\) CI {[}-0.56, -0.48{]}; Kendall's
-  \(\tau = -0.39\)). The negative correlation between the trust and
-  distrust items and scores makes intuitive sense. See Appendix C for
-  inter-item correlation}.
+single scale presuming a unidimensional construct for each\footnote{See
+  Appendix C for analysis.}.
 
 \subsection{Data Specification}\label{data-specification}
 
@@ -883,20 +872,6 @@ will be counted as voter's intend, whereas a separate item from the
 distrust scale has the the respondent report their expectation that many
 votes will not be counted. Positive responses to these two items
 directly contradict each other, and would thus cancel out.
-
-The relationship is that trust and distrust represent opposing degrees
-of confidence along the same spectrum. However, despite the inherent
-contrast, one can hold both positive degrees of trust and distrust,
-feeling similarly confident in both respects. Accordingly, equivalent
-degrees of trust and distrust cancel out, rendering one relatively more
-\emph{insecure} about their expectations of the future despite the fact
-that they may feel confident in either direction. When trust and
-distrust are considered as reflective of one's confidence about future
-expectations, then both can be placed along the same spectrum. Quite
-literally, this reflects an uncertain feeling of ``it could go one way
-or the other'' with respect to the integrity of elections
-administration. Operationally, this would reflect a middling point on a
-scale of \emph{confidence}.
 
 In light of this, I reverse coded items on the distrust scale and
 combined responses to the trust in elections scale. That is, item
@@ -924,17 +899,7 @@ in elections} to serve as the dependent variable\footnote{The
   \citeproc{ref-robitzsch2020}{Robitzsch 2020}).}. On this scale,
 positive values reflect higher confidence in elections, negative values
 reflect greater distrust, and values closer to zero correspond to an
-individual's degree of insecurity.
-
-The advantage is that this permits a better test of the treatment effect
-as theorized. Of course, it is easy enough to examine the effect of the
-treatment on both trust and distrust separately. However, the theory
-presents a hypothesis that the treatment will impose influence upon both
-variables \emph{concurrently and in a positive direction} with respect
-to the relationship between trust and distrust. That is to say,
-confidence increases insofar as trust in elections increases and
-distrust decreases; since distrust detracts from trust, then an accurate
-measure of confidence must take that constraint into account.
+individual's degree of \emph{insecurity}.
 
 \subsection{Results}\label{results}
 
@@ -948,27 +913,25 @@ items that pertain to a respondent's local area. In fact, as expected,
 the treatment appears to have hardly made a difference when the items
 concerned one's local area.
 
-\phantomsection\label{cell-fig-trustlikert}
 \begin{figure}[h]
 
-\caption{\label{fig-trustlikert}Trust in Election Administration by
+\caption{\label{fig-patch10}Trust in Election Administration by
 Experiment Condition}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-trustlikert-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-figures-fig-patch10-output-1.png}}
 
 }
 
 \end{figure}%
 
 Reviewing item responses distinguished by treatment condition reveals
-particulars of the treatment effect (Figure~\ref{fig-trustlikert}).
-Among the items that asked about Maricopa County, AZ, it is a bit easier
-to see upon which items the treatment vignette had the greatest effect.
-It appears that the main effect of the treatment is upon responses to
-the item that measures confidence in the security of election
-technology.
+particulars of the treatment effect (Figure~\ref{fig-patch10}). Among
+the items that asked about Maricopa County, AZ, it is a bit easier to
+see upon which items the treatment vignette had the greatest effect. It
+appears that the main effect of the treatment is upon responses to the
+item that measures confidence in the security of election technology.
 
 Regarding confidence in the commitment of election staff and volunteers,
 a higher proportion of respondents in the treatment group selected
@@ -993,15 +956,14 @@ volunteers in places where such trust falters. The question turns to
 whether this also lowers distrust, or the extent to which one expects
 electoral fraud to occur.
 
-\phantomsection\label{cell-fig-distrustlikert}
 \begin{figure}[H]
 
-\caption{\label{fig-distrustlikert}Disrust in Election Administration by
+\caption{\label{fig-patch11}Disrust in Election Administration by
 Experiment Condition}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-distrustlikert-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-figures-fig-patch11-output-1.png}}
 
 }
 
@@ -1009,15 +971,15 @@ Experiment Condition}
 
 Similar to the trust scale items, the items on the distrust scale were
 associated with lower distrust in the treatment condition compared to
-the control. A quick glance at Figure~\ref{fig-distrustlikert} shows
-what appears to be a significant reduction in distrust, especially
-regarding the expectations that many votes wouldn't be counted, many
-voters would be turned away, and that election officials would
-discourage voters from casting a ballot. Interestingly, the expectation
-that there would be foreign interference in elections in Maricopa
-County, AZ were pretty resilient against the treatment. And again,
-responses for items pertaining to elections in one's local area are
-practically indistinguishable between treatment and control.
+the control. A quick glance at Figure~\ref{fig-patch11} shows what
+appears to be a significant reduction in distrust, especially regarding
+the expectations that many votes wouldn't be counted, many voters would
+be turned away, and that election officials would discourage voters from
+casting a ballot. Interestingly, the expectation that there would be
+foreign interference in elections in Maricopa County, AZ were pretty
+resilient against the treatment. And again, responses for items
+pertaining to elections in one's local area are practically
+indistinguishable between treatment and control.
 
 \subsubsection{Confidence in elections}\label{confidence-in-elections}
 
@@ -1058,7 +1020,6 @@ As revealed by review of the item responses, the distribution of
 confidence differed depending on whether survey items pertained to
 elections in Maricopa County, AZ, or elections within one's local area.
 
-\phantomsection\label{cell-fig-dist}
 \begin{figure}[H]
 
 \caption{\label{fig-dist}Overlapping Distribution of Confidence in
@@ -1066,7 +1027,7 @@ Elections for AZ and Local Area}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-dist-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-figures-fig-dist-output-1.png}}
 
 }
 
@@ -1103,7 +1064,7 @@ Control Condition}
 
 \begin{tabular}[t]{llllllllll}
 \toprule
-Place & $\bar{x}_{diff}$ & $\bar{x}_{treat}$ & $\bar{x}_{control}$ & $treat_{n}$ & $control_{n}$ & t & p & df & CI\\
+Place & $\bar{x}_{diff}$ & $\bar{x}_{treat}$ & $\bar{x}_{control}$ & $treat_{n}$ & $control_{n}$ & t & p & data & CI\\
 \midrule
 Maricopa County, AZ & 0.20 & 0.93 & 0.72 & 650.00 & 637.00 & 2.96 & 0.003** & 1283.73 & {}[ 0.07, 0.33]\\
 Local Area & 0.06 & 1.18 & 1.12 & 650.00 & 637.00 & 0.87 & 0.383 & 1282.95 & {}[-0.08, 0.20]\\
@@ -1185,15 +1146,14 @@ First, reviewing responses to items that capture trust in elections, it
 is easy to recognize the difference between the way 2020 election
 deniers responded with respect to where elections were held.
 
-\phantomsection\label{cell-fig-legit}
 \begin{figure}[!t]
 
-\caption{\label{fig-legit}Trust in elections by treatment among those
+\caption{\label{fig-patch13}Trust in elections by treatment among those
 who refute the 2020 election results}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-legit-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-figures-fig-patch13-output-1.png}}
 
 }
 
@@ -1210,21 +1170,20 @@ relative to the other items.\footnote{What is interesting to note here
   election administration process, e.g., ensuring accuracy of counts,
   competence, and commitment of election workers. Although a neat line
   can't really be drawn between the first three and latter two items
-  presented here, it is interesting to see a divergence of the usual
-  high confidence placed in local area elections.} Now the comparative
-difference in responses between those in the treatment group compared to
-those in the control group appears substantial for items pertaining to
-elections in Maricopa County, AZ.
+  presented here, it is interesting to see a slight divergence from the
+  usual high confidence placed in local area elections.} Now the
+comparative difference in responses between those in the treatment group
+compared to those in the control group appears substantial for items
+pertaining to elections in Maricopa County, AZ.
 
-\phantomsection\label{cell-fig-legit2}
 \begin{figure}[!t]
 
-\caption{\label{fig-legit2}Distrust in elections by treatment among
+\caption{\label{fig-patch14}Distrust in elections by treatment among
 those who refute the 2020 election results}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-legit2-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-figures-fig-patch14-output-1.png}}
 
 }
 
@@ -1236,52 +1195,22 @@ occur reveal the same pattern. Although there is not as stark a
 disparity between responses of those in the treatment and those in the
 control, among those in the treatment group, there does appear to be
 less expectation that election fraud would occur in Maricopa County, AZ.
-Overall, review of responses to trust (Figure~\ref{fig-legit}) and
-distrust survey items (Figure~\ref{fig-legit2}) does lend credence to
+Overall, review of responses to trust (Figure~\ref{fig-patch13}) and
+distrust survey items (Figure~\ref{fig-patch14}) does lend credence to
 the impact of the treatment.
 
 In order to substantiate the overall influence of the treatment on
 confidence in elections, I regressed the dependent variable confidence
 on legitimacy beliefs while controlling for partisanship.
 
-\begin{table}[H]
-
-\caption{\label{tbl-legit}Confidence in Elections by Treatment and
-Legitimacy Beliefs}
-
-\centering{
-
-\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-2} D{.}{.}{-2} } 
-\\[-1.8ex]\hline \\[-1.8ex] 
- & \multicolumn{1}{c}{Confidence in AZ Elections} & \multicolumn{1}{c}{w/Interaction} \\ 
-\hline \\[-1.8ex] 
- Treatment & 0.18^{***}$ $(0.05) & 0.09$ $(0.06) \\ 
-  Not Legitimate & -0.72^{***}$ $(0.07) & -0.86^{***}$ $(0.09) \\ 
-  Republican & 0.11$ $(0.08) & 0.12$ $(0.08) \\ 
-  Democrat & 0.17^{*}$ $(0.09) & 0.17^{**}$ $(0.09) \\ 
-  Not Legitimate * Treatment &  & 0.27^{**}$ $(0.11) \\ 
-  Constant & 0.03$ $(0.08) & 0.07$ $(0.08) \\ 
- N & \multicolumn{1}{c}{1,263} & \multicolumn{1}{c}{1,263} \\ 
-R$^{2}$ & \multicolumn{1}{c}{0.14} & \multicolumn{1}{c}{0.14} \\ 
-Adjusted R$^{2}$ & \multicolumn{1}{c}{0.13} & \multicolumn{1}{c}{0.14} \\ 
-Residual Std. Error & \multicolumn{1}{c}{0.93 (df = 1258)} & \multicolumn{1}{c}{0.93 (df = 1257)} \\ 
-F Statistic & \multicolumn{1}{c}{49.92$^{***}$ (df = 4; 1258)} & \multicolumn{1}{c}{41.24$^{***}$ (df = 5; 1257)} \\ 
-\hline \\[-1.8ex] 
-\multicolumn{3}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
-\end{tabular}
-
-}
-
-\end{table}%
-
 The first model in Table \ref{tbl-legit} shows that overall confidence
-in elections (trust - distrust) among those who read the treatment
-vignette was significantly (statistically) greater than those who read
-the control, on average and netting out the effects of partisanship and
-legitimacy beliefs. Democratic partisanship remains marginally
-significant at \(90\%\) confidence level (\(p = 0.055\)). Not believing
-the 2020 election of Joe Biden was legitimate is negatively associated
-with confidence in elections. In order to assess the magnitude of this
+in elections among those who read the treatment vignette was
+significantly (statistically) greater than those who read the control,
+on average and netting out the effects of partisanship and legitimacy
+beliefs. Democratic partisanship remains marginally significant at
+\(90\%\) confidence level (\(p = 0.055\)). Not believing the 2020
+election of Joe Biden was legitimate is negatively associated with
+confidence in elections. In order to assess the magnitude of this
 interaction effect of the treatment on those who refuted the 2020
 election results, I ran a model where confidence in elections was
 regressed on the interaction between the treatment and legitimacy
@@ -1312,7 +1241,7 @@ insecurity concerning elections elsewhere for whatever reason. In the
 anticipatory period prior to national elections, publicized efforts to
 recruit veterans to work as election staff and volunteers may be a
 small, but positive, step towards reducing insecurity in elections that
-occur elsewhere. Especially among those who maintained a steadfast
+occur elsewhere. Especially among those who maintained a steadataast
 degree of distrust in elections. Despite a lack of evidence that
 systematic electoral fraud had occurred in the 2020 election, a
 substantial proportion of the population were unwilling to affirm the
@@ -1334,7 +1263,343 @@ And seeing as how insecurity presents vulnerability, it is perhaps far
 easier to inspire a general sense of distrust in the process and its
 administration in places not near and around one's local area.
 
-\pagebreak
+\newpage
+
+\section{Appendix A: Survey Experiment Vignettes and Survey
+Items}\label{appendix-a-survey-experiment-vignettes-and-survey-items}
+
+\subsection{Survey Experiment
+Vignettes}\label{survey-experiment-vignettes}
+
+\begin{figure}
+
+\begin{minipage}{0.45\linewidth}
+
+\subsubsection{Treatment Vignette}\label{treatment-vignette-1}
+
+\textbf{Local Military Veterans Recruited for Election Jobs in Maricopa
+County}\\
+\strut \\
+\strut ~~PHOENIX (AP) --- Election officials in Maricopa County,
+Arizona, announced a program designed to recruit military veterans and
+their family members from the community to serve as election
+administrators, including election polling place workers, temporary
+workers, and full-time staff. As the U.S. general elections in November
+near, election officials must fill several thousand temporary positions
+and hundreds of other open positions to ensure sufficient staffing for
+the 2024 elections and beyond.\\
+\strut \\
+\strut ~~Army veteran Jordan Braxton just joined the elections
+workforce. Jordan believes their role is important to ensuring a secure,
+accurate, and transparent election, ``Many places are short on staff
+this election cycle. I served my country in the Army, and I want to do
+my part as a veteran and a citizen to ensure that everyone trusts the
+process and the outcome of the election.''
+
+\end{minipage}%
+%
+\begin{minipage}{0.10\linewidth}
+~\end{minipage}%
+%
+\begin{minipage}{0.45\linewidth}
+
+\subsubsection{Control Vignette}\label{control-vignette-1}
+
+\textbf{Local Residents Recruited for Election Jobs in Maricopa
+County}\\
+\strut \\
+\strut ~~PHOENIX (AP) ---Election officials in Maricopa County, Arizona,
+announced a program to recruit members of the community to serve as
+election administrators, including election polling place workers,
+temporary workers, and full-time staff. As the U.S. general elections in
+November near, election officials must fill several thousand temporary
+positions and hundreds of other open positions to ensure sufficient
+staffing for the 2024 elections and beyond.\\
+\strut \\
+\strut ~~Jordan Braxton just joined the elections workforce. Jordan
+believes their role is important to ensuring a secure, accurate, and
+transparent election, ``Many places are short on staff this election
+cycle. I want to do my part as a citizen to ensure that everyone trusts
+the process and the outcome of the election.''
+
+\end{minipage}%
+
+\end{figure}%
+
+\newpage
+
+\subsection{Survey Items}\label{survey-items}
+
+\begin{table}
+
+\caption{\label{tbl-4}Survey Items and Response Options}
+
+\centering{
+
+\begingroup\fontsize{8}{10}\selectfont
+
+\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{7cm}>{\raggedright\arraybackslash}p{4cm}}
+\toprule
+Question & response\\
+\midrule
+In general, how favorable or unfavorable is your impression of local election officials? & {}[Strongly unfavorable, Somewhat unfavorable, Neither, Somewhat favorable, Strongly favorable]\\
+\addlinespace
+Regardless of whom you supported in the 2020 election, do you think Joe Biden's election as president was legitimate, or was he not legitimately elected? & Legitimate, Not legitimate\\
+\addlinespace
+Thinking about Maricopa County, AZ, how concerned should voters feel about potential violence, threats of violence, or intimidation while voting in person at their local polling place? & Very concerned, Somewhat concerned, Not too concerned, Not at all concerned\\
+\addlinespace
+How confident, if at all, are you that in person polling places in Maricopa County, AZ will be safe places for voters to cast their ballots during the upcoming elections in November? & Not at all confident, Not too confident, Somewhat confident, Very confident\\
+\bottomrule
+\end{tabu}
+\endgroup{}
+
+}
+
+\end{table}%
+
+\newpage
+
+\section{Appendix B: Sample Demographics and
+Balance}\label{appendix-b-sample-demographics-and-balance}
+
+\subsection{Sample Demographics}\label{sample-demographics}
+
+The median age was 46 (mean age was \(47\)), \(51.7\%\) (\(n = 658\))
+women, \(47\%\) (\(n = 598\)) men, and approximately \(1.3\%\) who
+identified as either Non-binary/third gender (\(n = 7\)) or preferred
+not to say (\(n = 9\)). A large proportion of the sample identified as
+White or Caucasian (\(n = 975, 76.65\%\)), while all other non-White
+respondents comprised \(27.83\%\) (\(n = 297\)) of the sample. Those who
+held a graduate level degree (e.g., Master's, Doctorate, or Professional
+level) comprised \(13\%\) of the sample; those with either degree at the
+Associate or Bachelor's level comprised \(36.24\%\), while \(22.25\%\)
+had some college but no degree; and \(28.46\%\) had either a high school
+level or equivalent education or less than high school. The largest
+proportion of the sample identified as Democrat at \(44.64\%\), followed
+by Republicans at \(42.59\%\). The proportion of true
+Independents\footnote{Independent `leaners' were grouped into the
+  respective party affiliation in which they lean.} was \(12.78\%\).
+
+\begin{table}
+
+\caption{\label{tbl-demog}Sample Demographics}
+
+\centering{
+
+\centering\begingroup\fontsize{9}{11}\selectfont
+
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Demographic} & \textbf{N} & \makecell[c]{\textbf{Overall}\ \ \\N = 1,287} & \makecell[c]{\textbf{Control}\ \ \\N = 637} & \makecell[c]{\textbf{Treatment}\ \ \\N = 650}\\
+\midrule
+\textbf{Age group} & 1,287 &  &  & \\
+\hspace{1em}18-34 &  & 350 (27\%) & 170 (27\%) & 180 (28\%)\\
+\hspace{1em}35-54 &  & 480 (37\%) & 245 (38\%) & 235 (36\%)\\
+\hspace{1em}55-74 &  & 390 (30\%) & 198 (31\%) & 192 (30\%)\\
+\hspace{1em}75-85+ &  & 67 (5.2\%) & 24 (3.8\%) & 43 (6.6\%)\\
+\addlinespace
+\textbf{Gender} & 1,272 &  &  & \\
+\hspace{1em}Male &  & 598 (47\%) & 289 (46\%) & 309 (48\%)\\
+\hspace{1em}Female &  & 658 (52\%) & 330 (52\%) & 328 (51\%)\\
+\hspace{1em}Other/Refused &  & 16 (1.3\%) & 10 (1.6\%) & 6 (0.9\%)\\
+\hspace{1em}NA &  & 15 & 8 & \vphantom{4} 7\\
+\addlinespace
+\textbf{Race/Ethnicity} & 1,272 &  &  & \\
+\hspace{1em}White &  & 975 (77\%) & 478 (76\%) & 497 \vphantom{1} (77\%)\\
+\hspace{1em}Asian &  & 51 (4.0\%) & 25 (4.0\%) & 26 (4.0\%)\\
+\hspace{1em}Black &  & 164 (13\%) & 85 (14\%) & 79 (12\%)\\
+\hspace{1em}Other &  & 24 (1.9\%) & 12 (1.9\%) & 12 (1.9\%)\\
+\addlinespace
+\hspace{1em}Hispanic &  & 44 (3.5\%) & 24 (3.8\%) & 20 (3.1\%)\\
+\hspace{1em}American Indian &  & 14 (1.1\%) & 5 (0.8\%) & 9 (1.4\%)\\
+\hspace{1em}NA &  & 15 & 8 & \vphantom{3} 7\\
+\textbf{White or Non-White} & 1,272 &  &  & \\
+\hspace{1em}Non-White &  & 297 (23\%) & 151 (24\%) & 146 (23\%)\\
+\addlinespace
+\hspace{1em}White &  & 975 (77\%) & 478 (76\%) & 497 (77\%)\\
+\hspace{1em}NA &  & 15 & 8 & \vphantom{2} 7\\
+\textbf{Education} & 1,272 &  &  & \\
+\hspace{1em}H.S. or less &  & 362 (28\%) & 174 (28\%) & 188 (29\%)\\
+\hspace{1em}Some college no degree &  & 283 (22\%) & 142 (23\%) & 141 (22\%)\\
+\addlinespace
+\hspace{1em}College degree &  & 461 (36\%) & 236 (38\%) & 225 (35\%)\\
+\hspace{1em}Postgraduate degree &  & 166 (13\%) & 77 (12\%) & 89 (14\%)\\
+\hspace{1em}NA &  & 15 & 8 & \vphantom{1} 7\\
+\textbf{Party ID} & 1,268 &  &  & \\
+\hspace{1em}Independent &  & 162 (13\%) & 83 (13\%) & 79 (12\%)\\
+\addlinespace
+\hspace{1em}Republican &  & 540 (43\%) & 262 (42\%) & 278 (43\%)\\
+\hspace{1em}Democrat &  & 566 (45\%) & 283 (45\%) & 283 (44\%)\\
+\hspace{1em}NA &  & 19 & 9 & 10\\
+\textbf{Military Relation} & 1,272 &  &  & \\
+\hspace{1em}No relation &  & 789 (62\%) & 394 (63\%) & 395 (61\%)\\
+\addlinespace
+\hspace{1em}Only family &  & 362 (28\%) & 182 (29\%) & 180 (28\%)\\
+\hspace{1em}Served w/fam &  & 64 (5.0\%) & 31 (4.9\%) & 33 (5.1\%)\\
+\hspace{1em}Served &  & 57 (4.5\%) & 22 (3.5\%) & 35 (5.4\%)\\
+\hspace{1em}NA &  & 15 & 8 & 7\\
+\bottomrule
+\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{1} n (\%)}\\
+\multicolumn{5}{l}{\textsuperscript{a} Independents do not identify nor 'lean' toward either political party}\\
+\end{tabular}
+\endgroup{}
+
+}
+
+\end{table}%
+
+\subsection{Test of Random Assignment to Experiment
+Condition}\label{test-of-random-assignment-to-experiment-condition}
+
+Table~\ref{tbl-logit} shows results of a logistic regression test of
+random assignment to the treatment group. Demographics such as age,
+gender, race, educational attainment, and party ID are included as
+predictor variables. Note that 19 missing observations were deleted. A
+\(\chi^2(15) = 11.010\), with 15 degrees of freedom and associated
+p-value \textgreater{} 0.05 (\(p = 0.75\)) confirms that none of the
+demographic predictor variables significantly increased the
+log-odds---in turn, the probability---of being assigned to the treatment
+group.
+
+\begin{table}
+
+\caption{\label{tbl-logit}Logistic Regression of Random Assignment to
+Treatment}
+
+\centering{
+
+\centering\begingroup\fontsize{9}{11}\selectfont
+
+\begin{tabular}{lcccc}
+\toprule
+  & \textbf{Treatment N} & \textbf{log(OR)} & \textbf{95\% CI} & \textbf{p-value}\\
+\midrule
+\textbf{(Intercept)} & 640 & 0.17 & -0.25, 0.59 & 0.4\\
+\textbf{Age} & 640 &  &  & 0.14\\
+\hspace{1em}18-34 & 179 & — & — & \\
+\hspace{1em}35-54 & 230 & -0.17 & -0.45, 0.12 & 0.2\\
+\hspace{1em}55-74 & 190 & -0.15 & -0.46, 0.15 & 0.3\\
+\addlinespace
+\hspace{1em}75-85+ & 41 & 0.40 & -0.15, 0.97 & 0.2\\
+\textbf{Gender} & 640 &  &  & 0.5\\
+\hspace{1em}Male & 308 & — & — & \\
+\hspace{1em}Female & 326 & -0.07 & -0.29, 0.15 & 0.5\\
+\hspace{1em}Other/Refused & 6 & -0.62 & -1.8, 0.42 & 0.2\\
+\addlinespace
+\textbf{Race (includes Hispanic as race)} & 640 &  &  & 0.9\\
+\hspace{1em}White & 495 & — & — & \\
+\hspace{1em}Asian & 26 & 0.03 & -0.55, 0.60 & >0.9\\
+\hspace{1em}Black & 79 & -0.08 & -0.43, 0.27 & 0.6\\
+\hspace{1em}Other & 11 & 0.05 & -0.82, 0.93 & >0.9\\
+\addlinespace
+\hspace{1em}Hispanic & 20 & -0.24 & -0.86, 0.38 & 0.5\\
+\hspace{1em}American Indian & 9 & 0.50 & -0.58, 1.7 & 0.4\\
+\textbf{Educational Attainment} & 640 &  &  & 0.6\\
+\hspace{1em}H.S. or less & 188 & — & — & \\
+\hspace{1em}Some college no degree & 140 & -0.10 & -0.42, 0.21 & 0.5\\
+\addlinespace
+\hspace{1em}College degree & 223 & -0.16 & -0.45, 0.12 & 0.3\\
+\hspace{1em}Postgraduate degree & 89 & 0.02 & -0.35, 0.40 & >0.9\\
+\textbf{Party ID} & 640 &  &  & 0.8\\
+\hspace{1em}Independent & 79 & — & — & \\
+\hspace{1em}Republican & 278 & 0.12 & -0.24, 0.48 & 0.5\\
+\addlinespace
+\hspace{1em}Democrat & 283 & 0.05 & -0.31, 0.40 & 0.8\\
+\bottomrule
+\multicolumn{5}{l}{\rule{0pt}{1em}\textit{Note: }}\\
+\multicolumn{5}{l}{\rule{0pt}{1em}Chi-Squared = 11.01, d.f. = 15, p = 0.75}\\
+\multicolumn{5}{l}{\rule{0pt}{1em}Abbreviations: CI = Confidence Interval, OR = Odds Ratio}\\
+\end{tabular}
+\endgroup{}
+
+}
+
+\end{table}%
+
+\newpage
+
+\section{Appendix C: Polychoric Item and Score Correlations of Trust and
+Distrust}\label{appendix-c-polychoric-item-and-score-correlations-of-trust-and-distrust}
+
+\subsection{Trust and Distrust}\label{trust-and-distrust}
+
+Polychoric correlation is a measure of association between two ordered
+categorical variables each assumed to represent (i.e., indicate, be
+influenced by) two normally distributed, continuous, latent variables.
+Due to the fact that each item is an ordered categorical variable
+assumed to represent one of two latent constructs (i.e., trust or
+distrust, respectively), I examined polychoric correlations between the
+items used to construct each scale. In addition, one set of the trust
+and distrust items pertained to Maricopa County, AZ, whereas the other
+set of items were identical except that these items pertained to one's
+local area.
+
+Since the two sets of items (AZ items and Local items) are, in theory,
+supposed to capture the same normally distributed continuous latent
+variables, then the polychoric inter-item correlations should be
+significantly associated, strong, and in the same direction for the
+items that measure trust regardless of whether the items pertain to AZ
+or one's local area (likewise for distrust). Simply, trust/distrust in
+elections in AZ should strongly and positively be associated with
+trust/distrust in elections in one's local area.
+
+Additionally, the items that indicate trust should negatively correlate
+with items that indicate distrust. Furthermore, the strength of the
+negative correlations between trust and distrust should closely
+approximate if not match.
+
+\phantomsection\label{cell-fig-polycor}
+\begin{figure}[h]
+
+\caption{\label{fig-polycor}Polychoric Item Correlation Matrix}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-polycor-1.png}}
+
+}
+
+\end{figure}%
+
+Indeed, this is what is revealed by the correlation matrix
+(Figure~\ref{fig-polycor}). Trust items correlate positively, strongly,
+and are significant regardless of location at which the items pertain.
+The same goes for distrust items. Also, items meant to measure trust
+negatively correlate with the items that measure distrust. However, the
+positive correlations are not nearly as high as would be expected
+supposing that the items are nearly identical theoretical indicators of
+the same hypothetical constructs, i.e., trust and distrust respectively.
+
+If the items accurately measure trust/distrust in elections regardless
+of where those elections are said to take place, then positive
+correlations between the AZ and Local area items should approach perfect
+correlation as though the same exact questions were asked twice. This
+result, however, suggests that the location of which the survey items
+pertain (and perhaps other factors) makes a substantial difference in
+the pattern of responses, but also raises valid questions as to whether
+the items accurately measure the latent variable constructs in the first
+place.
+
+Although I do not explicitly assume that the survey instruments
+perfectly measure the hypothetical constructs of interest (i.e., trust
+and distrust), perfect measurement is implicitly assumed by the method
+of combining multiple item responses into a sum or mean composite score.
+
+In short, I expected item responses from the trust and distrust scales
+to be inversely correlated among the sample, but not mutually exclusive.
+Indeed, this is what I find. Polychoric correlations between the trust
+and distrust items negatively correlate as expected, as does the
+correlation between the two sum score scales. Given the ordinal nature
+of the variable items, I conducted a Spearman's rank correlation test
+(\citeproc{ref-spearman1907}{Spearman 1907}) and found a negative
+correlation of \(\rho = -0.49\) (\(95\%\) CI {[}-0.53, -0.44{]};
+Kendall's \(\tau = -0.39\)) between scores on the two scales for the AZ
+items (For the local item scale score correlation: \(\rho = -0.52\),
+\(95\%\) CI {[}-0.56, -0.48{]}; Kendall's \(\tau = -0.39\)). The
+negative correlation between the trust and distrust items and scores
+makes intuitive sense.
+
+\newpage
 
 \section*{References}\label{bibliography}
 \addcontentsline{toc}{section}{References}

@@ -1,34 +1,30 @@
 project:
   type: manuscript
+  execute-dir: project
   output-dir: docs
   render: 
     - index.qmd
-    - "!notebooks/01-data-import-clean-process.qmd"
-    - "!notebooks/02-tables.qmd"
-    - "!notebooks/03-figures.qmd"
-    - "!notebooks/question-set-differences.qmd"
+
 
 manuscript:
   article: index.qmd
   resources:
-    - data/research-paper-df-20250203.Rdata
+    - data/research-paper-data-20241029.Rdata
+    - data/research-paper-data-20241029.csv
     - data/survey_codebook.csv
     - data/data_dictionary.csv
-    - data/raw_spss_dict.csv
+    - data/raw_spss_sanitized_data_dict.csv
+    - data/vmf_election_worker_recruitment_survey_raw_spss_sanitized_20241029_T12.02.sav
   code-links: 
     - text: Data Processing Script
       icon: file-code
       href: src/01-data-clean-process.R
-      url: https://github.com/isaiahespi/rea-paper/blob/0bd7138259d244e9a046828fdcf09f2a33837b95/src/01-data.R
+      url: https://github.com/isaiahespi/rea-paper/blob/46e4c82d3685e3f9c62d64c7a6b4504742232f78/src/01-data-clean-process.R
   notebooks:
-    - notebook: notebooks/01-data-import-clean-process.qmd
-      title: "Data Import and Clean"
-    - notebook: notebooks/appendix_A.qmd
-      title: "Appendix A: Vignettes and Survey Items"
-    - notebook: notebooks/appendix_B.qmd
-      title: "Appendix B: Sample Demographics and Test of Random Assignment"
-    - notebook: notebooks/appendix_C.qmd
-      title: "Appendix C: Trust and Distrust"
+    - notebook: notebooks/figures.qmd
+      title: "Figures"
+    # - notebook: notebooks/01-data-import-clean-process.qmd
+    #   title: "Data Import and Clean"
 
 authors:
   - name: Isaiah Espinoza
@@ -40,12 +36,17 @@ authors:
         city: College Park
         state: MD
         country: US
+
 bibliography: references.bib
 csl: american-political-science-association.csl
-mainfont: Palatino Linotype
+# mainfont: Palatino Linotype
 date-modified: last-modified
 date-format: "YYYY-M-D"
 notebook-links: false
+
+knitr: 
+  opts_chunk: 
+    dev: "ragg_png" # same as knitr::opts_chunk$set(dev = "ragg_png")
 
 format:
   bookup-html: 
@@ -56,10 +57,11 @@ format:
     link-citations: true
     smooth-scroll: true
     link-external-newwindow: true
+    fig-cap-location: top
+    html-math-method: mathjax
     notebook-links: global
     citations-hover: true
     footnotes-hover: false
-    include-in-header: in-line_math_mode.html
     theme: 
       light: [bookup.scss]
       dark: [bookup.scss, bookup_dark.scss]
@@ -76,7 +78,7 @@ format:
     mathfont: TeX Gyre Pagella Math
     fontsize: 11pt
     indent: true # indented paragraphs (indent=true) vs space between paragraphs
-    linestretch: 1.5
+    linestretch: 1.25
     number-sections: false
     citecolor: RoyalBlue
     cap-location: top
@@ -108,6 +110,7 @@ format:
     # mainfont: Palatino Linotype
     mainfont: TeX Gyre Pagella
     mathfont: TeX Gyre Pagella Math
+    linestretch: 1.25
     colorlinks: true
     urlcolor: RoyalBlue
     link-citations: true
@@ -128,12 +131,21 @@ format:
     keep-tex: false
     endnotes: false
     titlepage: false
-    fontsize: 11pt
-    linestretch: 1
-    papersize: a4
+    mainfont: TeX Gyre Pagella
+    mathfont: TeX Gyre Pagella Math
+    fig-height: 4
+    fig-width: 7.5
+    cap-location: top
+    fontsize: 12pt
+    linestretch: 1.25
+    papersize: letter
     link-citations: true
     colorlinks: true
     urlcolor: RoyalBlue
+    include-in-header: 
+      - text: |
+          \usepackage{dcolumn}
+          \usepackage{booktabs}
 
   submittable-docx:
     keep-md: false

@@ -1,8 +1,8 @@
 ---
 title: title
 subtitle: subtitle
-shorttitle: A Short title # aog-article-pdf
-shortauthors: Isaiah      # aog-article-pdf
+shorttitle: A Short title # aog-article-pdata
+shortauthors: Isaiah      # aog-article-pdata
 authors:
   - name: Isaiah Espinoza
     email: gespinoz@umd.edu
@@ -26,6 +26,7 @@ editor_options:
 ```{r}
 #| label: setup
 #| include: false
+#| echo: false
 
 set.seed(1234)
 
@@ -34,18 +35,34 @@ library(tidyverse)
 library(easystats)
 library(odds.n.ends) # model sig from glm
 library(patchwork)
+library(texreg) # Conversion of R regression output into latex or HTML tables
 
-# load subset of processed dataframe that includes dv composite scores
-load("data/research-paper-df-subset-20250203.Rdata") #df
+# load data
+load("data/research-paper-data-20241029.Rdata")
 
 # load data dictionary/codebook
 codebook <- read.csv("data/survey_codebook.csv")
-df_dict <- read.csv("data/df_dictionary.csv")
+data_dict <- read.csv("data/data_dictionary.csv")
+```
 
-# do next. a whole lotta Likert plots
-source(here::here('src', '03-likert_plots.R'))
+```{r}
+#| label: setup-theme
+
+# set ggplot theme that will be used for every plot
+# theme_get()
+old <- ggplot2::theme_set(ggplot2::theme_bw())  # capture current theme
+
+# set/update new theme
+ggplot2::theme_set(
+  new = ggplot2::theme_bw(
+    base_family = 'TeX Gyre Pagella')+ # set font of ggplots
+    theme(legend.position = 'bottom')  # set legend position for all plots
+)
+
 
 ```
+
+
 
 \pagebreak
 
@@ -81,13 +98,13 @@ Trust and confidence in the conduct of elections concerns aspects of elections t
 
 Intuitively, enhancing public trust in elections would best be accomplished by enhancing the *trustworthiness* of the institution, i.e., consistently doing the things that election officials already regularly do come election time. However, trust and confidence in elections has become ever more precarious over the last few election cycles. Especially considering public polling data since 2000 shows that confidence that votes were, or would be, counted as intended was in a consistent decline despite efforts towards bolstering election integrity and trustworthiness [@sances2015]. This is even more pronounced considering the role that partisanship has had on such confidence over accuracy of vote count [@sances2015; @stewart2022].
 
-There's also stark difference in public trust before the election has occurred compared to after, a phenomenon referred to as the "winner-loser gap"; the "winners" are those who supported the winning candidate and the "losers" are those who supported the losing candidate. Much research has been dedicated to analyzing the sentiment of electoral winners vs losers, and vice versa [@nadeau1993; @daniller2019]. Opinions of electoral trust gathered after the election has occurred are limited considering the well-recognized impact that the electoral outcome itself has on feelings of public trust in elections [@daniller2019].
+There's also stark difference in public trust before the election has occurred compared to after, a phenomenon referred to as the "winner-loser gap"; the "winners" are those who supported the winning candidate and the "losers" are those who supported the losing candidate. Much research has been dedicated to analyzing the sentiment of electoral winners vs losers, and vice versa [@nadeau1993; @daniller2019]. Opinions of electoral trust gathered after the election has occurred, however, are limited considering the well-recognized impact that the electoral outcome itself has on feelings of public trust in elections [@daniller2019].
 
 As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *empirical*---a judgement discerned in hindsight after the experience of the election event has occurred. As discussed by @stewart2022, not only was confidence in vote count accuracy influenced by the voter experience, but so too were evaluations of election officials [-@stewart2022, 242-243]. Not to mention the influence that the election results would also have on such evaluations. In other words, trust evaluations post-election are influenced by one's interpretation of their experience and election results. This study, in contrast, focuses primarily on that *anticipatory* kind of confidence, which speaks more to those insecurities based on perceptions of the institution's trustworthiness than upon the particular voter experience.
 
 Regardless of the measures taken by election officials to boost public confidence in the *trustworthiness* of election administration (e.g., conducting audits, testing election machines), public *trust* and confidence in elections more generally is apt to shift dramatically post-election based on factors such as partisanship, elite rhetoric, particular state policies, and more [@nadeau1993; @carter2024; @coll2024a]. Moreover, prior research has found that evaluation of election workers themselves are an important factor when it comes to levels of public confidence in the electoral process [@hall2007; @hall2009; @claassen2008]. Such studies focused on the quality of the voter experience with reference to the interaction between voter and election worker.
 
-Beyond the general competence of election workers, however, the quality of the voter experience may be influenced merely by *a priori* impressions about *who* comprises election staff and volunteers. Political and other social science researchers have recognized for some time the power that group identity can have over attitudes and perception [@xiao2016; @xiao2012; @vanbavel2021]. As such, we can expect that information identifying the particular groups being recruited to serve as election staff will be enough to improve trust and confidence in election administration, and lessen expectations of electoral fraud. The next section elaborates on why military veterans are of particular interest in this regard.
+Beyond the general competence of election workers, however, the quality of the voter experience may be influenced merely by prior impressions about *who* comprises election staff and volunteers. Political and other social science researchers have recognized for some time the power that group identity can have over attitudes and perception [@xiao2016; @xiao2012; @vanbavel2021]. As such, we can expect that information identifying the particular groups being recruited to serve as election staff will be enough to improve trust and confidence in election administration, and lessen expectations of electoral fraud. The next section elaborates on why military veterans are of particular interest in this regard.
 
 ## Why Veterans
 
@@ -107,11 +124,11 @@ Considering the generally positive perception afforded to veterans by the public
 
 Asking participants whether they supported programs intent on recruiting anyone to work as election staff would garner support regardless of the target group. Considering that support and admiration for veterans is generally high among the population [@kleykamp2023], then discerning the impact on one's confidence would require a survey experiment designed to determine whether publicized recruitment efforts targeting veterans as a group would have any special effect on confidence in elections administration.
 
-Since the results and events following the 2020 election loomed large in anticipation of the U.S. 2024 general elections, it is reasonable to take into account beliefs about legitimacy of the 2020 election. This group who denies the legitimacy of the 2020 election results were possibly the most distrusting of the 2024 election. However, given that veteran service members are held in high regard, generally speaking, announcing that veterans are being actively recruited to work as election staff and volunteers is expected to positively influence confidence in elections among those who remained firm in the belief that the 2020 election results were illegitimate. I take into account that legitimacy beliefs about the 2020 election and expectations of electoral fraud are related to partisanship and include partisanship as a control in the analysis[^4].
+Since the results and events following the 2020 election loomed large in anticipation of the U.S. 2024 general elections, it is reasonable to take into account beliefs about legitimacy of the 2020 election. This group who denies the legitimacy of the 2020 election results were possibly the most apprehensive (distrusting) of the 2024 election. However, given that veteran service members are held in high regard, generally speaking, announcing that veterans are being actively recruited to work as election staff and volunteers is expected to positively influence confidence in elections among those who remained firm in the belief that the 2020 election results were illegitimate. I take into account that legitimacy beliefs about the 2020 election and expectations of electoral fraud are related to partisanship and include partisanship as a control in the analysis[^4].
 
 In addition, I expect that both expectations of electoral fraud and concerns for voter safety would lessen (shrink) when presented with information that veterans are being actively recruited to work and volunteer in election offices.
 
-Finally, prior research has shown that confidence that one's own vote would be counted as intended has been much stronger than confidence that votes nationwide would be treated likewise [@sances2015; @stewart2022]. In other words, the public is more trusting of elections closer to home. Taking into account that confidence is lower for elections conducted outside of one's local area, then information that veterans are being recruited to help conduct elections in locations beyond one's locale may close this gap between confidence in elections within one's local area and confidence in elections elsewhere. Although it may be difficult to discern whether recruiting veteran service members would improve confidence in elections near one's local area in light of such hometown favoritism, a positive effect on confidence in elections held beyond one's local area---where confidence is already expectedly lower---can help discern the impact of the group alone. Therefore, any observed disparity of confidence in elections (i.e., the "confidence gap") between elections within one's local area and elections beyond will be smaller among those who are presented with information about election official recruitment efforts of veteran service members.
+Finally, prior research has shown that confidence that one's own vote would be counted as intended has been much stronger than confidence that votes nationwide would be treated likewise [@sances2015; @stewart2022]. In other words, the public is more trusting of elections closer to home. Taking into account that confidence is lower for elections conducted outside of one's local area, then information that veterans are being recruited to help conduct elections in locations beyond one's locale may close this gap between confidence in elections within one's local area and confidence in elections elsewhere. Although it may be difficult to discern whether recruiting veteran service members would improve confidence in elections near one's local area in light of such hometown favoritism, a positive effect on confidence in elections held beyond one's local area---where confidence is already expectedly lower---can help discern the impact of the group alone on public opinion. Therefore, any observed disparity of confidence in elections (i.e., the "confidence gap") between elections within one's local area and elections beyond will be smaller among those who are presented with information about election official recruitment efforts of veteran service members.
 
 ## Experiment Design and Survey Measures
 
@@ -142,7 +159,7 @@ A set of five survey items measured public trust in elections by inquiring into 
 #| tbl-cap: "Survey Items for Trust and Distrust in Elections"
 
 
-trust_txt <- df |> select(q19, q20, q21, q22, q24) |>
+trust_txt <- data |> select(q19, q20, q21, q22, q24) |>
   labelled::set_variable_labels(
     q21 = "How commited do you think election staff and volunteers in Maricopa County, AZ will be to making sure the elections are fair and accurate?"
   ) |> 
@@ -150,7 +167,7 @@ trust_txt <- df |> select(q19, q20, q21, q22, q24) |>
   dplyr::as_tibble() |> 
   select(Trust=label)
 
-distrust_txt <- df |> select(q28_1:q28_5) |>
+distrust_txt <- data |> select(q28_1:q28_5) |>
   labelled::generate_dictionary() |> 
   dplyr::as_tibble() |> 
   select(Distrust=label)
@@ -178,53 +195,24 @@ Upon construction of the two summated scales of *trust* and *distrust*, internal
 
 The primary outcome of interest concerns public confidence in elections administration compensated by one's distrust in elections, i.e., their expectations of electoral fraud. Because trust and distrust are assessed by multiple Likert items, conventional methods call for combining the items of each set into separate Likert scales (also known as summated rating scales). However, many of the items comprising the trust scale directly oppose items capturing distrust. For instance, one item from the trust scale has the respondent report their confidence that votes will be counted as voter's intend, whereas a separate item from the distrust scale has the the respondent report their expectation that many votes will not be counted. Positive responses to these two items directly contradict each other, and would thus cancel out.
 
-The relationship is that trust and distrust represent opposing degrees of confidence along the same spectrum. However, despite the inherent contrast, one can hold both positive degrees of trust and distrust, feeling similarly confident in both respects. Accordingly, equivalent degrees of trust and distrust cancel out, rendering one relatively more *insecure* about their expectations of the future despite the fact that they may feel confident in either direction. When trust and distrust are considered as reflective of one's confidence about future expectations, then both can be placed along the same spectrum. Quite literally, this reflects an uncertain feeling of "it could go one way or the other" with respect to the integrity of elections administration. Operationally, this would reflect a middling point on a scale of *confidence*.
-
-In light of this, I reverse coded items on the distrust scale and combined responses to the trust in elections scale. That is, item responses on the trust scale ranged from 0 ("Not confident at all") to 3 ("Very confident), whereas responses on the distrust scale ranged from 0 ("Not likely at all") to -3 ("Very likely"). Combining responses in this way resulted in an overall measure of *confidence in elections* to serve as the dependent variable[^11]. On this scale, positive values reflect higher confidence in elections, negative values reflect greater distrust, and values closer to zero correspond to an individual's degree of insecurity.
-
-The advantage is that this permits a better test of the treatment effect as theorized. Of course, it is easy enough to examine the effect of the treatment on both trust and distrust separately. However, the theory presents a hypothesis that the treatment will impose influence upon both variables *concurrently and in a positive direction* with respect to the relationship between trust and distrust. That is to say, confidence increases insofar as trust in elections increases and distrust decreases; since distrust detracts from trust, then an accurate measure of confidence must take that constraint into account.
+In light of this, I reverse coded items on the distrust scale and combined responses to the trust in elections scale. That is, item responses on the trust scale ranged from 0 ("Not confident at all") to 3 ("Very confident), whereas responses on the distrust scale ranged from 0 ("Not likely at all") to -3 ("Very likely"). Combining responses in this way resulted in an overall measure of *confidence in elections* to serve as the dependent variable[^11]. On this scale, positive values reflect higher confidence in elections, negative values reflect greater distrust, and values closer to zero correspond to an individual's degree of *insecurity*.
 
 ## Results
 
 I first review responses to the survey items capturing trust and distrust separately by treatment condition. When distinguished by experiment condition, trust in elections admin is noticeably higher for those who read the treatment vignette. The difference is more pronounced for some items over others. That being said, there is a definite distinction between items pertaining to Maricopa County, AZ compared to items that pertain to a respondent's local area. In fact, as expected, the treatment appears to have hardly made a difference when the items concerned one's local area.
 
+{{< embed notebooks/figures.qmd#fig-patch10 >}}
 
-```{r}
-#| label: fig-trustlikert
-#| fig-cap: "Trust in Election Administration by Experiment Condition"
-#| fig-height: 4.5
-#| fig-pos: "h"
-
-
-
-p10.trust.treat
-
-
-
-
-```
-
-
-Reviewing item responses distinguished by treatment condition reveals particulars of the treatment effect (@fig-trustlikert). Among the items that asked about Maricopa County, AZ, it is a bit easier to see upon which items the treatment vignette had the greatest effect. It appears that the main effect of the treatment is upon responses to the item that measures confidence in the security of election technology.
+Reviewing item responses distinguished by treatment condition reveals particulars of the treatment effect (@fig-patch10). Among the items that asked about Maricopa County, AZ, it is a bit easier to see upon which items the treatment vignette had the greatest effect. It appears that the main effect of the treatment is upon responses to the item that measures confidence in the security of election technology.
 
 Regarding confidence in the commitment of election staff and volunteers, a higher proportion of respondents in the treatment group selected "Very confident" over "Somewhat confident" compared to the control group, but only for items concerning Maricopa County, AZ. Although confidence in election workers was generally high across the board, the shift from "Somewhat" to "Very" confident for items pertaining to election worker *commitment* to fairness and accuracy seems to clearly speak to the group being recruited, i.e., veterans and family members. However, the same visible shift in proportion from "Somewhat" to "Very" confident isn't observed when items asked about one's local area. It may be the case that respondents harbor particular attitudes or sentiment about Maricopa County, AZ itself, or there may be nothing uniquely special about Maricopa County, AZ supposing that elections anywhere beyond one's local area generally garner slightly less confidence.
 
 What this does suggest, however, is that trust in the fairness and accuracy of the electoral process is notably higher upon the notion that military veterans will be directly engaged as election staff and volunteers in places where such trust falters. The question turns to whether this also lowers distrust, or the extent to which one expects electoral fraud to occur.
 
-```{r}
-#| label: fig-distrustlikert
-#| fig-cap: "Disrust in Election Administration by Experiment Condition"
-#| fig-height: 4.5
-#| fig-pos: "H"
+{{< embed notebooks/figures.qmd#fig-patch11 >}}
 
 
-
-p11.distrust.treat
-
-
-```
-
-Similar to the trust scale items, the items on the distrust scale were associated with lower distrust in the treatment condition compared to the control. A quick glance at @fig-distrustlikert shows what appears to be a significant reduction in distrust, especially regarding the expectations that many votes wouldn't be counted, many voters would be turned away, and that election officials would discourage voters from casting a ballot. Interestingly, the expectation that there would be foreign interference in elections in Maricopa County, AZ were pretty resilient against the treatment. And again, responses for items pertaining to elections in one's local area are practically indistinguishable between treatment and control.
+Similar to the trust scale items, the items on the distrust scale were associated with lower distrust in the treatment condition compared to the control. A quick glance at @fig-patch11 shows what appears to be a significant reduction in distrust, especially regarding the expectations that many votes wouldn't be counted, many voters would be turned away, and that election officials would discourage voters from casting a ballot. Interestingly, the expectation that there would be foreign interference in elections in Maricopa County, AZ were pretty resilient against the treatment. And again, responses for items pertaining to elections in one's local area are practically indistinguishable between treatment and control.
 
 ### Confidence in elections
 
@@ -233,74 +221,8 @@ Once trust and distrust were composed into unified variable of confidence in ele
 As revealed by review of the item responses, the distribution of confidence differed depending on whether survey items pertained to elections in Maricopa County, AZ, or elections within one's local area.
 
 
-```{r}
-#| label: fig-dist
-#| fig-cap: "Overlapping Distribution of Confidence in Elections for AZ and Local Area"
-#| fig-pos: "H"
+{{< embed notebooks/figures.qmd#fig-dist >}}
 
-ggplot(df) +
-  geom_histogram(
-    aes(x = conf.az.rescaled , y = after_stat(density)),
-    bins = 15,
-    alpha = 0.2,
-    color = 1,
-    fill = "red"
-  ) +
-  geom_histogram(
-    aes(x = conf.lcl.rescaled , y = after_stat(density)),
-    bins = 15,
-    alpha = 0.2,
-    color = 1,
-    fill = "blue"
-  ) +
-  geom_segment(
-    x = round(mean(df$conf.az.rescaled), 2),
-    y = 0,
-    yend = 0.35,
-    color = "firebrick",
-    lwd = 1.4,
-    linetype = 2
-  ) +
-  geom_segment(
-    x = round(mean(df$conf.lcl.rescaled), 2),
-    y = 0,
-    yend = 0.35,
-    color = "darkblue",
-    lwd = 1.4,
-    linetype = 2
-  ) +
-  annotate(
-    "text",
-    x = round(mean(df$conf.az.rescaled), 2),
-    y = 0.40,
-    label = paste("AZ =", round(mean(
-      df$conf.az.rescaled
-    ), 2), "(", round(sd(
-      df$conf.az.rescaled
-    ), 2), ")"),
-    color = "firebrick"
-  ) +
-  annotate(
-    "text",
-    x = round(mean(df$conf.lcl.rescaled), 2),
-    y = 0.43,
-    label = paste("Local area =", round(mean(
-      df$conf.lcl.rescaled
-    ), 2), "(", round(sd(
-      df$conf.lcl.rescaled
-    ), 2), ")"),
-    color = "darkblue"
-  ) +
-  labs(
-    x = str_wrap("Confidence", width = 85),
-    y = "Density",
-    caption = str_wrap(
-     "Mean (std.deviation). Mean difference = 0.33, CI [0.27, 0.38], t = 11.613, df = 1286, p < 0.01",
-     width = 95)) +
-  theme_bw(base_family = "TeX Gyre Pagella")
-
-
-```
 
 Overall, the sample expressed more trust in elections relative to distrust seeing as how the distribution of confidence is largely positive (@fig-dist). However, there's a clear difference between confidence in Maricopa county, AZ elections and elections within one's local area. A paired t-test confirms that this difference was statistically significant, though somewhat small (mean difference $= 0.325$, $95\%$ CI $[0.27, 0.38]$, $t(1286) = 11.61$, $p < .001$). Nonetheless, respondents appeared less confident regarding elections in Maricopa County, AZ, but held more confidence in elections administration in their local area. This complements previous research that demonstrates a similar bias favorable to one's local area [@stewart2022].
 
@@ -314,9 +236,9 @@ Accordingly, when confidence levels are distinguished by experiment condition, t
 # conduct two t-tests using `rstatix::t_test`, bind results by row, and pipe
 # into table
 dplyr::bind_rows(
-  df |> mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |>
+  data |> mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |>
   rstatix::t_test(formula = conf.az.rescaled ~ group,var.equal = F,detailed = T),
-  df |> mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |>
+  data |> mutate(group = forcats::fct_relevel(group, "Treatment", after = 0L)) |>
   rstatix::t_test(formula = conf.lcl.rescaled ~ group,var.equal = F, detailed = T)
   ) |> 
   # specify columns and column names
@@ -335,11 +257,11 @@ dplyr::bind_rows(
     .before = Diff) |> 
   insight::format_table(stars = T) |> 
   # insight::export_table(format = "md") # alternate
-  # output table as `kable` for LaTeX pdf
+  # output table as `kable` for LaTeX pdata
   kableExtra::kbl( 
     booktabs = T,
     col.names = c("Place", "$\\bar{x}_{diff}$", "$\\bar{x}_{treat}$", "$\\bar{x}_{control}$",
-                  "$treat_{n}$", "$control_{n}$", "t", "p", "df", "CI"), 
+                  "$treat_{n}$", "$control_{n}$", "t", "p", "data", "CI"), 
     escape = F) |> 
   kableExtra::footnote(general = "Welch Two Sample t-tests of difference between Confidence in Elections by Treatment Condition.") |> 
   kableExtra::kable_styling(
@@ -366,8 +288,8 @@ The results of @tbl-ttest show that, on a scale ranging from -3 to 3, the effect
 
 # coef plot of treatment effect on confidence distinguished by location
 conf.coef1 <- jtools::plot_summs(
-  lm(conf.az.rescaled ~ group, data = df), 
-  lm(conf.lcl.rescaled ~ group, data = df), 
+  lm(conf.az.rescaled ~ group, data = data), 
+  lm(conf.lcl.rescaled ~ group, data = data), 
   center = T, scale = T, transform.response = T,
   model.names = c("Conf.AZ", "Conf.Local"),
   coefs = c("Treatment" = "groupTreatment"), 
@@ -380,10 +302,10 @@ conf.coef1 <- jtools::plot_summs(
 
 # Coef plots of trust and distrust models for AZ and Local items
 conf.coef2 <- jtools::plot_summs(
-  lm(trust.scores.az ~ group, data = df),
-  lm(distrust.scores.az ~ group, data = df),
-  lm(trust.scores.lcl ~ group, data = df),
-  lm(distrust.scores.lcl ~ group, data = df),
+  lm(trust.scores.az ~ group, data = data),
+  lm(distrust.scores.az ~ group, data = data),
+  lm(trust.scores.lcl ~ group, data = data),
+  lm(distrust.scores.lcl ~ group, data = data),
   center = T, scale = T, transform.response = T,
   model.names = c("Trust.AZ", "Distrust.AZ", "Trust.Local", "Distrust.Local"),
   coefs = c("Treatment" = "groupTreatment"),
@@ -402,6 +324,7 @@ conf.coef2
 
 ```
 
+
 @fig-coef1 displays standard difference estimates of confidence in elections by treatment condition (control condition as reference). @fig-coef1-1 displays two models for confidence in elections in Maricopa County, AZ, and one's local area by treatment condition; @fig-coef1-2 displays the same except *confidence* is decomposed into its two components, *trust* and *distrust*. These figures merely illustrate the effect of the treatment with respect to the relationship between trust and distrust; ultimately confidence improves. 
 
 Confidence in elections was higher among those who read the treatment vignette but remained conditional on whether the survey questions inquired about elections in Maricopa County, AZ. This evidence suggests that announcing efforts to recruit veterans and their families to work as election staff and volunteers may increase confidence in elections administration in places outside of one's local area, but may not boost confidence in elections within one's local area.
@@ -410,132 +333,377 @@ Confidence in elections was higher among those who read the treatment vignette b
 
 I now turn to results examining the effect of the treatment on those who held onto the belief that the 2020 election results were illegitimate. First, reviewing responses to items that capture trust in elections, it is easy to recognize the difference between the way 2020 election deniers responded with respect to where elections were held. 
 
-```{r}
-#| label: fig-legit
-#| fig-cap: "Trust in elections by treatment among those who refute the 2020 election results"
-#| fig-height: 4.5
-
-p13.trust.treat.legit
-
-
-```
+{{< embed notebooks/figures.qmd#fig-patch13 >}}
 
 Among those who refuted the 2020 election results, trust in Maricopa County, AZ elections was lower for each item compared to items pertaining to elections within one's local area, regardless of treatment condition. However, notably, trust that election technology would be secure received the lowest confidence endorsement overall. There was also a notable lack of trust that the voting process would be fair relative to the other items.[^13] Now the comparative difference in responses between those in the treatment group compared to those in the control group appears substantial for items pertaining to elections in Maricopa County, AZ. 
 
 
-```{r}
-#| label: fig-legit2
-#| fig-cap: "Distrust in elections by treatment among those who refute the 2020 election results"
-#| fig-height: 4.5
+{{< embed notebooks/figures.qmd#fig-patch14 >}}
 
-p14.distrust.treat.legit
 
-```
-
-Concerning distrust among those who refuted the 2020 election results, responses items assessing one's expectation that election fraud would occur reveal the same pattern. Although there is not as stark a disparity between responses of those in the treatment and those in the control, among those in the treatment group, there does appear to be less expectation that election fraud would occur in Maricopa County, AZ. Overall, review of responses to trust (@fig-legit) and distrust survey items (@fig-legit2) does lend credence to the impact of the treatment.
+Concerning distrust among those who refuted the 2020 election results, responses items assessing one's expectation that election fraud would occur reveal the same pattern. Although there is not as stark a disparity between responses of those in the treatment and those in the control, among those in the treatment group, there does appear to be less expectation that election fraud would occur in Maricopa County, AZ. Overall, review of responses to trust (@fig-patch13) and distrust survey items (@fig-patch14) does lend credence to the impact of the treatment.
 
 In order to substantiate the overall influence of the treatment on confidence in elections, I regressed the dependent variable confidence on legitimacy beliefs while controlling for partisanship.  
 
-::: {.content-visible when-format="bookup-html"}
+::: {.content-visible when-format="bookup-html" unless-format="aog-article-pdf"}
 
 ```{r}
-#| label: tbl-legit-html
 #| tbl-cap: "Confidence in Elections by Treatment and Legitimacy Beliefs"
 #| tbl-pos: H
 
-
-
 # All continuous variables are mean-centered and scaled by 1 standard deviation.
-m1 <- lm(scale(conf.scores.az) ~ group + q7 + partyid_3cat, data = df)
-m2 <- lm(scale(conf.scores.az) ~ group * q7 + partyid_3cat, data = df)
+m1 <- lm(scale(conf.scores.az) ~ group + q7 + partyid_3cat, data = data)
+m2 <- lm(scale(conf.scores.az) ~ group * q7 + partyid_3cat, data = data)
 
-stargazer::stargazer(
-  m1,
-  m2,
-  type = "html",
-  style = 'apsr',
-  header = F,
-  float = F,
-  align = T, 
-  single.row = T, 
-  dep.var.labels.include = F, model.numbers = F,
-  digits = 2,
-  column.labels = c("Confidence in AZ Elections", "w/Interaction"),
-  covariate.labels = c(
-      "Treatment",
-      "Not Legitimate",
-      "Republican",
-      "Democrat",
-      "Not Legitimate * Treatment",
-      "Constant"
+texreg::htmlreg(
+  list(m1, m2), 
+  single.row = T,
+  caption.above = T,
+  custom.model.names = c("Confidence in AZ Elections", "w/Interaction"),
+  custom.coef.names = c(
+    "(Intercept)",
+    "Treatment",
+    "Not Legitimate",
+    "Republican",
+    "Democrat",
+    "Not Legitimate * Treatment"
     )
 )
 
+
 ```
-
-The first model in Table @tbl-legit-html shows that overall confidence in elections (trust - distrust) among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at $90\%$ confidence level ($p = 0.055$). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.
-
-There's a positive interaction effect of the treatment vignette among those who believe that the 2020 election was not legitimate, on average and controlling for partisanship. This shows that the treatment effect was most influential upon those who believe the 2020 election results were illegitimate. The treatment alone does not reverse such beliefs, but this shows where its influence was most potent.
 
 :::
 
-::: {.content-visible when-format="pdf"}
+::: {.content-visible when-format="aog-article-pdf" unless-format="bookup-html"}
 
 ```{r}
-#| label: tbl-legit-pdf
 #| tbl-cap: "Confidence in Elections by Treatment and Legitimacy Beliefs"
 #| tbl-pos: H
+#| label: tbl-legit
 #| results: asis
 
-# All continuous variables are mean-centered and scaled by 1 standard deviation.
-m1 <- lm(scale(conf.scores.az) ~ group + q7 + partyid_3cat, data = df)
-m2 <- lm(scale(conf.scores.az) ~ group * q7 + partyid_3cat, data = df)
 
-stargazer::stargazer(
-  m1,
-  m2,
-  type = "latex", 
-  style = 'apsr',
-  header = F,
-  float = F,
-  align = T, 
-  single.row = T, 
-  dep.var.labels.include = F, model.numbers = F,
-  digits = 2,
-  column.labels = c("Confidence in AZ Elections", "w/Interaction"),
-  covariate.labels = c(
-      "Treatment",
-      "Not Legitimate",
-      "Republican",
-      "Democrat",
-      "Not Legitimate * Treatment",
-      "Constant"
+
+# All continuous variables are mean-centered and scaled by 1 standard deviation.
+m1 <- lm(scale(conf.scores.az) ~ group + q7 + partyid_3cat, data = data)
+m2 <- lm(scale(conf.scores.az) ~ group * q7 + partyid_3cat, data = data)
+
+texreg::texreg(
+  list(m1, m2),
+  single.row = T,
+  caption.above = T,
+  use.packages = F,
+  table = F, # Ensure this is set to FALSE so Quarto handles table cross-ref env
+  custom.model.names = c("Confidence in AZ Elections", "w/Interaction"),
+  custom.coef.names = c(
+    "(Intercept)",
+    "Treatment",
+    "Not Legitimate",
+    "Republican",
+    "Democrat",
+    "Not Legitimate * Treatment"
     )
 )
 
+
+
 ```
-
-The first model in Table \ref{tbl-legit-pdf} shows that overall confidence in elections (trust - distrust) among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at $90\%$ confidence level ($p = 0.055$). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.
-
-There's a positive interaction effect of the treatment vignette among those who believe that the 2020 election was not legitimate, on average and controlling for partisanship. This shows that the treatment effect was most influential upon those who believe the 2020 election results were illegitimate. The treatment alone does not reverse such beliefs, but this shows where its influence was most potent.
-
 
 :::
 
+The first model in Table \ref{tbl-legit} shows that overall confidence in elections among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at $90\%$ confidence level ($p = 0.055$). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.
 
-
-
+There's a positive interaction effect of the treatment vignette among those who believe that the 2020 election was not legitimate, on average and controlling for partisanship. This shows that the treatment effect was most influential upon those who believe the 2020 election results were illegitimate. The treatment alone does not reverse such beliefs, but this shows where its influence was most potent.
 
 
 ## Conclusion
 
 Publicized announcements that election officials are actively recruiting former military service members to work as election staff and volunteers is associated with slightly greater confidence in elections compared to election worker recruitment announcements that do not explicitly mention targeted recruitment of former military service members. Moreover, increased levels of confidence is limited to elections beyond one's local area and, of course, in anticipation of election night. Whether the increase in confidence is sustained post-election night cannot be inferred from these results.
 
-Bear in mind that confidence in elections for one's local area is already higher than for those beyond. Thus, there's already more insecurity concerning elections elsewhere for whatever reason. In the anticipatory period prior to national elections, publicized efforts to recruit veterans to work as election staff and volunteers may be a small, but positive, step towards reducing insecurity in elections that occur elsewhere. Especially among those who maintained a steadfast degree of distrust in elections. Despite a lack of evidence that systematic electoral fraud had occurred in the 2020 election, a substantial proportion of the population were unwilling to affirm the legitimacy of the results. However, despite such legitimacy beliefs, most were not consistent as they expressed varying levels of trust in different aspects of elections administration.
+Bear in mind that confidence in elections for one's local area is already higher than for those beyond. Thus, there's already more insecurity concerning elections elsewhere for whatever reason. In the anticipatory period prior to national elections, publicized efforts to recruit veterans to work as election staff and volunteers may be a small, but positive, step towards reducing insecurity in elections that occur elsewhere. Especially among those who maintained a steadataast degree of distrust in elections. Despite a lack of evidence that systematic electoral fraud had occurred in the 2020 election, a substantial proportion of the population were unwilling to affirm the legitimacy of the results. However, despite such legitimacy beliefs, most were not consistent as they expressed varying levels of trust in different aspects of elections administration.
 
 These results speaks more to the influence that military veterans have among those who distrust the electoral process and refute the legitimacy of prior outcomes than it does to the public more generally. In general, public confidence appears strongest when the elections under consideration regard those within one's local community. Yet, such strong confidence is not generalized outward to the institution of elections administration as a whole. Insecurity in the integrity of the electoral process and its administration may be naturally higher for elections that occur further from home. Whether that is due to some local favorability bias or some outward negativity bias is hard to say. And seeing as how insecurity presents vulnerability, it is perhaps far easier to inspire a general sense of distrust in the process and its administration in places not near and around one's local area.        
 
-\pagebreak
+\newpage
+
+
+# Appendix A: Survey Experiment Vignettes and Survey Items {.appendix}
+
+
+## Survey Experiment Vignettes
+
+::::: {#fig-vignettes .content-visible layout-ncol="2" when-format="html" unless-format="pdf"}
+::: {#fig-treatment}
+### Treatment Vignette
+
+| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+::: {#fig-control}
+### Control Vignette
+
+| **Local Residents Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+Fabricated Article Vignettes utilized as Experimental Stimulus
+:::::
+
+::::: {.content-hidden unless-format="pdf" layout="[0.45, -0.1, 0.45]"}
+::: {#first-column}
+### Treatment Vignette
+
+| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+::: {#second-column}
+### Control Vignette
+
+| **Local Residents Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+:::::
+
+\newpage
+
+## Survey Items
+
+```{r}
+#| label: tbl-4
+#| tbl-cap: "Survey Items and Response Options"
+
+data |> 
+  select(q6, q7, q25, q26) |> 
+  labelled::generate_dictionary() |> 
+  dplyr::as_tibble() |> 
+  mutate(value_labels = dplyr::case_when(
+    variable == 'q6' ~ "[Strongly unfavorable, Somewhat unfavorable, Neither, Somewhat favorable, Strongly favorable]",
+    variable == 'q7' ~ "Legitimate, Not legitimate",
+    variable == 'q25' ~ "Very concerned, Somewhat concerned, Not too concerned, Not at all concerned",
+    variable == 'q26' ~ "Not at all confident, Not too confident, Somewhat confident, Very confident"
+  )) |> 
+  select(Question = label, response = value_labels) |> 
+  kableExtra::kbl(booktabs = T, linesep = "\\addlinespace") |> 
+  kableExtra::kable_styling(full_width = T,
+                            font_size = 8,
+                            latex_options = c("HOLD_position")) |> 
+  kableExtra::column_spec(column = 1, width = "7cm") |> 
+  kableExtra::column_spec(column = 2, width = "4cm")
+
+
+```
+
+
+\newpage
+
+# Appendix B: Sample Demographics and Balance {.appendix}
+
+
+## Sample Demographics
+
+The median age was 46 (mean age was $47$), $51.7\%$ ($n = 658$) women, $47\%$ ($n = 598$) men, and approximately $1.3\%$ who identified as either Non-binary/third gender ($n = 7$) or preferred not to say ($n = 9$). A large proportion of the sample identified as White or Caucasian ($n = 975, 76.65\%$), while all other non-White respondents comprised $27.83\%$ ($n = 297$) of the sample. Those who held a graduate level degree (e.g., Master's, Doctorate, or Professional level) comprised $13\%$ of the sample; those with either degree at the Associate or Bachelor's level comprised $36.24\%$, while $22.25\%$ had some college but no degree; and $28.46\%$ had either a high school level or equivalent education or less than high school. The largest proportion of the sample identified as Democrat at $44.64\%$, followed by Republicans at $42.59\%$. The proportion of true Independents^[Independent 'leaners' were grouped into the respective party affiliation in which they lean.] was $12.78\%$.
+
+
+```{r}
+#| label: tbl-demog
+#| tbl-cap: "Sample Demographics"
+#| 
+
+# descriptive stats of categorical variables
+# best method for html document
+tbl.desc <- data |>  
+  labelled::set_variable_labels(
+    age_4cat = "Age group",
+    gender_3cat = "Gender",
+    race2 = "Race/Ethnicity",
+    race_wnw = "White or Non-White",
+    educ_4cat = "Education",
+    partyid_3cat = "Party ID",
+    milrelation  = "Military Relation"
+  ) |> 
+  gtsummary::tbl_summary(
+    by = group,
+    include = c(
+    age_4cat, 
+    gender_3cat, 
+    race2,
+    race_wnw,
+    educ_4cat, 
+    partyid_3cat,
+    milrelation),
+    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
+    missing = "ifany",
+    missing_text = "NA") |> 
+  gtsummary::add_n() |> 
+  gtsummary::add_overall() |> 
+  gtsummary::modify_header(label = "**Demographic**") |> 
+  gtsummary::bold_labels()
+
+gtsummary::as_kable_extra(tbl.desc, booktabs = T) |>
+  kableExtra::add_footnote(
+    label = "Independents do not identify nor 'lean' toward either political party") |> 
+  kableExtra::kable_styling(
+    font_size = 9, 
+    protect_latex = T)
+
+# gtsummary::as_gt(tbl.desc) |>  
+#   gt::tab_footnote(
+#     footnote = "Independents do not identify nor 'lean' toward either political party",
+#     placement = "left"
+#     ) |>  
+#   gt::cols_align(align = 'left', columns = everything()) |> 
+#   gt::tab_options(
+#     table.font.size = "small",
+#     data_row.padding = gt::px(1)
+#   )
+
+
+
+```
+
+## Test of Random Assignment to Experiment Condition
+
+@tbl-logit shows results of a logistic regression test of random assignment to the treatment group. Demographics such as age, gender, race, educational attainment, and party ID are included as predictor variables. Note that 19 missing observations were deleted. A $\chi^2(15) = 11.010$, with 15 degrees of freedom and associated p-value > 0.05 ($p = 0.75$) confirms that none of the demographic predictor variables significantly increased the log-odds---in turn, the probability---of being assigned to the treatment group.
+
+
+```{r}
+#| label: tbl-logit
+#| tbl-cap: "Logistic Regression of Random Assignment to Treatment"
+
+
+# simple logit of test of random assignment to treatment
+# treatment is DV (treatment = 1, control = 0)
+# demographic variables are IVs
+
+
+data <- data |> 
+  mutate(group.dum = dplyr::case_when(
+    group == "Treatment" ~ 1,
+    group == "Control" ~ 0,
+    TRUE ~ NA), .after = group)
+
+m1 <- glm(group.dum ~ age_4cat + gender_3cat + race2 + educ_4cat + partyid_3cat, 
+          family = binomial(link = "logit"), data = data)
+
+
+# A Chi-square of 11.01 with 15 degrees of freedom and associated p-value > 0.05 (p-value = 0.752) confirms that none of the demographic predictor variables significantly increased the probability of being assigned to the treatment group. 
+
+logit_tab <- gtsummary::tbl_regression(
+    m1, 
+    intercept = T,
+    label = list(
+      age_4cat ~"Age", 
+      gender_3cat ~ "Gender", 
+      race2 ~ "Race (includes Hispanic as race)",
+      educ_4cat ~ "Educational Attainment", 
+      partyid_3cat ~ "Party ID")) |> 
+  gtsummary::add_global_p(keep = T) |> 
+  gtsummary::add_nevent(location = c("label", "level")) |>
+  gtsummary::bold_p() |> 
+  gtsummary::bold_labels() |>
+  # gtsummary::show_header_names()
+  gtsummary::modify_header(
+    label = " ",
+    stat_nevent = "**Treatment N**") 
+# 
+#   gtsummary::modify_footnote_header(
+#     footnote = "Chi-Squared ($\\chi^2$) = 11.01, d.f. = 15, p = 0.75", columns = "p.value")
+
+gtsummary::as_kable_extra(logit_tab, 
+                          booktabs = T, 
+                          escape = F, 
+                          addtl_fmt = T) |> 
+  kableExtra::footnote("Chi-Squared = 11.01, d.f. = 15, p = 0.75", escape = F) |> 
+  kableExtra::kable_styling(font_size = 9)
+
+
+```
+
+\newpage
+
+# Appendix C: Polychoric Item and Score Correlations of Trust and Distrust {.appendix}
+ 
+## Trust and Distrust
+
+Polychoric correlation is a measure of association between two ordered categorical variables each assumed to represent (i.e., indicate, be influenced by) two normally distributed, continuous, latent variables. Due to the fact that each item is an ordered categorical variable assumed to represent one of two latent constructs (i.e., trust or distrust, respectively), I examined polychoric correlations between the items used to construct each scale. In addition, one set of the trust and distrust items pertained to Maricopa County, AZ, whereas the other set of items were identical except that these items pertained to one's local area.
+
+Since the two sets of items (AZ items and Local items) are, in theory, supposed to capture the same normally distributed continuous latent variables, then the polychoric inter-item correlations should be significantly associated, strong, and in the same direction for the items that measure trust regardless of whether the items pertain to AZ or one's local area  (likewise for distrust). Simply, trust/distrust in elections in AZ should strongly and positively be associated with trust/distrust in elections in one's local area. 
+
+Additionally, the items that indicate trust should negatively correlate with items that indicate distrust. Furthermore, the strength of the negative correlations between trust and distrust should closely approximate if not match.  
+
+```{r}
+#| label: fig-polycor
+#| fig-cap: "Polychoric Item Correlation Matrix"
+#| fig-pos: 'h'
+
+# Get polychoric item correlation matrix.
+item.cor <- data |>
+  select(q19:q24, -q23, q28_1:q28_5, q30:q35, -q34, q40_1:q40_5) |> 
+  # ensure factors are ordered factors
+  mutate(across(where(is.factor), ~factor(., ordered = T))) |> 
+  # adjust variable column names of items
+  dplyr::rename(
+    trustvote_az     = q19,
+    trustadmin_az    = q20,
+    truststaff_az    = q21,
+    trustprcss_az    = q22,
+    trusttech_az     = q24,
+    votefraud_az     = q28_1,
+    miscount_az      = q28_2,
+    turnedaway_az    = q28_3,
+    foreigntamp_az   = q28_4,
+    discourage_az    = q28_5,
+    trustvote_lcl    = q30,
+    trustadmin_lcl   = q31,
+    truststaff_lcl   = q32,
+    trustprcss_lcl   = q33,
+    trusttech_lcl    = q35,
+    votefraud_lcl    = q40_1,
+    miscount_lcl     = q40_2,
+    turnedaway_lcl   = q40_3,
+    foreigntamp_lcl  = q40_4,
+    discourage_lcl   = q40_5
+  ) |> 
+  correlation::correlation(
+    select = 
+      c("trustvote_az", "trustadmin_az", "truststaff_az", "trustprcss_az", "trusttech_az",
+        "votefraud_az", "miscount_az", "turnedaway_az", "foreigntamp_az", "discourage_az"),
+    select2 =
+      c("trustvote_lcl", "trustadmin_lcl", "truststaff_lcl", "trustprcss_lcl","trusttech_lcl",
+        "votefraud_lcl", "miscount_lcl", "turnedaway_lcl", "foreigntamp_lcl","discourage_lcl"),
+    method = "polychoric") |>
+  summary()
+
+# plot item correlations
+plot(item.cor) + theme(axis.text.x = element_text(angle = 45, vjust = 0.6))
+
+```
+
+
+Indeed, this is what is revealed by the correlation matrix (@fig-polycor). Trust items correlate positively, strongly, and are significant regardless of location at which the items pertain. The same goes for distrust items. Also, items meant to measure trust negatively correlate with the items that measure distrust. However, the positive correlations are not nearly as high as would be expected supposing that the items are nearly identical theoretical indicators of the same hypothetical constructs, i.e., trust and distrust respectively. 
+
+If the items accurately measure trust/distrust in elections regardless of where those elections are said to take place, then positive correlations between the AZ and Local area items should approach perfect correlation as though the same exact questions were asked twice. This result, however, suggests that the location of which the survey items pertain (and perhaps other factors) makes a substantial difference in the pattern of responses, but also raises valid questions as to whether the items accurately measure the latent variable constructs in the first place.
+
+Although I do not explicitly assume that the survey instruments perfectly measure the hypothetical constructs of interest (i.e., trust and distrust), perfect measurement is implicitly assumed by the method of combining multiple item responses into a sum or mean composite score.   
+
+In short, I expected item responses from the trust and distrust scales to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Polychoric correlations between the trust and distrust items negatively correlate as expected, as does the correlation between the two sum score scales. Given the ordinal nature of the variable items, I conducted a Spearman's rank correlation test [@spearman1907] and found a negative correlation of $\rho = -0.49$ ($95\%$ CI \[-0.53, -0.44\]; Kendall's $\tau = -0.39$) between scores on the two scales for the AZ items (For the local item scale score correlation: $\rho = -0.52$, $95\%$ CI \[-0.56, -0.48\]; Kendall's $\tau = -0.39$). The negative correlation between the trust and distrust items and scores makes intuitive sense.
+
+\newpage
 
 [^1]: I adopt a distinction made between *trustworthiness* and *trust* in elections [@stewart2022]. The "*worthiness*" of one's trust in the conduct and administration of elections is based on the extent that outcomes of an election reasonably follow the rules prescribed and can be adjudicated as such. The public's *trust* in elections, however, is amendable to an indefinite number of factors that may be unrelated to the formal structure or procedures of election administration. I can recognize that my car is trustworthy prior to ever driving it because it is structurally sound; I have every reason to deem it *worthy of my trust*. However, I don't trust my car because I am sure it is haunted.
 
@@ -555,7 +723,7 @@ These results speaks more to the influence that military veterans have among tho
 
 [^9]: Survey item wording and responses are included in Appendix A.
 
-[^10]: I expected item responses from the trust and distrust scales to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Polychoric correlations between the trust and distrust items negatively correlate as expected, as does the correlation between the two sum score scales. Given the ordinal nature of the variable items, I conducted a Spearman's rank correlation test [@spearman1907] and found a negative correlation of $\rho = -0.49$ ($95\%$ CI \[-0.53, -0.44\]; Kendall's $\tau = -0.39$) between scores on the two scales for the AZ items (For the local item scale score correlation: $\rho = -0.52$, $95\%$ CI \[-0.56, -0.48\]; Kendall's $\tau = -0.39$). The negative correlation between the trust and distrust items and scores makes intuitive sense. See Appendix C for inter-item correlation
+[^10]: See Appendix C for analysis.
 
 [^11]: The methodological concerns between the use of (unit weighted) sum or mean scores compared to the use of estimated factor scores for Likert scales composed of multiple Likert items are legion. The use of either computed sum scores or estimated factor scores as a general practice is continuously debated [@mcneish2020; @widaman2022; @mcneish2023; @widaman2024], yet there is no general consensus on the most appropriate method generally. The use of either appears to largely depend on the researcher's particular research objective, theoretical suppositions, and necessity. Another common concern is the inappropriate treatment of ordinal variables as interval which levy strong assumptions, e.g., each item contributes equally to the variable being measured and that ordinal response categories are equidistant as though on an interval scale [@wang2013; for contrast, see @robitzsch2020].
 

@@ -110,7 +110,7 @@ run_crab <- function(data, row, col){
 likert_plot <- function(data, x, ...,  
                         symmetric = FALSE,
                         variable_labels = NULL,
-                        label_size = 3.0,
+                        label_size = 2.7,
                         vline = FALSE,
                         title = waiver(), 
                         subtitle = waiver(),
