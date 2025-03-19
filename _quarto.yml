@@ -89,7 +89,8 @@ format:
 
   aog-article-pdf:
     pdf-engine: latexmk
-    keep-tex: false
+    keep-tex: true
+    keep-md: false
     papersize: letter
     # mainfont: Palatino Linotype
     mainfont: TeX Gyre Pagella
@@ -111,5 +112,19 @@ format:
     include-in-header: 
       - text: |
           \usepackage{dcolumn}
+          \usepackage{etoolbox}
+          \AtBeginEnvironment{longtblr}{\begin{singlespacing}}
+          \AtEndEnvironment{longtblr}{\end{singlespacing}}
+  
+  submittable-docx: default
+  jats: default
+  # docx:
+  #   toc: false
+  #   keep-md: true
+  #   execute:
+  #     echo: false
+  #     eval: false
+  #     include: false
+    
 
 

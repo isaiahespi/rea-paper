@@ -192,20 +192,10 @@
 \NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
 \newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
 \newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 \usepackage{dcolumn}
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtblr}{\begin{singlespacing}}
+\AtEndEnvironment{longtblr}{\end{singlespacing}}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -1543,63 +1533,47 @@ Independents\footnote{Independent `leaners' were grouped into the
 
 \centering{
 
-\centering\begingroup\fontsize{9}{11}\selectfont
-
-\begin{tabular}{lcccc}
+\centering
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]},
+column{1,2,3,4}={}{font=\fontsize{0.7em}{1em}\selectfont,},
+rowsep={0.1em}, colsep = {0.5em},
+}                     %% tabularray inner close
 \toprule
-\textbf{Demographic} & \textbf{N} & \makecell[c]{\textbf{Overall}\ \ \\N = 1,287} & \makecell[c]{\textbf{Control}\ \ \\N = 637} & \makecell[c]{\textbf{Treatment}\ \ \\N = 650}\\
-\midrule
-\textbf{Age group} & 1,287 &  &  & \\
-\hspace{1em}18-34 &  & 350 (27\%) & 170 (27\%) & 180 (28\%)\\
-\hspace{1em}35-54 &  & 480 (37\%) & 245 (38\%) & 235 (36\%)\\
-\hspace{1em}55-74 &  & 390 (30\%) & 198 (31\%) & 192 (30\%)\\
-\hspace{1em}75-85+ &  & 67 (5.2\%) & 24 (3.8\%) & 43 (6.6\%)\\
-\addlinespace
-\textbf{Gender} & 1,272 &  &  & \\
-\hspace{1em}Male &  & 598 (47\%) & 289 (46\%) & 309 (48\%)\\
-\hspace{1em}Female &  & 658 (52\%) & 330 (52\%) & 328 (51\%)\\
-\hspace{1em}Other/Refused &  & 16 (1.3\%) & 10 (1.6\%) & 6 (0.9\%)\\
-\hspace{1em}NA &  & 15 & 8 & \vphantom{4} 7\\
-\addlinespace
-\textbf{Race/Ethnicity} & 1,272 &  &  & \\
-\hspace{1em}White &  & 975 (77\%) & 478 (76\%) & 497 \vphantom{1} (77\%)\\
-\hspace{1em}Asian &  & 51 (4.0\%) & 25 (4.0\%) & 26 (4.0\%)\\
-\hspace{1em}Black &  & 164 (13\%) & 85 (14\%) & 79 (12\%)\\
-\hspace{1em}Other &  & 24 (1.9\%) & 12 (1.9\%) & 12 (1.9\%)\\
-\addlinespace
-\hspace{1em}Hispanic &  & 44 (3.5\%) & 24 (3.8\%) & 20 (3.1\%)\\
-\hspace{1em}American Indian &  & 14 (1.1\%) & 5 (0.8\%) & 9 (1.4\%)\\
-\hspace{1em}NA &  & 15 & 8 & \vphantom{3} 7\\
-\textbf{White or Non-White} & 1,272 &  &  & \\
-\hspace{1em}Non-White &  & 297 (23\%) & 151 (24\%) & 146 (23\%)\\
-\addlinespace
-\hspace{1em}White &  & 975 (77\%) & 478 (76\%) & 497 (77\%)\\
-\hspace{1em}NA &  & 15 & 8 & \vphantom{2} 7\\
-\textbf{Education} & 1,272 &  &  & \\
-\hspace{1em}H.S. or less &  & 362 (28\%) & 174 (28\%) & 188 (29\%)\\
-\hspace{1em}Some college no degree &  & 283 (22\%) & 142 (23\%) & 141 (22\%)\\
-\addlinespace
-\hspace{1em}College degree &  & 461 (36\%) & 236 (38\%) & 225 (35\%)\\
-\hspace{1em}Postgraduate degree &  & 166 (13\%) & 77 (12\%) & 89 (14\%)\\
-\hspace{1em}NA &  & 15 & 8 & \vphantom{1} 7\\
-\textbf{Party ID} & 1,268 &  &  & \\
-\hspace{1em}Independent &  & 162 (13\%) & 83 (13\%) & 79 (12\%)\\
-\addlinespace
-\hspace{1em}Republican &  & 540 (43\%) & 262 (42\%) & 278 (43\%)\\
-\hspace{1em}Democrat &  & 566 (45\%) & 283 (45\%) & 283 (44\%)\\
-\hspace{1em}NA &  & 19 & 9 & 10\\
-\textbf{Military Relation} & 1,272 &  &  & \\
-\hspace{1em}No relation &  & 789 (62\%) & 394 (63\%) & 395 (61\%)\\
-\addlinespace
-\hspace{1em}Only family &  & 362 (28\%) & 182 (29\%) & 180 (28\%)\\
-\hspace{1em}Served w/fam &  & 64 (5.0\%) & 31 (4.9\%) & 33 (5.1\%)\\
-\hspace{1em}Served &  & 57 (4.5\%) & 22 (3.5\%) & 35 (5.4\%)\\
-\hspace{1em}NA &  & 15 & 8 & 7\\
+\textbf{Demographic} & \textbf{Overall (N = 1287)} & \textbf{Control (N = 637)} & \textbf{Treatment (N = 650)} \\
+\textbf{Age group} &  &  &  \\
+18-34 & 350 (27\%) & 170 (27\%) & 180 (28\%) \\
+35-54 & 480 (37\%) & 245 (38\%) & 235 (36\%) \\
+55-74 & 390 (30\%) & 198 (31\%) & 192 (30\%) \\
+75-85+ & 67 (5.2\%) & 24 (3.8\%) & 43 (6.6\%) \\
+\textbf{Gender} &  &  &  \\
+Male & 598 (47\%) & 289 (46\%) & 309 (48\%) \\
+Female & 658 (52\%) & 330 (52\%) & 328 (51\%) \\
+Other/Refused & 16 (1.3\%) & 10 (1.6\%) & 6 (0.9\%) \\
+NA & 15 & 8 & 7 \\
+\textbf{Race/Ethnicity} &  &  &  \\
+White & 975 (77\%) & 478 (76\%) & 497 (77\%) \\
+Asian & 51 (4.0\%) & 25 (4.0\%) & 26 (4.0\%) \\
+Black & 164 (13\%) & 85 (14\%) & 79 (12\%) \\
+Other & 24 (1.9\%) & 12 (1.9\%) & 12 (1.9\%) \\
+Hispanic & 44 (3.5\%) & 24 (3.8\%) & 20 (3.1\%) \\
+American Indian & 14 (1.1\%) & 5 (0.8\%) & 9 (1.4\%) \\
+NA & 15 & 8 & 7 \\
+\textbf{Education} &  &  &  \\
+H.S. or less & 362 (28\%) & 174 (28\%) & 188 (29\%) \\
+Some college no degree & 283 (22\%) & 142 (23\%) & 141 (22\%) \\
+College degree & 461 (36\%) & 236 (38\%) & 225 (35\%) \\
+Postgraduate degree & 166 (13\%) & 77 (12\%) & 89 (14\%) \\
+NA & 15 & 8 & 7 \\
+\textbf{Party ID} &  &  &  \\
+Independent & 162 (13\%) & 83 (13\%) & 79 (12\%) \\
+Republican & 540 (43\%) & 262 (42\%) & 278 (43\%) \\
+Democrat & 566 (45\%) & 283 (45\%) & 283 (44\%) \\
+NA & 19 & 9 & 10 \\
 \bottomrule
-\multicolumn{5}{l}{\rule{0pt}{1em}\textsuperscript{1} n (\%)}\\
-\multicolumn{5}{l}{\textsuperscript{a} Independents do not identify nor 'lean' toward either political party}\\
-\end{tabular}
-\endgroup{}
+\end{tblr}
 
 }
 

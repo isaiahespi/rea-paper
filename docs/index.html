@@ -58,10 +58,6 @@ div.csl-indent {
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <style>html{ scroll-behavior: smooth; }</style>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -266,7 +262,7 @@ window.Quarto = {
               </div>
       </div>
       <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF (aog-article)</a></p></div></div></div>
+      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF (aog-article)</a></p></div><div class="quarto-title-meta-contents"><p><a href="index.docx"><i class="bi bi-file-word"></i>MS Word (submittable)</a></p></div></div></div>
     </div>
 
     <div>
@@ -771,6 +767,72 @@ Figure&nbsp;4: Distrust in elections by treatment among those who refute the 202
 </div>
 <p>Concerning distrust among those who refuted the 2020 election results, responses to items assessing one’s expectation that election fraud would occur reveal the same pattern. Although there is not as stark a disparity between responses of those in the treatment and those in the control, among those in the treatment group, there does appear to be less expectation that election fraud would occur in Maricopa County, AZ. Overall, review of responses to trust (<a href="#fig-patch13" class="quarto-xref">Figure&nbsp;3</a>) and distrust survey items (<a href="#fig-patch14" class="quarto-xref">Figure&nbsp;4</a>) does lend credence to the impact of the treatment.</p>
 <p>In order to substantiate the overall influence of the treatment on confidence in elections, I regressed the dependent variable confidence on legitimacy beliefs while controlling for partisanship.</p>
+<div class="cell" data-tbl-cap="Confidence in Elections by Treatment and Legitimacy Beliefs" data-tbl-pos="H">
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;color: #000000;border-top: 2px solid #000000;"&gt;
+&lt;caption&gt;Statistical models&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="padding-left: 5px;padding-right: 5px;"&gt;&amp;nbsp;&lt;/th&gt;
+&lt;th style="padding-left: 5px;padding-right: 5px;"&gt;Confidence in AZ Elections&lt;/th&gt;
+&lt;th style="padding-left: 5px;padding-right: 5px;"&gt;w/Interaction&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr style="border-top: 1px solid #000000;"&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;(Intercept)&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.03 (0.08)&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.07 (0.08)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;Treatment&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.18 (0.05)&lt;sup&gt;&amp;#42;&amp;#42;&amp;#42;&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.09 (0.06)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;Not Legitimate&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;-0.72 (0.07)&lt;sup&gt;&amp;#42;&amp;#42;&amp;#42;&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;-0.86 (0.09)&lt;sup&gt;&amp;#42;&amp;#42;&amp;#42;&lt;/sup&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;Republican&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.11 (0.08)&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.12 (0.08)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;Democrat&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.17 (0.09)&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.17 (0.09)&lt;sup&gt;&amp;#42;&lt;/sup&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;Not Legitimate * Treatment&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.27 (0.11)&lt;sup&gt;&amp;#42;&lt;/sup&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style="border-top: 1px solid #000000;"&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.14&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;Adj. R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.13&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;0.14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr style="border-bottom: 2px solid #000000;"&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;Num. obs.&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;1263&lt;/td&gt;
+&lt;td style="padding-left: 5px;padding-right: 5px;"&gt;1263&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tfoot&gt;
+&lt;tr&gt;
+&lt;td style="font-size: 0.8em;" colspan="3"&gt;&lt;sup&gt;&amp;#42;&amp;#42;&amp;#42;&lt;/sup&gt;p &amp;lt; 0.001; &lt;sup&gt;&amp;#42;&amp;#42;&lt;/sup&gt;p &amp;lt; 0.01; &lt;sup&gt;&amp;#42;&lt;/sup&gt;p &amp;lt; 0.05&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tfoot&gt;
+&lt;/table&gt;</code></pre>
+</div>
+</div>
 <p>The first model in Table <span class="math inline">\(\ref{tbl-legit}\)</span> shows that overall confidence in elections among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at <span class="math inline">\(90\%\)</span> confidence level (<span class="math inline">\(p = 0.055\)</span>). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.</p>
 <p>There’s a positive interaction effect of the treatment vignette among those who believe that the 2020 election was not legitimate, on average and controlling for partisanship. This shows that the treatment effect was most influential upon those who believe the 2020 election results were illegitimate. The treatment alone does not reverse such beliefs, but this shows where its influence was most potent.</p>
 </section>
@@ -1374,309 +1436,299 @@ Table&nbsp;5: Survey Items and Response Options
 <section id="sample-demographics" class="level2">
 <h2 class="anchored" data-anchor-id="sample-demographics">Sample Demographics</h2>
 <p>The median age was 46 (mean age was <span class="math inline">\(47\)</span>), <span class="math inline">\(51.7\%\)</span> (<span class="math inline">\(n = 658\)</span>) women, <span class="math inline">\(47\%\)</span> (<span class="math inline">\(n = 598\)</span>) men, and approximately <span class="math inline">\(1.3\%\)</span> who identified as either Non-binary/third gender (<span class="math inline">\(n = 7\)</span>) or preferred not to say (<span class="math inline">\(n = 9\)</span>). A large proportion of the sample identified as White or Caucasian (<span class="math inline">\(n = 975, 76.65\%\)</span>), while all other non-White respondents comprised <span class="math inline">\(27.83\%\)</span> (<span class="math inline">\(n = 297\)</span>) of the sample. Those who held a graduate level degree (e.g., Master’s, Doctorate, or Professional level) comprised <span class="math inline">\(13\%\)</span> of the sample; those with either degree at the Associate or Bachelor’s level comprised <span class="math inline">\(36.24\%\)</span>, while <span class="math inline">\(22.25\%\)</span> had some college but no degree; and <span class="math inline">\(28.46\%\)</span> had either a high school level or equivalent education or less than high school. The largest proportion of the sample identified as Democrat at <span class="math inline">\(44.64\%\)</span>, followed by Republicans at <span class="math inline">\(42.59\%\)</span>. The proportion of true Independents<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> was <span class="math inline">\(12.78\%\)</span>.</p>
-<div class="cell" data-tbl-pos="H">
-<div id="tbl-demog" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H">
+<div class="cell" data-tbl-colwidths="80" data-tbl-pos="H">
+<div id="tbl-demog" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-tbl-colwidths="80">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-demog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6: Sample Demographics
 </figcaption>
 <div aria-describedby="tbl-demog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table style="NAborder-bottom: 0; font-size: 9px; margin-left: auto; margin-right: auto;" class="table">
- <thead>
-  <tr>
-   <th style="text-align:left;"> Demographic </th>
-   <th style="text-align:center;"> N </th>
-   <th style="text-align:center;"> Overall  <br>N = 1,287 </th>
-   <th style="text-align:center;"> Control  <br>N = 637 </th>
-   <th style="text-align:center;"> Treatment  <br>N = 650 </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> <span style=" font-weight: bold;    ">Age group</span> </td>
-   <td style="text-align:center;"> 1,287 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> 18-34 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 350 (27%) </td>
-   <td style="text-align:center;"> 170 (27%) </td>
-   <td style="text-align:center;"> 180 (28%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> 35-54 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 480 (37%) </td>
-   <td style="text-align:center;"> 245 (38%) </td>
-   <td style="text-align:center;"> 235 (36%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> 55-74 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 390 (30%) </td>
-   <td style="text-align:center;"> 198 (31%) </td>
-   <td style="text-align:center;"> 192 (30%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> 75-85+ </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 67 (5.2%) </td>
-   <td style="text-align:center;"> 24 (3.8%) </td>
-   <td style="text-align:center;"> 43 (6.6%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> <span style=" font-weight: bold;    ">Gender</span> </td>
-   <td style="text-align:center;"> 1,272 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Male </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 598 (47%) </td>
-   <td style="text-align:center;"> 289 (46%) </td>
-   <td style="text-align:center;"> 309 (48%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Female </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 658 (52%) </td>
-   <td style="text-align:center;"> 330 (52%) </td>
-   <td style="text-align:center;"> 328 (51%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Other/Refused </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 16 (1.3%) </td>
-   <td style="text-align:center;"> 10 (1.6%) </td>
-   <td style="text-align:center;"> 6 (0.9%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> NA </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 15 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> <span style=" font-weight: bold;    ">Race/Ethnicity</span> </td>
-   <td style="text-align:center;"> 1,272 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> White </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 975 (77%) </td>
-   <td style="text-align:center;"> 478 (76%) </td>
-   <td style="text-align:center;"> 497 (77%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Asian </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 51 (4.0%) </td>
-   <td style="text-align:center;"> 25 (4.0%) </td>
-   <td style="text-align:center;"> 26 (4.0%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Black </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 164 (13%) </td>
-   <td style="text-align:center;"> 85 (14%) </td>
-   <td style="text-align:center;"> 79 (12%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Other </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 24 (1.9%) </td>
-   <td style="text-align:center;"> 12 (1.9%) </td>
-   <td style="text-align:center;"> 12 (1.9%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Hispanic </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 44 (3.5%) </td>
-   <td style="text-align:center;"> 24 (3.8%) </td>
-   <td style="text-align:center;"> 20 (3.1%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> American Indian </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 14 (1.1%) </td>
-   <td style="text-align:center;"> 5 (0.8%) </td>
-   <td style="text-align:center;"> 9 (1.4%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> NA </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 15 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> <span style=" font-weight: bold;    ">White or Non-White</span> </td>
-   <td style="text-align:center;"> 1,272 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Non-White </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 297 (23%) </td>
-   <td style="text-align:center;"> 151 (24%) </td>
-   <td style="text-align:center;"> 146 (23%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> White </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 975 (77%) </td>
-   <td style="text-align:center;"> 478 (76%) </td>
-   <td style="text-align:center;"> 497 (77%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> NA </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 15 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> <span style=" font-weight: bold;    ">Education</span> </td>
-   <td style="text-align:center;"> 1,272 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> H.S. or less </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 362 (28%) </td>
-   <td style="text-align:center;"> 174 (28%) </td>
-   <td style="text-align:center;"> 188 (29%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Some college no degree </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 283 (22%) </td>
-   <td style="text-align:center;"> 142 (23%) </td>
-   <td style="text-align:center;"> 141 (22%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> College degree </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 461 (36%) </td>
-   <td style="text-align:center;"> 236 (38%) </td>
-   <td style="text-align:center;"> 225 (35%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Postgraduate degree </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 166 (13%) </td>
-   <td style="text-align:center;"> 77 (12%) </td>
-   <td style="text-align:center;"> 89 (14%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> NA </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 15 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> <span style=" font-weight: bold;    ">Party ID</span> </td>
-   <td style="text-align:center;"> 1,268 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Independent </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 162 (13%) </td>
-   <td style="text-align:center;"> 83 (13%) </td>
-   <td style="text-align:center;"> 79 (12%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Republican </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 540 (43%) </td>
-   <td style="text-align:center;"> 262 (42%) </td>
-   <td style="text-align:center;"> 278 (43%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Democrat </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 566 (45%) </td>
-   <td style="text-align:center;"> 283 (45%) </td>
-   <td style="text-align:center;"> 283 (44%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> NA </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 19 </td>
-   <td style="text-align:center;"> 9 </td>
-   <td style="text-align:center;"> 10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> <span style=" font-weight: bold;    ">Military Relation</span> </td>
-   <td style="text-align:center;"> 1,272 </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;">  </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> No relation </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 789 (62%) </td>
-   <td style="text-align:center;"> 394 (63%) </td>
-   <td style="text-align:center;"> 395 (61%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Only family </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 362 (28%) </td>
-   <td style="text-align:center;"> 182 (29%) </td>
-   <td style="text-align:center;"> 180 (28%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Served w/fam </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 64 (5.0%) </td>
-   <td style="text-align:center;"> 31 (4.9%) </td>
-   <td style="text-align:center;"> 33 (5.1%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Served </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 57 (4.5%) </td>
-   <td style="text-align:center;"> 22 (3.5%) </td>
-   <td style="text-align:center;"> 35 (5.4%) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> NA </td>
-   <td style="text-align:center;">  </td>
-   <td style="text-align:center;"> 15 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 7 </td>
-  </tr>
-</tbody>
-<tfoot>
-<tr>
-<td style="padding: 0; border:0;" colspan="100%">
-<sup>a</sup> Independents do not identify nor 'lean' toward either political party</td>
-</tr>
-</tfoot>
-<tfoot><tr><td style="padding: 0; " colspan="100%">
-<sup>1</sup> n (%)</td></tr></tfoot>
-</table>
+<!-- preamble start -->
 
+    <!-- tinytable mathjax start -->
+    <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+    <!-- tinytable mathjax end -->
+
+    <script>
+
+      function styleCell_ia9vcrlgop0fwipuv2un(i, j, css_id) {
+          var table = document.getElementById("tinytable_ia9vcrlgop0fwipuv2un");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ia9vcrlgop0fwipuv2un');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_ia9vcrlgop0fwipuv2un(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ia9vcrlgop0fwipuv2un");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 29, j: 3 },  ], css_id: '6',}, 
+          { positions: [ { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 4, j: 3 }, { i: 5, j: 3 }, { i: 6, j: 3 }, { i: 7, j: 3 }, { i: 8, j: 3 }, { i: 9, j: 3 }, { i: 10, j: 3 }, { i: 11, j: 3 }, { i: 12, j: 3 }, { i: 13, j: 3 }, { i: 14, j: 3 }, { i: 15, j: 3 }, { i: 16, j: 3 }, { i: 17, j: 3 }, { i: 18, j: 3 }, { i: 19, j: 3 }, { i: 20, j: 3 }, { i: 21, j: 3 }, { i: 22, j: 3 }, { i: 23, j: 3 }, { i: 24, j: 3 }, { i: 25, j: 3 }, { i: 26, j: 3 }, { i: 27, j: 3 }, { i: 28, j: 3 },  ], css_id: '5',}, 
+          { positions: [ { i: 0, j: 3 },  ], css_id: '4',}, 
+          { positions: [ { i: 29, j: 1 }, { i: 29, j: 0 }, { i: 29, j: 2 },  ], css_id: '3',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 }, { i: 11, j: 0 }, { i: 12, j: 0 }, { i: 13, j: 0 }, { i: 14, j: 0 }, { i: 15, j: 0 }, { i: 16, j: 0 }, { i: 4, j: 0 }, { i: 18, j: 0 }, { i: 19, j: 0 }, { i: 7, j: 0 }, { i: 21, j: 0 }, { i: 22, j: 0 }, { i: 23, j: 0 }, { i: 24, j: 0 }, { i: 25, j: 0 }, { i: 26, j: 0 }, { i: 27, j: 0 }, { i: 28, j: 0 }, { i: 9, j: 2 }, { i: 17, j: 0 }, { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 8, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 }, { i: 11, j: 1 }, { i: 12, j: 1 }, { i: 13, j: 1 }, { i: 14, j: 1 }, { i: 15, j: 1 }, { i: 16, j: 1 }, { i: 17, j: 1 }, { i: 18, j: 1 }, { i: 19, j: 1 }, { i: 20, j: 1 }, { i: 21, j: 1 }, { i: 22, j: 1 }, { i: 23, j: 1 }, { i: 24, j: 1 }, { i: 25, j: 1 }, { i: 26, j: 1 }, { i: 27, j: 1 }, { i: 28, j: 1 }, { i: 12, j: 2 }, { i: 20, j: 0 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 5, j: 2 }, { i: 6, j: 2 }, { i: 7, j: 2 }, { i: 8, j: 2 }, { i: 22, j: 2 }, { i: 10, j: 2 }, { i: 11, j: 2 }, { i: 25, j: 2 }, { i: 13, j: 2 }, { i: 14, j: 2 }, { i: 15, j: 2 }, { i: 16, j: 2 }, { i: 17, j: 2 }, { i: 18, j: 2 }, { i: 19, j: 2 }, { i: 20, j: 2 }, { i: 21, j: 2 }, { i: 26, j: 2 }, { i: 23, j: 2 }, { i: 24, j: 2 }, { i: 27, j: 2 }, { i: 28, j: 2 },  ], css_id: '2',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 2 }, { i: 0, j: 1 },  ], css_id: '1',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_ia9vcrlgop0fwipuv2un(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_5lu4dkpdjuyr96zfm9ta, .table th.tinytable_css_5lu4dkpdjuyr96zfm9ta { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_bzisattaqp0qllz8mzjk, .table th.tinytable_css_bzisattaqp0qllz8mzjk { font-size: 0.7em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_is8466kktvul98f742rx, .table th.tinytable_css_is8466kktvul98f742rx { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_vhls7946okt3nx05h2v5, .table th.tinytable_css_vhls7946okt3nx05h2v5 { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; }
+      .table td.tinytable_css_1iaxrjvn340c0az8fsry, .table th.tinytable_css_1iaxrjvn340c0az8fsry { font-size: 0.7em; padding-right: 0.5em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_ltusa8xn0rz3yptjlp7n, .table th.tinytable_css_ltusa8xn0rz3yptjlp7n { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; padding-bottom: 0.1em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_ia9vcrlgop0fwipuv2un" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"><strong>Demographic</strong></th>
+                <th scope="col"><strong>Overall (N = 1287)</strong></th>
+                <th scope="col"><strong>Control (N = 637)</strong></th>
+                <th scope="col"><strong>Treatment (N = 650)</strong></th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td><strong>Age group</strong></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>18-34</td>
+                  <td>350 (27%)</td>
+                  <td>170 (27%)</td>
+                  <td>180 (28%)</td>
+                </tr>
+                <tr>
+                  <td>35-54</td>
+                  <td>480 (37%)</td>
+                  <td>245 (38%)</td>
+                  <td>235 (36%)</td>
+                </tr>
+                <tr>
+                  <td>55-74</td>
+                  <td>390 (30%)</td>
+                  <td>198 (31%)</td>
+                  <td>192 (30%)</td>
+                </tr>
+                <tr>
+                  <td>75-85+</td>
+                  <td>67 (5.2%)</td>
+                  <td>24 (3.8%)</td>
+                  <td>43 (6.6%)</td>
+                </tr>
+                <tr>
+                  <td><strong>Gender</strong></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Male</td>
+                  <td>598 (47%)</td>
+                  <td>289 (46%)</td>
+                  <td>309 (48%)</td>
+                </tr>
+                <tr>
+                  <td>Female</td>
+                  <td>658 (52%)</td>
+                  <td>330 (52%)</td>
+                  <td>328 (51%)</td>
+                </tr>
+                <tr>
+                  <td>Other/Refused</td>
+                  <td>16 (1.3%)</td>
+                  <td>10 (1.6%)</td>
+                  <td>6 (0.9%)</td>
+                </tr>
+                <tr>
+                  <td>NA</td>
+                  <td>15</td>
+                  <td>8</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td><strong>Race/Ethnicity</strong></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>White</td>
+                  <td>975 (77%)</td>
+                  <td>478 (76%)</td>
+                  <td>497 (77%)</td>
+                </tr>
+                <tr>
+                  <td>Asian</td>
+                  <td>51 (4.0%)</td>
+                  <td>25 (4.0%)</td>
+                  <td>26 (4.0%)</td>
+                </tr>
+                <tr>
+                  <td>Black</td>
+                  <td>164 (13%)</td>
+                  <td>85 (14%)</td>
+                  <td>79 (12%)</td>
+                </tr>
+                <tr>
+                  <td>Other</td>
+                  <td>24 (1.9%)</td>
+                  <td>12 (1.9%)</td>
+                  <td>12 (1.9%)</td>
+                </tr>
+                <tr>
+                  <td>Hispanic</td>
+                  <td>44 (3.5%)</td>
+                  <td>24 (3.8%)</td>
+                  <td>20 (3.1%)</td>
+                </tr>
+                <tr>
+                  <td>American Indian</td>
+                  <td>14 (1.1%)</td>
+                  <td>5 (0.8%)</td>
+                  <td>9 (1.4%)</td>
+                </tr>
+                <tr>
+                  <td>NA</td>
+                  <td>15</td>
+                  <td>8</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td><strong>Education</strong></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>H.S. or less</td>
+                  <td>362 (28%)</td>
+                  <td>174 (28%)</td>
+                  <td>188 (29%)</td>
+                </tr>
+                <tr>
+                  <td>Some college no degree</td>
+                  <td>283 (22%)</td>
+                  <td>142 (23%)</td>
+                  <td>141 (22%)</td>
+                </tr>
+                <tr>
+                  <td>College degree</td>
+                  <td>461 (36%)</td>
+                  <td>236 (38%)</td>
+                  <td>225 (35%)</td>
+                </tr>
+                <tr>
+                  <td>Postgraduate degree</td>
+                  <td>166 (13%)</td>
+                  <td>77 (12%)</td>
+                  <td>89 (14%)</td>
+                </tr>
+                <tr>
+                  <td>NA</td>
+                  <td>15</td>
+                  <td>8</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td><strong>Party ID</strong></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Independent</td>
+                  <td>162 (13%)</td>
+                  <td>83 (13%)</td>
+                  <td>79 (12%)</td>
+                </tr>
+                <tr>
+                  <td>Republican</td>
+                  <td>540 (43%)</td>
+                  <td>262 (42%)</td>
+                  <td>278 (43%)</td>
+                </tr>
+                <tr>
+                  <td>Democrat</td>
+                  <td>566 (45%)</td>
+                  <td>283 (45%)</td>
+                  <td>283 (44%)</td>
+                </tr>
+                <tr>
+                  <td>NA</td>
+                  <td>19</td>
+                  <td>9</td>
+                  <td>10</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
 </div>
 </div>
 </figure>
@@ -1712,8 +1764,8 @@ Table&nbsp;7: Logistic Regression of Random Assignment to Treatment
 
     <script>
 
-      function styleCell_3nx05h2v5is8466kktvu(i, j, css_id) {
-          var table = document.getElementById("tinytable_3nx05h2v5is8466kktvu");
+      function styleCell_4kncytqfqz5eq7hdgvb6(i, j, css_id) {
+          var table = document.getElementById("tinytable_4kncytqfqz5eq7hdgvb6");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -1723,7 +1775,7 @@ Table&nbsp;7: Logistic Regression of Random Assignment to Treatment
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_3nx05h2v5is8466kktvu');
+        var table = document.getElementById('tinytable_4kncytqfqz5eq7hdgvb6');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -1731,8 +1783,8 @@ Table&nbsp;7: Logistic Regression of Random Assignment to Treatment
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_3nx05h2v5is8466kktvu(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_3nx05h2v5is8466kktvu");
+      function spanCell_4kncytqfqz5eq7hdgvb6(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_4kncytqfqz5eq7hdgvb6");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -1771,7 +1823,7 @@ Table&nbsp;7: Logistic Regression of Random Assignment to Treatment
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_3nx05h2v5is8466kktvu(cell.i, cell.j, group.css_id);
+                  styleCell_4kncytqfqz5eq7hdgvb6(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1779,13 +1831,13 @@ Table&nbsp;7: Logistic Regression of Random Assignment to Treatment
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_eehjvb8vv54z3vav2cek, .table th.tinytable_css_eehjvb8vv54z3vav2cek { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_r96zfm9tav7yuk1qhyxr, .table th.tinytable_css_r96zfm9tav7yuk1qhyxr { border-top: solid black 0.1em; font-size: 0.8em; }
-      .table td.tinytable_css_qllz8mzjk5lu4dkpdjuy, .table th.tinytable_css_qllz8mzjk5lu4dkpdjuy { font-size: 0.8em; }
-      .table td.tinytable_css_l98f742rxbzisattaqp0, .table th.tinytable_css_l98f742rxbzisattaqp0 { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_p841rubgkl9f0mihf9s6, .table th.tinytable_css_p841rubgkl9f0mihf9s6 { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_b06xgi1hsnfrv8jbd4a9, .table th.tinytable_css_b06xgi1hsnfrv8jbd4a9 { border-top: solid black 0.1em; font-size: 0.8em; }
+      .table td.tinytable_css_ka5npll6xtdys8gkig38, .table th.tinytable_css_ka5npll6xtdys8gkig38 { font-size: 0.8em; }
+      .table td.tinytable_css_edqy713camh9v8261yoc, .table th.tinytable_css_edqy713camh9v8261yoc { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_3nx05h2v5is8466kktvu" style="table-layout: fixed; width: 80% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_4kncytqfqz5eq7hdgvb6" style="table-layout: fixed; width: 80% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -1997,7 +2049,7 @@ Figure&nbsp;7: Polychoric Item Correlation Matrix
 </div></section><section id="appendix-d-predicted-probabilities-of-safety-concerns-by-treatment-condition" class="level1 appendix"><h2 class="anchored quarto-appendix-heading">Appendix D: Predicted Probabilities of Safety Concerns by Treatment Condition</h2><div class="quarto-appendix-contents">
 
 <div class="cell" data-tbl-colwidths="80" data-tbl-pos="H" data-tbl-cap-location="top">
-<div id="tbl-safety-logit" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-tbl-cap-location="top" data-tbl-colwidths="80">
+<div id="tbl-safety-logit" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-cap-location="top" data-tbl-pos="H" data-tbl-colwidths="80">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-safety-logit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;8: Ordinal Logistic Regression of Concerns for Violence and Confidence in Voter Safety Regressed on Experiment Condition
@@ -2022,8 +2074,8 @@ Table&nbsp;8: Ordinal Logistic Regression of Concerns for Violence and Confidenc
 
     <script>
 
-      function styleCell_qruvc6hdoj7986vdd0hx(i, j, css_id) {
-          var table = document.getElementById("tinytable_qruvc6hdoj7986vdd0hx");
+      function styleCell_upca83ptnuc3ctlmtyfy(i, j, css_id) {
+          var table = document.getElementById("tinytable_upca83ptnuc3ctlmtyfy");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -2033,7 +2085,7 @@ Table&nbsp;8: Ordinal Logistic Regression of Concerns for Violence and Confidenc
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_qruvc6hdoj7986vdd0hx');
+        var table = document.getElementById('tinytable_upca83ptnuc3ctlmtyfy');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -2041,8 +2093,8 @@ Table&nbsp;8: Ordinal Logistic Regression of Concerns for Violence and Confidenc
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_qruvc6hdoj7986vdd0hx(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_qruvc6hdoj7986vdd0hx");
+      function spanCell_upca83ptnuc3ctlmtyfy(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_upca83ptnuc3ctlmtyfy");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -2085,7 +2137,7 @@ Table&nbsp;8: Ordinal Logistic Regression of Concerns for Violence and Confidenc
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_qruvc6hdoj7986vdd0hx(cell.i, cell.j, group.css_id);
+                  styleCell_upca83ptnuc3ctlmtyfy(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -2093,17 +2145,17 @@ Table&nbsp;8: Ordinal Logistic Regression of Concerns for Violence and Confidenc
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_r5fbebil541t2lye3pxp, .table th.tinytable_css_r5fbebil541t2lye3pxp { text-align: center; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_qopam5tovhgm4ko4wd3g, .table th.tinytable_css_qopam5tovhgm4ko4wd3g { text-align: center; border-bottom: solid black 0.05em; font-size: 0.8em; }
-      .table td.tinytable_css_baw0vmpdl4t9ik0byf5b, .table th.tinytable_css_baw0vmpdl4t9ik0byf5b { text-align: center; font-size: 0.8em; }
-      .table td.tinytable_css_m0714inm6yst5ucmpxss, .table th.tinytable_css_m0714inm6yst5ucmpxss { text-align: center; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
-      .table td.tinytable_css_nd3dcz71kgpd7hxgps9n, .table th.tinytable_css_nd3dcz71kgpd7hxgps9n { text-align: left; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_vi16moz5u9eau78nrai1, .table th.tinytable_css_vi16moz5u9eau78nrai1 { text-align: left; border-bottom: solid black 0.05em; font-size: 0.8em; }
-      .table td.tinytable_css_ujbf2kzlc7ktzsyrmtv5, .table th.tinytable_css_ujbf2kzlc7ktzsyrmtv5 { text-align: left; font-size: 0.8em; }
-      .table td.tinytable_css_7fxdbuha0k8z9hbljnvo, .table th.tinytable_css_7fxdbuha0k8z9hbljnvo { text-align: left; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_gsavcazzly226hd5jfze, .table th.tinytable_css_gsavcazzly226hd5jfze { text-align: center; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_lh6t0qhixfj9vzhchipb, .table th.tinytable_css_lh6t0qhixfj9vzhchipb { text-align: center; border-bottom: solid black 0.05em; font-size: 0.8em; }
+      .table td.tinytable_css_cpk8ar2rmchdpqk77eyu, .table th.tinytable_css_cpk8ar2rmchdpqk77eyu { text-align: center; font-size: 0.8em; }
+      .table td.tinytable_css_t0q8e1qngf0a6imxqtlk, .table th.tinytable_css_t0q8e1qngf0a6imxqtlk { text-align: center; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_o0achco67h5nt2rz7qzd, .table th.tinytable_css_o0achco67h5nt2rz7qzd { text-align: left; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_gtr6iks0blu8bn75gcfr, .table th.tinytable_css_gtr6iks0blu8bn75gcfr { text-align: left; border-bottom: solid black 0.05em; font-size: 0.8em; }
+      .table td.tinytable_css_a4wen9ewzarvd51w7349, .table th.tinytable_css_a4wen9ewzarvd51w7349 { text-align: left; font-size: 0.8em; }
+      .table td.tinytable_css_f3urpgtame2ss9o3cb0w, .table th.tinytable_css_f3urpgtame2ss9o3cb0w { text-align: left; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_qruvc6hdoj7986vdd0hx" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_upca83ptnuc3ctlmtyfy" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -2231,8 +2283,8 @@ Table&nbsp;9: Unit-level predicted probabilities of selecting response or higher
 
     <script>
 
-      function styleCell_q2q1tlsqb4kncytqfqz5(i, j, css_id) {
-          var table = document.getElementById("tinytable_q2q1tlsqb4kncytqfqz5");
+      function styleCell_mj3ufxeen9mciyhpa7q1(i, j, css_id) {
+          var table = document.getElementById("tinytable_mj3ufxeen9mciyhpa7q1");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -2242,7 +2294,7 @@ Table&nbsp;9: Unit-level predicted probabilities of selecting response or higher
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_q2q1tlsqb4kncytqfqz5');
+        var table = document.getElementById('tinytable_mj3ufxeen9mciyhpa7q1');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -2250,8 +2302,8 @@ Table&nbsp;9: Unit-level predicted probabilities of selecting response or higher
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_q2q1tlsqb4kncytqfqz5(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_q2q1tlsqb4kncytqfqz5");
+      function spanCell_mj3ufxeen9mciyhpa7q1(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_mj3ufxeen9mciyhpa7q1");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -2289,7 +2341,7 @@ Table&nbsp;9: Unit-level predicted probabilities of selecting response or higher
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_q2q1tlsqb4kncytqfqz5(cell.i, cell.j, group.css_id);
+                  styleCell_mj3ufxeen9mciyhpa7q1(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -2297,12 +2349,12 @@ Table&nbsp;9: Unit-level predicted probabilities of selecting response or higher
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_ys8gkig38b06xgi1hsnf, .table th.tinytable_css_ys8gkig38b06xgi1hsnf { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_9v8261yocka5npll6xtd, .table th.tinytable_css_9v8261yocka5npll6xtd { font-size: 0.8em; }
-      .table td.tinytable_css_eq7hdgvb6edqy713camh, .table th.tinytable_css_eq7hdgvb6edqy713camh { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_ry9hwi8rulctv5b7cg54, .table th.tinytable_css_ry9hwi8rulctv5b7cg54 { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_5hi25lvx13xvid1l1327, .table th.tinytable_css_5hi25lvx13xvid1l1327 { font-size: 0.8em; }
+      .table td.tinytable_css_7hgxvs4744d7egegz503, .table th.tinytable_css_7hgxvs4744d7egegz503 { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_q2q1tlsqb4kncytqfqz5" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_mj3ufxeen9mciyhpa7q1" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -2424,8 +2476,8 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
 
     <script>
 
-      function styleCell_ubsmngvyksx8zg8bwik5(i, j, css_id) {
-          var table = document.getElementById("tinytable_ubsmngvyksx8zg8bwik5");
+      function styleCell_i2sw23wfaq8ysp3xlx6g(i, j, css_id) {
+          var table = document.getElementById("tinytable_i2sw23wfaq8ysp3xlx6g");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -2435,7 +2487,7 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_ubsmngvyksx8zg8bwik5');
+        var table = document.getElementById('tinytable_i2sw23wfaq8ysp3xlx6g');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -2443,8 +2495,8 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_ubsmngvyksx8zg8bwik5(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_ubsmngvyksx8zg8bwik5");
+      function spanCell_i2sw23wfaq8ysp3xlx6g(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_i2sw23wfaq8ysp3xlx6g");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -2482,7 +2534,7 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_ubsmngvyksx8zg8bwik5(cell.i, cell.j, group.css_id);
+                  styleCell_i2sw23wfaq8ysp3xlx6g(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -2490,12 +2542,12 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_ss9o3cb0wa4wen9ewzar, .table th.tinytable_css_ss9o3cb0wa4wen9ewzar { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_3ctlmtyfyf3urpgtame2, .table th.tinytable_css_3ctlmtyfyf3urpgtame2 { font-size: 0.8em; }
-      .table td.tinytable_css_y3y6qqbenupca83ptnuc, .table th.tinytable_css_y3y6qqbenupca83ptnuc { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_6p7lepit6yp8gejlvznm, .table th.tinytable_css_6p7lepit6yp8gejlvznm { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_1xu7ndenal8k2kqf2t4g, .table th.tinytable_css_1xu7ndenal8k2kqf2t4g { font-size: 0.8em; }
+      .table td.tinytable_css_u8nunxqe86j17ytq62su, .table th.tinytable_css_u8nunxqe86j17ytq62su { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_ubsmngvyksx8zg8bwik5" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_i2sw23wfaq8ysp3xlx6g" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>

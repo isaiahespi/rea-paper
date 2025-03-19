@@ -34,6 +34,7 @@ set.seed(1234)
 library(tidyverse)
 library(modelsummary)
 library(tinytable) # simple tables in html, LaTeX, markdown, word, pdf, typst
+library(litedown)
 library(ordinal)
 library(marginaleffects)
 library(easystats)
@@ -431,7 +432,7 @@ Concerning distrust among those who refuted the 2020 election results, responses
 
 In order to substantiate the overall influence of the treatment on confidence in elections, I regressed the dependent variable confidence on legitimacy beliefs while controlling for partisanship.  
 
-::: {.content-visible when-format="bookup-html" unless-format="pdf"}
+::: {.content-visible when-format="html" unless-format="pdf"}
 
 ```{r}
 #| tbl-cap: "Confidence in Elections by Treatment and Legitimacy Beliefs"
@@ -461,7 +462,7 @@ texreg::htmlreg(
 
 :::
 
-::: {.content-visible when-format="pdf" unless-format="bookup-html"}
+::: {.content-visible when-format="pdf" unless-format="html"}
 
 ```{r}
 #| tbl-cap: "Confidence in Elections by Treatment and Legitimacy Beliefs"
@@ -617,7 +618,7 @@ tab_q25_pdiff <- pdiff_q25 |>
   insight::format_table(stars = T, digits = 3)
 
 tinytable::tt(
-  tab_q25_pdiff, 
+  tab_q25_pdiff,
   notes = "Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher") |> 
   tinytable::style_tt(
     fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
@@ -650,7 +651,7 @@ tab_q26_pdiff <- pdiff_q26 |>
   insight::format_table(stars = T, digits = 4)
 
 tinytable::tt(
-  tab_q26_pdiff, 
+  tab_q26_pdiff,
   notes = "Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher") |>  
   tinytable::style_tt(
     fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
@@ -802,9 +803,11 @@ The median age was 46 (mean age was $47$), $51.7\%$ ($n = 658$) women, $47\%$ ($
 
 
 ```{r}
-#| label: tbl-demog
+#| label: sample-desc-setup
 #| tbl-cap: "Sample Demographics"
 #| tbl-pos: 'H'
+
+gtsummary::theme_gtsummary_compact()
 
 # descriptive stats of categorical variables
 # best method for html document
@@ -813,10 +816,8 @@ tbl.desc <- data |>
     age_4cat = "Age group",
     gender_3cat = "Gender",
     race2 = "Race/Ethnicity",
-    race_wnw = "White or Non-White",
     educ_4cat = "Education",
-    partyid_3cat = "Party ID",
-    milrelation  = "Military Relation"
+    partyid_3cat = "Party ID"
   ) |> 
   gtsummary::tbl_summary(
     by = group,
@@ -824,10 +825,8 @@ tbl.desc <- data |>
     age_4cat, 
     gender_3cat, 
     race2,
-    race_wnw,
     educ_4cat, 
-    partyid_3cat,
-    milrelation),
+    partyid_3cat),
     statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
     missing = "ifany",
     missing_text = "NA") |> 
@@ -836,27 +835,30 @@ tbl.desc <- data |>
   gtsummary::modify_header(label = "**Demographic**") |> 
   gtsummary::bold_labels()
 
-gtsummary::as_kable_extra(tbl.desc, booktabs = T) |>
-  kableExtra::add_footnote(
-    label = "Independents do not identify nor 'lean' toward either political party") |> 
-  kableExtra::kable_styling(
-    font_size = 9, 
-    protect_latex = T)
-
-# gtsummary::as_gt(tbl.desc) |>  
-#   gt::tab_footnote(
-#     footnote = "Independents do not identify nor 'lean' toward either political party",
-#     placement = "left"
-#     ) |>  
-#   gt::cols_align(align = 'left', columns = everything()) |> 
-#   gt::tab_options(
-#     table.font.size = "small",
-#     data_row.padding = gt::px(1)
-#   )
-
 
 
 ```
+
+
+```{r}
+#| label: tbl-demog
+#| tbl-cap: "Sample Demographics"
+#| tbl-colwidths: 80
+#| tbl-pos: 'H'
+
+tbl.desc |> 
+  gtsummary::as_tibble() |> 
+  dplyr::rename('**Overall (N = 1287)**' = "**Overall**  \nN = 1,287",
+                "**Control (N = 637)**" = "**Control**  \nN = 637",
+                "**Treatment (N = 650)**" = "**Treatment**  \nN = 650") |>
+  dplyr::select(-"**N**") |> 
+  tinytable::tt(theme = "spacing") |> 
+  tinytable::format_tt(markdown = T) |> 
+  tinytable::format_tt(replace = " ") |> 
+  tinytable::style_tt(fontsize = 0.70)
+
+```
+
 
 ## Test of Random Assignment to Experiment Condition
 
