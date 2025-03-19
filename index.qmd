@@ -34,7 +34,6 @@ set.seed(1234)
 library(tidyverse)
 library(modelsummary)
 library(tinytable) # simple tables in html, LaTeX, markdown, word, pdf, typst
-library(litedown)
 library(ordinal)
 library(marginaleffects)
 library(easystats)
