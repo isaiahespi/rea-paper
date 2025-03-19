@@ -1075,6 +1075,11 @@ data <- data |>
 save(data, file = "data/research-paper-data-20241029.Rdata")
 write.csv(data, file = "data/research-paper-data-20241029.csv")
 
+# Save sanitized raw data set for use as resource in manuscript
+haven::write_sav(
+  data = raw_spss_sanitized, 
+  path = "data/vmf_election_worker_recruitment_survey_raw_spss_sanitized_20241029_T12.02.sav")
+
 
 # save a data dict that can be saved as .csv
 # generate data dictionary
@@ -1083,19 +1088,13 @@ write.csv(data, file = "data/research-paper-data-20241029.csv")
 # labelled::generate_dictionary() because the codebook produced by the former is
 # preferred.
 data_dict <- surveytoolbox::data_dict(data)
-write.csv(data_dict, file = "data/data_dictionary.csv")
+write.csv(data_dict, file = "codebooks/data_dictionary.csv")
 
 # save data dictionary of raw_spss_sanitized dataset download
-write.csv(raw_spss_sanitized_data_dict, file = "data/raw_spss_sanitized_data_dict.csv")
+write.csv(raw_spss_sanitized_data_dict, file = "codebooks/raw_spss_sanitized_data_dict.csv")
 
 # save codebook as .csv file in data/ directory
-write.csv(codebook, file = "data/survey_codebook.csv")
-
-
-# Save sanitized raw data set for use as resource in manuscript
-haven::write_sav(
-  data = raw_spss_sanitized, 
-  path = "data/vmf_election_worker_recruitment_survey_raw_spss_sanitized_20241029_T12.02.sav")
+write.csv(codebook, file = "codebooks/survey_codebook.csv")
 
 
 # Delete unnecessary objects from global environment :::::::::::::::::::::::####

@@ -3,6 +3,8 @@ title: 'Inspiring Confidence and Easing Insecurity in the Pre-election period: T
 # subtitle: 'The Effect of Recruiting Military Veterans on Confidence in 2024 US Elections'
 shorttitle: 'Effect of Recruiting Military Veterans on Confidence in 2024 US Elections' # aog-article-pdf
 shortauthors: Isaiah      # aog-article-pdf
+abstract: |
+  In this paper, I report results from a recent survey experiment administered to test whether publicized efforts to recruit veterans to work as election staff and volunteers would improve public trust in elections and ease election insecurity. Results of the survey experiment support the notion that emphasizing veterans as the target of election worker recruitment efforts eases pre-election insecurity. Expectations of electoral fraud and concerns for voter safety were lower among those who read an announcement that veterans are being recruited to work as election staff and volunteers compared to those who read a control vignette where veterans were not mentioned. Notable is that there was a significant difference in confidence among those in the treatment condition who believe that results of the 2020 election were illegitimate. In addition, concerns over voter safety and potential for violence were lower among those who received the treatment.
 authors:
   - name: Isaiah Espinoza
     email: gespinoz@umd.edu
@@ -14,8 +16,6 @@ authors:
         state: MD
         country: US
 reference-section-title: References
-date: "2024-10-16"
-date-modified: today
 knitr: 
   opts_chunk: 
     dev: "ragg_png" # same as knitr::opts_chunk$set(dev = "ragg_png")
@@ -35,27 +35,19 @@ library(tidyverse)
 library(modelsummary)
 library(tinytable) # simple tables in html, LaTeX, markdown, word, pdf, typst
 library(litedown)
-# library(MASS)
-# library(ordinal)
-# library(marginaleffects)
-# library(easystats)
-# library(patchwork)
+library(ordinal)
+library(marginaleffects)
+library(easystats)
+library(patchwork)
 
 # set some session options for `tinytable`
 options(tinytable_tt_digits = 3)
 # options(tinytable_theme_placement_latex_float = "H")
 options(tinytable_html_mathjax = TRUE) # set option to render math in html
 
-# apply Quarto data processing to all tables
-# theme_quarto <- function(x) format_tt(x, quarto = TRUE)
-# options(tinytable_tt_theme = theme_quarto)
 
 # load data
 load("data/research-paper-data-20241029.Rdata")
-
-# load data dictionary/codebook
-codebook <- read.csv("data/survey_codebook.csv")
-data_dict <- read.csv("data/data_dictionary.csv")
 
 
 ```
@@ -187,7 +179,7 @@ One point of contention that election officials have faced in the past regard ev
 
 Supposing such is the case, we can expect that information about *who* (i.e., which groups) election officials are targeting in publicized recruitment efforts would lessen particular election insecurity, and concurrently, boost confidence. That is to say, it is reasonable to expect that telling people *who* will be working and volunteering as election staff would ease election insecurity, and therefore improve confidence that the election will be conducted fairly, accurately, and safe for all involved.
 
-In this paper, I report results from a recent survey experiment administered to test whether publicized efforts to recruit veterans to work as election staff and volunteers would improve public trust in elections and ease election insecurity. Results of the survey experiment support the notion that emphasizing veterans as the target of election worker recruitment efforts eases pre-election insecurity. Expectations of electoral fraud and concerns for voter safety were lower among those who read an announcement that veterans are being recruited to work as election staff and volunteers compared to those who read a control vignette where veterans were not mentioned[^2]. Notable is that there was a significant difference in confidence among those in the treatment condition who believe that results of the 2020 election were illegitimate.
+In this paper, I report results from a recent survey experiment administered to test whether publicized efforts to recruit veterans to work as election staff and volunteers would improve public trust in elections and ease election insecurity. Results of the survey experiment support the notion that emphasizing veterans as the target of election worker recruitment efforts eases pre-election insecurity. Expectations of electoral fraud and concerns for voter safety were lower among those who read an announcement that veterans are being recruited to work as election staff and volunteers compared to those who read a control vignette where veterans were not mentioned[^2]. Notable is that there was a significant difference in confidence among those in the treatment condition who believe that results of the 2020 election were illegitimate. In addition, concerns over voter safety and potential for violence were lower among those who received the treatment.  
 
 This paper is structured as follows. First, I provide a brief background on public trust in election administration. I synthesize a review of relevant literature with a focus on how political and social science has conceptualized and ascertained public trust in elections. Next, I supply reasoning for why military veterans are singled out as the relevant subset of the population in this study. I then explicitly provide the simple theory and testable hypotheses of the study before moving on to describe the design of the survey, the measurement instruments therein, and the conceptual and operational definitions of the variables of interest. I explain my reasoning and method for constructing the primary dependent variable, which I broadly refer to as *confidence in elections*. I close by offering my interpretation of the results and suggest potential avenues for future inquiry.
 
@@ -205,11 +197,11 @@ Election anxiety was high in the lead up to the 2024 elections in the United Sta
 
 Trust and confidence in the conduct of elections concerns aspects of elections that fall squarely within the institution of election administration. At this level, for instance, public trust is ascertained by capturing assessments about the perceived accuracy of vote counts (e.g., whether votes are/were counted as intended). 
 
-Intuitively, enhancing public trust in elections would best be accomplished by enhancing the *trustworthiness* of the institution, i.e., consistently doing the things that election officials already regularly do come election time. However, trust and confidence in elections has become ever more precarious over the last few election cycles. Especially considering public polling data since 2000 shows that confidence that votes were, or would be, counted as intended was in a consistent decline despite efforts towards bolstering election integrity and trustworthiness [@sances2015]. This is even more pronounced considering the role that partisanship has had on such confidence over accuracy of vote count [@sances2015; @stewart2022].
+Intuitively, enhancing public trust in elections would best be accomplished by enhancing the *trustworthiness* of the institution, e.g., enhancing vote tabulation equipment and technology, conducting audits. However, trust and confidence in elections has become ever more precarious over the last few election cycles. Especially considering public polling data since 2000 shows that confidence that votes were, or would be, counted as intended was in a consistent decline despite efforts towards bolstering election integrity and trustworthiness [@sances2015]. This is even more pronounced considering the role that partisanship has had on such confidence over accuracy of vote counts [@sances2015; @stewart2022].
 
 There's also stark difference in public trust before the election has occurred compared to after, a phenomenon referred to as the "winner-loser gap"; the "winners" are those who supported the winning candidate and the "losers" are those who supported the losing candidate. Much research has been dedicated to analyzing the sentiment of electoral winners vs losers, and vice versa [@nadeau1993; @daniller2019]. Opinions of electoral trust gathered after the election has occurred, however, are limited considering the well-recognized impact that the electoral outcome itself has on feelings of public trust in elections [@daniller2019].
 
-As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *empirical*---a judgement discerned in hindsight after the experience of the election event has occurred. As discussed by @stewart2022, not only was confidence in vote count accuracy influenced by the voter experience, but so too were evaluations of election officials [-@stewart2022, 242-243]. Not to mention the influence that the election results would also have on such evaluations. In other words, trust evaluations post-election are influenced by one's interpretation of their experience and election results. This study, in contrast, focuses primarily on that *anticipatory* kind of confidence, which speaks more to those insecurities based on perceptions of the institution's trustworthiness than upon the particular voter experience.
+As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *empirical*---a judgement discerned in hindsight after the experience of the election event has occurred. As discussed by @stewart2022, not only was confidence in vote count accuracy influenced by the voter experience, but so too were evaluations of election officials [-@stewart2022, 242-243]. Not to mention the influence that the election results would also have on such evaluations. In other words, evaluations of trust considered in hindsight are influenced by the voter experience and the outcome of the election results. This study, in contrast, focuses primarily on that *anticipatory* kind of confidence, which speaks more to those insecurities based on perceptions of the institution's trustworthiness than upon the particular voter experience.
 
 Regardless of the measures taken by election officials to boost public confidence in the *trustworthiness* of election administration (e.g., conducting audits, testing election machines), public *trust* and confidence in elections more generally is apt to shift dramatically post-election based on factors such as partisanship, elite rhetoric, particular state policies, and more [@nadeau1993; @carter2024; @coll2024a]. Moreover, prior research has found that evaluation of election workers themselves are an important factor when it comes to levels of public confidence in the electoral process [@hall2007; @hall2009; @claassen2008]. Such studies focused on the quality of the voter experience with reference to the interaction between voter and election worker.
 
@@ -217,7 +209,7 @@ Beyond the general competence of election workers, however, the quality of the v
 
 ## Why Veterans
 
-Election officials are likely to be agnostic as to who dedicates their time to civil service such as election work. Staffing issues have been an issue since at least the 1990s [@maidenberg1996; @ferrer2024]. In 2020, such efforts were made far more difficult by the COVID-19 pandemic [@mena2020; @abbate2020a]. There's no special reason to target veterans for recruitment above other groups. Indeed, there's no reason to discriminate recruitment efforts at all if the point is purely to fill staffing vacancies.
+Election officials are likely to be agnostic as to who dedicates their time to civil service such as election work. Especially since staffing issues have been an issue since at least the 1990s [@maidenberg1996; @ferrer2024]. In 2020, such efforts were made far more difficult by the COVID-19 pandemic [@mena2020; @abbate2020a]. There's no special reason to target veterans for recruitment above other groups. Indeed, there's no reason to discriminate recruitment efforts at all if the point is purely to fill staffing vacancies.
 
 The reason why veterans arose as a special subset of the population to consider for this inquiry is because there was a sudden push to target veterans for recruitment efforts that arose shortly after the events on Capitol Hill on January 6th, 2021. After the 2020 election, large efforts were made to recruit military veterans and their families to work or volunteer as election staff [@wetheveterans2022; @nflfootballoperations2022]. Prior to that point, young people were sometimes given special mention as targets of election worker recruitment efforts [@powerthepolls2020; @herndon2020]. Generally, however, recruitment efforts cast a wide net, indiscriminate of who applies [@ross2020; @conde2020].
 
@@ -247,19 +239,17 @@ To test the theory that publicized efforts to recruit veterans to work as electi
 
 Survey participants read either a treatment or control vignette, which resembled a news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election[^5]. The treatment vignette referred to a program designed to recruit veterans and their family members and describes an interviewee "Jordan Braxton" as an Army veteran. The control vignette simply omitted any mention of veterans and their family members, and didn't describe "Jordan Braxton" as an Army veteran. Beyond those small differences and the headlines, the article vignettes are identical. Therefore, effects can be attributed to the information about veterans in the treatment vignette[^6].
 
-It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignette due to the increased scrutiny levied toward election administration there after the 2020 election [@giles2021; @maricopacountyelectionsdepartment2022]. Because of this, treatment effects are potentially limited or constrained to attitudes concerning the location specified in the vignette. A block of survey items asked specifically about Maricopa County, AZ, followed by an identical block of items that asked the same questions about one's local area. Later, I compare and discuss results between the items pertaining to different settings.
+It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignette due to the increased scrutiny levied toward election administration there after the 2020 election [@giles2021; @maricopacountyelectionsdepartment2022]. Because of this, treatment effects are potentially limited or constrained to attitudes concerning the location specified in the vignette. A block of survey items asked specifically about Maricopa County, AZ, followed by an identical block of items that asked the same questions about one's local area. I compare and discuss results between the items pertaining to different settings.
 
 Over the past two decades it became commonplace for national polls to gauge public confidence in election administration (i.e., voter confidence) by asking some variety of the question, "How confident are you that your vote \[will be/was\] counted as you intended in the most recent election?" [@hall2009; @sances2015; @stewart2022]. In addition, since 2008, the Survey of the Performance of American Elections (SPAE) has included a good number of relevant questions to more thoroughly assess trust and confidence in election administration. Such questions inquire into the voter experience with the institution more directly. This study borrows, modifies, or takes inspiration from certain question items found within the 2022 SPAE and other survey items from the Pew Research Center's 2018 American Trends Panel wave 38 [@dunn2018].
 
 The items in this study all inquire into confidence over one's expectations in anticipation of upcoming elections. In addition, the survey of this study focused on attitudes regarding election workers such as election officials, staff, and volunteers specific to the location mentioned in the vignette---Maricopa County, AZ---as well as specific to one's local area[^7].
 
-The survey included items that assessed both trust in elections administration and expectations of electoral fraud, referred to simply as *trust* and *distrust*, respectively. Responses from these two sets of items were utilized to construct the primary dependent variable, *confidence in elections*.
+The survey included items that assessed both trust in elections administration and expectations of electoral fraud, referred to simply as *trust* and *distrust*, respectively. Responses from these two sets of items were utilized to construct the primary dependent variable, *confidence in elections*. Additionally, a pair of survey items assessed concerns for potential violence and confidence in voter safety. The pair was asked once in regard to Maricopa County, AZ and again with respect to one's local area[^8]. Although two survey items are insufficient to serve as a composite scale, safety concerns will be evaluated by examination of response to these two questions in particular.
 
-Prior to the reading the treatment or control vignette, participants responded to distinct survey items assessing one's favorability to local election officials ("In general, how favorable or unfavorable is your impression of local election officials?") and legitimacy of the 2020 election results ("Regardless of whom you supported in the 2020 election, do you think Joe Biden's election as president was legitimate, or was he not legitimately elected?"). The former presented five response options from "Strongly favorable" to "Strongly unfavorable"; the latter item presented a binary of either "Legitimate" or "Not Legitimate".
+Prior to the reading the treatment or control vignette, participants responded to distinct survey items assessing one's beliefs about the legitimacy of the 2020 election results ("Regardless of whom you supported in the 2020 election, do you think Joe Biden's election as president was legitimate, or was he not legitimately elected?"). Respondents selected either "Legitimate" or "Not Legitimate".
 
 The conventional multiple item assessment of partisanship was included and used to construct a variable of partisanship consisting of three categories: Democrat, Republican, and independent.
-
-Finally, a pair of survey items assessed concerns for potential violence and confidence in voter safety. The pair was asked once in regard to Maricopa County, AZ and again with respect to one's local area[^8].
 
 ### Trust and Distrust in Elections
 
@@ -288,14 +278,6 @@ conf_items_text <- trust_txt |>
 
 tinytable::tt(conf_items_text, width = c(.5, .5)) |> 
   tinytable::style_tt(fontsize = 0.80)
-
-# kableExtra::kbl(conf_items_text, booktabs = T,
-#                 col.names = c("Trust", "Distrust"),
-#                 linesep = "\\addlinespace") |> 
-#   kableExtra::kable_styling(full_width = T,
-#                             font_size = 8,
-#                             latex_options = c("HOLD_position")) |> 
-#   kableExtra::column_spec(column = 1:2, width = "8cm")
 
 ```
 
@@ -373,32 +355,6 @@ tinytable::tt(tab_ttest) |>
     math = T # apply mathmode to specified columns
   ) |> 
   tinytable::style_tt(fontsize = 0.75) # fontsize in em units (0.75*default fontsize)
-
-
-# output table as `kable` for LaTeX pdf
-# kableExtra::kbl(
-#   tab_ttest,
-#   booktabs = T,
-#   col.names = c(
-#     "Place",
-#     "$\\bar{x}_{diff}$",
-#     "$\\bar{x}_{treat}$",
-#     "$\\bar{x}_{control}$",
-#     "$treat_{n}$",
-#     "$control_{n}$",
-#     "t",
-#     "p",
-#     "data",
-#     "CI"
-#   ),
-#   escape = F
-# ) |>
-#   kableExtra::footnote(general = "Two Sample t-tests of difference between Confidence in Elections by Treatment Condition.") |>
-#   kableExtra::kable_styling(font_size = 9, protect_latex = T)
-
-
-
-
 
 
 ```
@@ -670,9 +626,6 @@ tinytable::tt(
   tinytable::style_tt(i = "notes", fontsize = 0.75)
 
 
-  # kableExtra::kbl(tab_q25_pdiff, 
-  #                 booktabs = T) |> 
-  # kableExtra::footnote(general = "Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher")
 ```
 
 
@@ -704,11 +657,6 @@ tinytable::tt(
     fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
     ) |>  
   tinytable::style_tt(i = "notes", fontsize = 0.75) # style font of table notes
-
-  # kableExtra::kbl(tab_q26_pdiff, 
-  #                 booktabs = T) |> 
-  # kableExtra::footnote(general = "Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabitilites transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher")
-
 
 ```
 
@@ -837,36 +785,6 @@ tab <- tinytable::tt(items_responses, width = c(0.7, 0.3)) |>
 tab
 
 
-# 
-# Response <- data |> 
-#   dplyr::select(q7, q25, q26, q36, q37) |>
-#   surveytoolbox::data_dict() |> 
-#   dplyr::as_tibble() |> 
-#   dplyr::select(value)
-# 
-# 
-# item_table <- data |> 
-#   select(q7, q25, q26, q36, q37) |>
-#   dplyr::rename_with(.cols = everything(), .fn = ~snakecase::to_any_case(.,case = "upper_camel")) |> 
-#   var_label_tab() |>
-#   select(Question = var_label) |> 
-#   mutate(Response = Response$value)
-# 
-# item_table
-# 
-# tinytable::tt(item_table, width = c(.7, .3)) |> 
-#   tinytable::style_tt(fontsize = 0.80)
-
-# alternate
-# kableExtra::kbl(item_table, booktabs = T, linesep = "\\addlinespace[2mm]") |> 
-#   kableExtra::kable_styling(
-#     full_width = T,
-#     font_size = 9,
-#     latex_options = c("HOLD_position")
-#     ) |> 
-#   kableExtra::pack_rows(index = c("Legitimacy" = 1,
-#                                   "Safety Concerns" = 4))
-                                  
 
 ```
 
@@ -1222,7 +1140,7 @@ tinytable::tt(
 
 [^7]: Note that I refer to the items as either 'AZ items' or 'local items' in order to distinguish the location in which they pertain.
 
-[^8]: Survey item wording and responses are included in Appendix A.
+[^8]: Question wording and responses to a selection of survey items are included in Appendix A.
 
 [^9]: See Appendix C for Inter-item correlation analysis.
 

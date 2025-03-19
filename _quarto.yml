@@ -1,31 +1,35 @@
 project:
   type: manuscript
-  # execute-dir: project
+  execute-dir: project
   output-dir: docs
   render: 
     - index.qmd
 
+# learn about quarto manuscript project here https://quarto.org/docs/manuscripts/
 
 manuscript:
   article: index.qmd
+  manuscript-url: https://isaiahespi.github.io/rea-paper/
   resources:
     - data/research-paper-data-20241029.Rdata
     - data/research-paper-data-20241029.csv
-    - data/survey_codebook.csv
-    - data/data_dictionary.csv
-    - data/raw_spss_sanitized_data_dict.csv
+    - codebooks/survey_codebook.csv
+    - codebooks/data_dictionary.csv
+    - codebooks/raw_spss_sanitized_data_dict.csv
     - data/vmf_election_worker_recruitment_survey_raw_spss_sanitized_20241029_T12.02.sav
-  code-links: 
-    - text: Data Processing Script
-      icon: file-code
-      href: src/01-data-clean-process.R
-      url: https://github.com/isaiahespi/rea-paper/blob/46e4c82d3685e3f9c62d64c7a6b4504742232f78/src/01-data-clean-process.R
+  code-links: repo
   notebooks:
     - notebook: notebooks/figures.qmd
       title: "Figures"
     # - notebook: notebooks/01-data-import-clean-process.qmd
     #   title: "Data Import and Clean"
+  
 
+execute:
+  freeze: auto
+
+# set some YAML stuff that will be default for all documents.
+# See: https://quarto.org/docs/projects/quarto-projects.html#shared-metadata
 authors:
   - name: Isaiah Espinoza
     email: gespinoz@umd.edu
@@ -39,39 +43,57 @@ authors:
 
 bibliography: references.bib
 csl: american-political-science-association.csl
-# mainfont: Palatino Linotype
+# mainfont: Palatino Linotype # My fav, but no dedicated math font :(
 date-modified: last-modified
 date-format: "YYYY-M-D"
 notebook-links: false
 
+# set the custom `ragg_png` graphics device 
+# see https://yjunechoe.github.io/posts/2021-06-24-setting-up-and-debugging-custom-fonts/
 knitr: 
   opts_chunk: 
     dev: "ragg_png" # same as knitr::opts_chunk$set(dev = "ragg_png")
 
 format:
-  bookup-html: 
+  html: 
     toc: true
     toc-depth: 3
-    embed-resources: false
-    embed-fonts: true
-    link-citations: true
-    smooth-scroll: true
-    link-external-newwindow: true
-    fig-cap-location: top
+    mainfont: TeX Gyre Pagella
+    sansfont: TeX Gyre Pagella
+    mathfont: TeX Gyre Pagella Math
+    monofont: Inconsolata
+    fontsize: 12pt
+    cap-location: top
+    page-layout: article
+    appendix-style: default
+    lightbox: true
     html-math-method: mathjax
+    smooth-scroll: true
+    link-external-icon: true
+    link-external-newwindow: true
     notebook-links: global
     citations-hover: true
-    footnotes-hover: false
-    theme: 
-      light: [bookup.scss]
-      dark: [bookup.scss, bookup_dark.scss]
-  #     
+    footnotes-hover: true
+    repo-url: https://github.com/isaiahespi/rea-paper
+    csl: american-political-science-association.csl
+    reference-location: document
+    crossref: 
+      ref-hyperlink: true
+    code-links:
+      - text: Data Processing Script
+        icon: file-code
+        href: https://github.com/isaiahespi/rea-paper/blob/main/src/01-data-clean-process.R
+    theme:
+      light: flatly
+      dark: darkly
+
   aog-article-pdf:
     pdf-engine: latexmk
     keep-tex: false
     papersize: letter
     # mainfont: Palatino Linotype
     mainfont: TeX Gyre Pagella
+    sansfont: TeX Gyre Pagella
     mathfont: TeX Gyre Pagella Math
     linestretch: 1.25
     colorlinks: true
@@ -89,86 +111,5 @@ format:
     include-in-header: 
       - text: |
           \usepackage{dcolumn}
-
-  # submittable-pdf:
-  #   keep-tex: false
-  #   endnotes: false
-  #   titlepage: false
-  #   mainfont: TeX Gyre Pagella
-  #   mathfont: TeX Gyre Pagella Math
-  #   fig-height: 4
-  #   fig-width: 7.5
-  #   cap-location: top
-  #   fontsize: 12pt
-  #   linestretch: 1.25
-  #   papersize: letter
-  #   link-citations: true
-  #   colorlinks: true
-  #   urlcolor: RoyalBlue
-  #   include-in-header: 
-  #     - text: |
-  #         \usepackage{dcolumn}
-  #         \usepackage{booktabs}
-
-  # submittable-docx:
-  #   keep-md: false
-  # preprint-typst: 
-  #   mainfont: Libertinus Serif
-  #   running-head: Running head # preprint-typst format
-  #   bibliography: references.bib
-  #   bibliographystyle: "chicago-author-date"
-
-  # docx: default
-  # jats: default
-
-  # (other formats)
-  # pdf: 
-  #   pdf-engine: latexmk
-  #   pdf-engine-opts: 
-  #     - xelatex
-  #   documentclass: scrartcl
-  #   keep-tex: false
-  #   # mainfont: Palatino Linotype
-  #   mainfont: TeX Gyre Pagella
-  #   mathfont: TeX Gyre Pagella Math
-  #   fontsize: 11pt
-  #   indent: true # indented paragraphs (indent=true) vs space between paragraphs
-  #   linestretch: 1.25
-  #   number-sections: false
-  #   citecolor: RoyalBlue
-  #   cap-location: top
-  #   fig-height: 4
-  #   fig-width: 7.5
-  #   link-citations: true
-  #   papersize: a4
-  #   geometry:
-  #     - inner=3cm
-  #     - outer=4cm
-  #     - top=3cm
-  #     - bottom=4cm
-  #     - headsep=22pt
-  #     - headheight=11pt
-  #     - footskip=33pt
-  #     - ignorehead
-  #     - ignorefoot
-  #     - heightrounded
-  #   include-in-header: 
-  #     - include-in-header.tex
-  #   template-partials:
-  #     - title.tex
-  #     - before-body.tex
-
-format-links:
-    - format: bookup-html
-      text: HTML
-    - format: aog-article-pdf
-      text: PDF
-      icon: file-pdf
-    # - format: submittable-pdf
-    #   text: Submission Style PDF
-    #   icon: file-pdf
-
-execute:
-  freeze: auto
 
 
