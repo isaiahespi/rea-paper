@@ -65,7 +65,7 @@ format:
     fontsize: 12pt
     cap-location: top
     page-layout: article
-    appendix-style: default
+    appendix-style: none
     lightbox: true
     html-math-method: mathjax
     smooth-scroll: true
@@ -79,6 +79,17 @@ format:
     reference-location: document
     crossref: 
       ref-hyperlink: true
+    other-links:
+      - text: Survey Codebook
+        icon: filetype-csv
+        href: codebooks/survey_codebook.csv
+      - text: Dataframe Dictionary
+        icon: filetype-csv
+        href: codebooks/data_dictionary.csv
+      - text: Raw Dataset Dictionary (Sanitized)
+        icon: filetype-csv
+        href: codebooks/raw_spss_sanitized_data_dict.csv
+    
     code-links:
       - text: Data Processing Script
         icon: file-code
