@@ -181,12 +181,21 @@
 % ---------------------------
 % END CUSTOM PREAMBLE STUFF
 % ---------------------------
+\usepackage{float}
+\usepackage{tabularray}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{rotating}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{siunitx}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{multirow}
 \usepackage{wrapfig}
-\usepackage{float}
 \usepackage{colortbl}
 \usepackage{pdflscape}
 \usepackage{tabu}
@@ -195,7 +204,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
-\usepackage{dcolumn} 
+\usepackage{dcolumn}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -243,7 +252,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={title},
+  pdftitle={Inspiring Confidence and Easing Insecurity in the Pre-election period: The Effect of Recruiting Military Veterans on Confidence in 2024 US Elections},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -253,15 +262,11 @@
 
 
 
-\title{title}
+\title{Inspiring Confidence and Easing Insecurity in the Pre-election
+period: The Effect of Recruiting Military Veterans on Confidence in 2024
+US Elections}
 % subtitles do not seem to work with article class?
-%%\usepackage{etoolbox}
-%\makeatletter
-%\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-%  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-%}
-%\makeatother
-%%\subtitle{subtitle}
+%%\subtitle{}
 
 \author{
 {\bfseries \normalsize Isaiah Espinoza}%
@@ -280,7 +285,8 @@ Politics \\%
 \renewcommand{\abstractname}{Abstract.}
 
 % add the short title to the fancy header
-\fancyhead[R]{A Short title}
+\fancyhead[R]{Effect of Recruiting Military Veterans on Confidence in
+2024 US Elections}
 \fancyhead[L]{Isaiah}
 
 \maketitle
@@ -289,7 +295,7 @@ Politics \\%
 
 
 \setstretch{1.25}
-\pagebreak
+\newpage{}
 
 \subsection{Introduction}\label{introduction}
 
@@ -297,8 +303,14 @@ Election administration officials make efforts to sustain public trust
 and confidence in the fairness and accuracy of elections, and attempt to
 boost such confidence where it may be deprived. Concerns for safety have
 developed among election staff and voters in more recent elections.
-Regular measures are taken to enhance the
-\emph{trustworthiness}\footnote{I adopt a distinction made between
+Regular measures are taken to enhance the \emph{trustworthiness} of the
+electoral process through practices meant to improve the conduct,
+transparency, or overall administration of elections in the United
+States.
+
+Although election officials undertake great efforts to enhance the
+\emph{trustworthiness} of election administration, public
+\emph{trust}\footnote{I adopt a distinction made between
   \emph{trustworthiness} and \emph{trust} in elections
   (\citeproc{ref-stewart2022}{Stewart 2022}). The ``\emph{worthiness}''
   of one's trust in the conduct and administration of elections is based
@@ -309,14 +321,9 @@ Regular measures are taken to enhance the
   election administration. I can recognize that my car is trustworthy
   prior to ever driving it because it is structurally sound; I have
   every reason to deem it \emph{worthy of my trust}. However, I don't
-  trust my car because I am sure it is haunted.} of the electoral
-process through practices meant to improve the conduct, transparency, or
-overall administration of elections in the United States.
-
-Although election officials undertake great efforts to enhance the
-trustworthiness of election administration, public \emph{trust} in
-elections is a psychological construct influenced by many things outside
-of election official control such as partisanship or elite rhetoric
+  trust my car because I am sure it is haunted.} in elections is a
+psychological construct influenced by many things outside of election
+official control such as partisanship or elite rhetoric
 (\citeproc{ref-hooghe2018}{Hooghe 2018};
 \citeproc{ref-sances2015}{Sances and Stewart 2015}). Moreover, a
 person's evaluation of the election in hindsight is often influenced by
@@ -334,12 +341,7 @@ have witnessed many people's outright refusal to accept the 2020 U.S.
 election results as legitimate despite consistent review of the evidence
 confirming the results as fair and accurate. Such a case demonstrates
 that public trust in elections is, at best, only partial to
-trustworthiness of election administration in the United
-States\footnote{There's little that could justify a conceptual
-  distinction between public trust pre-election and public trust
-  post-election. The temporal element renders the difference between
-  pre- and post-election more operative than conceptual at a
-  foundational level.}.
+trustworthiness of election administration in the United States.
 
 One point of contention that election officials have faced in the past
 regard evaluation of election workers. Previous literature has focused
@@ -658,32 +660,9 @@ experiment designed to determine whether publicized recruitment efforts
 targeting veterans as a group would have any special effect on
 confidence in elections administration.
 
-Since the results and events following the 2020 election loomed large in
-anticipation of the U.S. 2024 general elections, it is reasonable to
-take into account beliefs about legitimacy of the 2020 election. This
-group who denies the legitimacy of the 2020 election results were
-possibly the most apprehensive (distrusting) of the 2024 election.
-However, given that veteran service members are held in high regard,
-generally speaking, announcing that veterans are being actively
-recruited to work as election staff and volunteers is expected to
-positively influence confidence in elections among those who remained
-firm in the belief that the 2020 election results were illegitimate. I
-take into account that legitimacy beliefs about the 2020 election and
-expectations of electoral fraud are related to partisanship and include
-partisanship as a control in the analysis\footnote{To be clear, I
-  conducted an auxiliary regression analysis to examine the relationship
-  between legitimacy beliefs and partisanship. Results revealed a
-  statistically significant relationship between the two variables and
-  thus omitting either would result in biased estimates.}.
-
-In addition, I expect that both expectations of electoral fraud and
-concerns for voter safety would lessen (shrink) when presented with
-information that veterans are being actively recruited to work and
-volunteer in election offices.
-
-Finally, prior research has shown that confidence that one's own vote
-would be counted as intended has been much stronger than confidence that
-votes nationwide would be treated likewise
+In addition, prior research has shown that confidence that one's own
+vote would be counted as intended has been much stronger than confidence
+that votes nationwide would be treated likewise
 (\citeproc{ref-sances2015}{Sances and Stewart 2015};
 \citeproc{ref-stewart2022}{Stewart 2022}). In other words, the public is
 more trusting of elections closer to home. Taking into account that
@@ -697,10 +676,35 @@ near one's local area in light of such hometown favoritism, a positive
 effect on confidence in elections held beyond one's local area---where
 confidence is already expectedly lower---can help discern the impact of
 the group alone on public opinion. Therefore, any observed disparity of
-confidence in elections (i.e., the ``confidence gap'') between elections
-within one's local area and elections beyond will be smaller among those
-who are presented with information about election official recruitment
-efforts of veteran service members.
+confidence in elections between those within one's local area and those
+beyond will be smaller among those who are presented with information
+about election official recruitment efforts of veteran service members.
+
+Since the results and events following the 2020 election loomed large in
+anticipation of the U.S. 2024 general elections, it is reasonable to
+take into account beliefs about legitimacy of the 2020 election. This
+group who denies the legitimacy of the 2020 election results were
+possibly the most apprehensive (distrusting) of the 2024 election.
+However, given that veteran service members are held in high regard,
+generally speaking, announcing that veterans are being actively
+recruited to work as election staff and volunteers is expected to
+positively influence confidence in elections among those who remained
+firm in the belief that the 2020 election results were illegitimate.
+That is to say, despite their belief about the illegitimacy of the 2020
+election results, I expect that informing them about veteran recruitment
+efforts to improve their confidence in elections. I take into account
+the relationship between partisanship and 2020 election legitimacy
+beliefs and include partisanship as a control in the
+analysis\footnote{To be clear, I conducted an auxiliary regression
+  analysis to examine the relationship between legitimacy beliefs and
+  party ID. Results revealed a statistically significant relationship
+  between the two variables and thus omitting either would result in
+  biased estimates.}.
+
+Finally, I expect that concerns about potential for violence will
+lessen, and confidence in voter safety improve, when presented with
+information that veterans are being actively recruited to work and
+volunteer in election offices.
 
 \subsection{Experiment Design and Survey
 Measures}\label{experiment-design-and-survey-measures}
@@ -729,7 +733,7 @@ mention of veterans and their family members, and didn't describe
 and the headlines, the article vignettes are identical. Therefore,
 effects can be attributed to the information about veterans in the
 treatment vignette\footnote{Complete text of treatment and control
-  vignettes are included in the Appendix}.
+  vignettes are included in Appendix A}.
 
 It should be noted that Maricopa County, AZ was chosen as the setting of
 the story in the vignette due to the increased scrutiny levied toward
@@ -814,24 +818,23 @@ different aspects of trust in elections administration.
 
 \centering{
 
-\begingroup\fontsize{8}{10}\selectfont
-
-\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{8cm}>{\raggedright\arraybackslash}p{8cm}}
+\centering
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={1\linewidth},
+colspec={X[0.5]X[0.5]},
+column{1,2}={}{font=\fontsize{0.8em}{1.1em}\selectfont,},
+}                     %% tabularray inner close
 \toprule
-Trust & Distrust\\
-\midrule
-How confident are you that votes in Maricopa County, AZ will be counted as voters intend in the elections this November? & There will be voter fraud, that is, people who are not eligible to vote will vote, or vote more than once\\
-\addlinespace
-How confident are you that election officials, their staff, and volunteers in Maricopa County, AZ will do a good job conducting the elections this November? & Many votes will not actually be counted\\
-\addlinespace
-How commited do you think election staff and volunteers in Maricopa County, AZ will be to making sure the elections are fair and accurate? & Many people will show up to vote and be told they are not eligible\\
-\addlinespace
-How confident are you that the voting process will be fair in Maricopa County, AZ? & A foreign country will tamper with the votes cast in this area to change the results\\
-\addlinespace
-How confident are you that election systems in Maricopa County, AZ will be secure from hacking and other technological threats? & Election officials in Maricopa County, Arizona will try to discourage some people from voting\\
+Trust & Distrust \\ \midrule %% TinyTableHeader
+How confident are you that votes in Maricopa County, AZ will be counted as voters intend in the elections this November? & There will be voter fraud, that is, people who are not eligible to vote will vote, or vote more than once \\
+How confident are you that election officials, their staff, and volunteers in Maricopa County, AZ will do a good job conducting the elections this November? & Many votes will not actually be counted \\
+How commited do you think election staff and volunteers in Maricopa County, AZ will be to making sure the elections are fair and accurate? & Many people will show up to vote and be told they are not eligible \\
+How confident are you that the voting process will be fair in Maricopa County, AZ? & A foreign country will tamper with the votes cast in this area to change the results \\
+How confident are you that election systems in Maricopa County, AZ will be secure from hacking and other technological threats? & Election officials in Maricopa County, Arizona will try to discourage some people from voting \\
 \bottomrule
-\end{tabu}
-\endgroup{}
+\end{tblr}
 
 }
 
@@ -856,7 +859,7 @@ were estimated for both and found to be adequate (\(\alpha\)
 the distrust scale \(\alpha\) = 0.86. In other words, the items in each
 of the scales were intercorrelated well enough for each to compose a
 single scale presuming a unidimensional construct for each\footnote{See
-  Appendix C for analysis.}.
+  Appendix C for Inter-item correlation analysis.}.
 
 \subsection{Data Specification}\label{data-specification}
 
@@ -897,128 +900,40 @@ in elections} to serve as the dependent variable\footnote{The
   equidistant as though on an interval scale
   (\citeproc{ref-wang2013}{Wang et al. 2013}; for contrast, see
   \citeproc{ref-robitzsch2020}{Robitzsch 2020}).}. On this scale,
-positive values reflect higher confidence in elections, negative values
-reflect greater distrust, and values closer to zero correspond to an
-individual's degree of \emph{insecurity}.
+positive values reflect higher confidence in elections (e.g., elections
+will be fair and accurate), negative values reflect greater distrust
+(i.e., expectation that election fraud will occur), and values closer to
+zero correspond to an individual's degree of \emph{insecurity}.
 
 \subsection{Results}\label{results}
 
-I first review responses to the survey items capturing trust and
-distrust separately by treatment condition. When distinguished by
-experiment condition, trust in elections admin is noticeably higher for
-those who read the treatment vignette. The difference is more pronounced
-for some items over others. That being said, there is a definite
-distinction between items pertaining to Maricopa County, AZ compared to
-items that pertain to a respondent's local area. In fact, as expected,
-the treatment appears to have hardly made a difference when the items
-concerned one's local area.
-
-\begin{figure}[h]
-
-\caption{\label{fig-patch10}Trust in Election Administration by
-Experiment Condition}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-figures-fig-patch10-output-1.png}}
-
-}
-
-\end{figure}%
-
-Reviewing item responses distinguished by treatment condition reveals
-particulars of the treatment effect (Figure~\ref{fig-patch10}). Among
-the items that asked about Maricopa County, AZ, it is a bit easier to
-see upon which items the treatment vignette had the greatest effect. It
-appears that the main effect of the treatment is upon responses to the
-item that measures confidence in the security of election technology.
-
-Regarding confidence in the commitment of election staff and volunteers,
-a higher proportion of respondents in the treatment group selected
-``Very confident'' over ``Somewhat confident'' compared to the control
-group, but only for items concerning Maricopa County, AZ. Although
-confidence in election workers was generally high across the board, the
-shift from ``Somewhat'' to ``Very'' confident for items pertaining to
-election worker \emph{commitment} to fairness and accuracy seems to
-clearly speak to the group being recruited, i.e., veterans and family
-members. However, the same visible shift in proportion from ``Somewhat''
-to ``Very'' confident isn't observed when items asked about one's local
-area. It may be the case that respondents harbor particular attitudes or
-sentiment about Maricopa County, AZ itself, or there may be nothing
-uniquely special about Maricopa County, AZ supposing that elections
-anywhere beyond one's local area generally garner slightly less
-confidence.
-
-What this does suggest, however, is that trust in the fairness and
-accuracy of the electoral process is notably higher upon the notion that
-military veterans will be directly engaged as election staff and
-volunteers in places where such trust falters. The question turns to
-whether this also lowers distrust, or the extent to which one expects
-electoral fraud to occur.
-
-\begin{figure}[H]
-
-\caption{\label{fig-patch11}Disrust in Election Administration by
-Experiment Condition}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-figures-fig-patch11-output-1.png}}
-
-}
-
-\end{figure}%
-
-Similar to the trust scale items, the items on the distrust scale were
-associated with lower distrust in the treatment condition compared to
-the control. A quick glance at Figure~\ref{fig-patch11} shows what
-appears to be a significant reduction in distrust, especially regarding
-the expectations that many votes wouldn't be counted, many voters would
-be turned away, and that election officials would discourage voters from
-casting a ballot. Interestingly, the expectation that there would be
-foreign interference in elections in Maricopa County, AZ were pretty
-resilient against the treatment. And again, responses for items
-pertaining to elections in one's local area are practically
-indistinguishable between treatment and control.
-
-\subsubsection{Confidence in elections}\label{confidence-in-elections}
-
 Once trust and distrust were composed into unified variable of
-confidence in elections, I then examined distribution of the dependent
+confidence in elections, I examined distribution of the dependent
 variable followed by analysis of the effect of the treatment by
-comparison of mean differences between experiment conditions. Recall
-that on this scale, zero reflects insecurity (e.g., similar or equal
-values of trust and distrust), whereas values diverging from zero
-reflect confidence in either direction, trust or distrust respectively.
-Positive values reflect trust in elections administration (e.g.,
-elections will be fair and accurate), whereas negative values reflect
-distrust in elections (i.e., expectation that election fraud will
-occur). To retain a meaningful zero, I rescaled the sum scores to range
-from -3 to 3\footnote{This range is mostly arbitrary, as a range from -1
-  to 1 works much the same. When relying on simple sum total score, the
-  scale ranges from -15 to 15. So a single point increase from 0 to 1
-  may reflect a combination of a single ``Very confident'' response on a
+comparison of mean differences between experiment conditions. To retain
+a meaningful zero, I rescaled the sum scores to range from -3 to
+3\footnote{This range is mostly arbitrary, as a range from -1 to 1 works
+  much the same. When relying on simple sum total score, the scale
+  ranges from -15 to 15. So a single point increase from 0 to 1 may
+  reflect a combination of a single ``Very confident'' response on a
   trust item compensated by a single ``Somewhat likely'' response on a
   distrust item (i.e., 3-2 = 1), or some other equivalent combination.
   Although the use of mean scores would place scores back onto the
   response scale metric (e.g., from 0 to 3, reflective of ``not at all''
   to ``very''), this results in a unipolar scale (from 0 to 3). The
   bipolar scale resulting from the composition of positive trust and
-  negative distrust engenders meaning to zero and negative values. As
-  such, composite mean scores become inappropriate and interpretation of
-  scores would no longer be feasible. In other words, negative values on
-  the scale for confidence in elections hold substantive meaning (e.g.,
-  distrust, absent trust), which makes transforming scores to fit a
-  unipolar scale inappropriate.} and then superimposed two histograms of
-confidence scores: one derived from AZ items and another for scores
-derived from local area items. Doing this is illustrative of the
-relative distribution of confidence that differed depending on the
-location of elections referred to in the survey items (e.g., Maricopa
-County, AZ).
-
-As revealed by review of the item responses, the distribution of
-confidence differed depending on whether survey items pertained to
-elections in Maricopa County, AZ, or elections within one's local area.
+  negative distrust engenders meaning to zero and negative values. In
+  other words, negative values on the scale for confidence in elections
+  hold substantive meaning (e.g., distrust, absent trust), which makes
+  transforming scores to fit a unipolar scale inappropriate.} and then
+superimposed two histograms of confidence scores: one derived from AZ
+items and another for scores derived from local area items
+(Figure~\ref{fig-dist}). Doing this is illustrative of the relative
+distribution of confidence that differed depending on the location of
+elections referred to in the survey items (e.g., Maricopa County, AZ).
+As expected, the distribution of confidence differed depending on
+whether survey items pertained to elections in Maricopa County, AZ, or
+elections within one's local area.
 
 \begin{figure}[H]
 
@@ -1035,15 +950,15 @@ Elections for AZ and Local Area}
 
 Overall, the sample expressed more trust in elections relative to
 distrust seeing as how the distribution of confidence is largely
-positive (Figure~\ref{fig-dist}). However, there's a clear difference
-between confidence in Maricopa county, AZ elections and elections within
-one's local area. A paired t-test confirms that this difference was
-statistically significant, though somewhat small (mean difference
-\(= 0.325\), \(95\%\) CI \([0.27, 0.38]\), \(t(1286) = 11.61\),
-\(p < .001\)). Nonetheless, respondents appeared less confident
-regarding elections in Maricopa County, AZ, but held more confidence in
-elections administration in their local area. This complements previous
-research that demonstrates a similar bias favorable to one's local area
+positive. However, there's a clear difference between confidence in
+Maricopa county, AZ elections and elections within one's local area. A
+paired t-test confirms that this difference was statistically
+significant, though somewhat small (mean difference \(= 0.325\),
+\(95\%\) CI \([0.27, 0.38]\), \(t(1286) = 11.61\), \(p < .001\)).
+Nonetheless, respondents appeared less confident regarding elections in
+Maricopa County, AZ, but held more confidence in elections
+administration in their local area. This complements previous research
+that demonstrates a similar bias favorable to one's local area
 (\citeproc{ref-stewart2022}{Stewart 2022}).
 
 Accordingly, when confidence levels are distinguished by experiment
@@ -1060,19 +975,19 @@ Control Condition}
 
 \centering{
 
-\centering\begingroup\fontsize{9}{11}\selectfont
-
-\begin{tabular}[t]{llllllllll}
+\centering
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+column{1,2,3,4,5,6,7,8,9,10}={}{font=\fontsize{0.75em}{1.05em}\selectfont,},
+}                     %% tabularray inner close
 \toprule
-Place & $\bar{x}_{diff}$ & $\bar{x}_{treat}$ & $\bar{x}_{control}$ & $treat_{n}$ & $control_{n}$ & t & p & data & CI\\
-\midrule
-Maricopa County, AZ & 0.20 & 0.93 & 0.72 & 650.00 & 637.00 & 2.96 & 0.003** & 1283.73 & {}[ 0.07, 0.33]\\
-Local Area & 0.06 & 1.18 & 1.12 & 650.00 & 637.00 & 0.87 & 0.383 & 1282.95 & {}[-0.08, 0.20]\\
+Place & $\bar{x}_{diff}$ & $\bar{x}_{treat}$ & $\bar{x}_{control}$ & $n_{treat}$ & $n_{control}$ & t & p & df & CI \\ \midrule %% TinyTableHeader
+Maricopa County, AZ & $0.20$ & $0.93$ & $0.72$ & $650.00$ & $637.00$ & 2.96 & 0.003** & 1283.73 & [ 0.07, 0.33] \\
+Local Area & $0.06$ & $1.18$ & $1.12$ & $650.00$ & $637.00$ & 0.87 & 0.383 & 1282.95 & [-0.08, 0.20] \\
 \bottomrule
-\multicolumn{10}{l}{\rule{0pt}{1em}\textit{Note: }}\\
-\multicolumn{10}{l}{\rule{0pt}{1em}Welch Two Sample t-tests of difference between Confidence in Elections by Treatment Condition.}\\
-\end{tabular}
-\endgroup{}
+\end{tblr}
 
 }
 
@@ -1165,13 +1080,13 @@ pertaining to elections within one's local area, regardless of treatment
 condition. However, notably, trust that election technology would be
 secure received the lowest confidence endorsement overall. There was
 also a notable lack of trust that the voting process would be fair
-relative to the other items.\footnote{What is interesting to note here
-  is that the first three items regard the more human element of the
+relative to the other items\footnote{What is interesting to note here is
+  that the first three items regard the more human element of the
   election administration process, e.g., ensuring accuracy of counts,
   competence, and commitment of election workers. Although a neat line
   can't really be drawn between the first three and latter two items
   presented here, it is interesting to see a slight divergence from the
-  usual high confidence placed in local area elections.} Now the
+  usual high confidence placed in local area elections.}. Now the
 comparative difference in responses between those in the treatment group
 compared to those in the control group appears substantial for items
 pertaining to elections in Maricopa County, AZ.
@@ -1190,7 +1105,7 @@ those who refute the 2020 election results}
 \end{figure}%
 
 Concerning distrust among those who refuted the 2020 election results,
-responses items assessing one's expectation that election fraud would
+responses to items assessing one's expectation that election fraud would
 occur reveal the same pattern. Although there is not as stark a
 disparity between responses of those in the treatment and those in the
 control, among those in the treatment group, there does appear to be
@@ -1202,6 +1117,35 @@ the impact of the treatment.
 In order to substantiate the overall influence of the treatment on
 confidence in elections, I regressed the dependent variable confidence
 on legitimacy beliefs while controlling for partisanship.
+
+\begin{table}[H]
+
+\caption{\label{tbl-legit}Confidence in Elections by Treatment and
+Legitimacy Beliefs}
+
+\centering{
+
+\begin{tabular}{l c c}
+\hline
+ & Confidence in AZ Elections & w/Interaction \\
+\hline
+(Intercept)                & $0.03 \; (0.08)$        & $0.07 \; (0.08)$        \\
+Treatment                  & $0.18 \; (0.05)^{***}$  & $0.09 \; (0.06)$        \\
+Not Legitimate             & $-0.72 \; (0.07)^{***}$ & $-0.86 \; (0.09)^{***}$ \\
+Republican                 & $0.11 \; (0.08)$        & $0.12 \; (0.08)$        \\
+Democrat                   & $0.17 \; (0.09)$        & $0.17 \; (0.09)^{*}$    \\
+Not Legitimate * Treatment &                         & $0.27 \; (0.11)^{*}$    \\
+\hline
+R$^2$                      & $0.14$                  & $0.14$                  \\
+Adj. R$^2$                 & $0.13$                  & $0.14$                  \\
+Num. obs.                  & $1263$                  & $1263$                  \\
+\hline
+\multicolumn{3}{l}{\scriptsize{$^{***}p<0.001$; $^{**}p<0.01$; $^{*}p<0.05$}}
+\end{tabular}
+
+}
+
+\end{table}%
 
 The first model in Table \ref{tbl-legit} shows that overall confidence
 in elections among those who read the treatment vignette was
@@ -1223,36 +1167,180 @@ was most influential upon those who believe the 2020 election results
 were illegitimate. The treatment alone does not reverse such beliefs,
 but this shows where its influence was most potent.
 
+\subsubsection{Concerns for Violence and Voter
+Safety}\label{concerns-for-violence-and-voter-safety}
+
+Thus far, publicized announcements that election officials will be
+targeting veterans in their recruitment efforts does quite a bit to
+improve confidence in elections outside of one's local area (or, at
+least for elections held in Maricopa County, AZ), especially among those
+who believed the 2020 election results were illegitimate. While distrust
+is one concern during the pre-election period, it is not the only
+concern that arises in anticipation of US elections; the public must
+feel confident that voters are safe to cast a ballot in person. The
+survey included questions\footnote{See Table~\ref{tbl-4} in Appendix A}
+that allows me to assess whether those in the treatment condition
+expressed less concern for violence and more confidence in voter safety
+compared to those in the control condition.
+
+\begin{figure}[!t]
+
+\caption{\label{fig-safety-bars}Safety Concerns and Confidence by
+Treatment Condition}
+
+\begin{minipage}{\linewidth}
+
+\subcaption{\label{fig-safety-bars-1}Concern for Violence while voting
+in Maricopa County, AZ Elections}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-safety-bars-1.png}}
+
+}
+
+\end{minipage}%
+\newline
+\begin{minipage}{\linewidth}
+
+\subcaption{\label{fig-safety-bars-2}Confidence in Voter Saftey at
+Election Sites in Maricopa County, AZ}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-safety-bars-2.png}}
+
+}
+
+\end{minipage}%
+
+\end{figure}%
+
+Briefly reviewing Figure~\ref{fig-safety-bars}, those in the treatment
+condition felt less concern over the potential for violence compared to
+those in the control. As for confidence in voter safety at election
+sites, it appears that more respondents in the treatment condition
+expressed that they were ``Very confident'' compared to those in the
+control, by approximately \(8\) percentage points.
+
+It would appear that the treatment vignette increased the likelihood
+that a respondent would select a higher response option compared to
+those in the control group. In order to assess whether that was the
+case, I conducted an ordered logistic regression on the relevant items
+using the experimental condition as a dichotomous predictor.
+
+Those in the treatment condition had lower probability to express that
+they were `Very' or `Somewhat' concerned for violence in Maricopa
+County, AZ Elections, yet higher probability of expressing `Not too' or
+`Not at all' concerned. As for confidence in voter safety, moving from
+treatment to control, the difference in predicted probability of a
+respondent selecting ``Very Confident'' was \(0.08\).
+Table~\ref{tbl-preds-diff1} and Table~\ref{tbl-preds-diff2} show the
+significant differences in predicted probabilities at 95\(\%\)
+confidence\footnote{The same models were run for items pertaining to
+  safety concerns in one's local area but results of the treatment were
+  not significantly different from the control. See Appendix D for full
+  results table of ordinal logistic regression}.
+
+\begin{table}
+
+\caption{\label{tbl-preds-diff1}Difference in Predicted Probabilities in
+Concern for violence, Threats of Violence, or Intimidation between
+Treatment and Control}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={{\fontsize{0.75em}{0.75em}\selectfont Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+column{1,2,3,4,5,6,7}={}{font=\fontsize{0.8em}{1.1em}\selectfont,},
+}                     %% tabularray inner close
+\toprule
+Violence & hypothesis & estimate & std.error & z & Pr(>|z|) & conf.int \\ \midrule %% TinyTableHeader
+Very concerned & (Treatment) - (Control) & -0.027 & 0.011 & -2.463 & 0.014 & [-0.048, -0.005] \\
+Somewhat concerned & (Treatment) - (Control) & -0.037 & 0.015 & -2.468 & 0.014 & [-0.066, -0.008] \\
+Not too concerned & (Treatment) - (Control) & 0.032 & 0.013 & 2.460 & 0.014 & [ 0.007,  0.058] \\
+Not at all concerned & (Treatment) - (Control) & 0.031 & 0.013 & 2.472 & 0.013 & [ 0.006,  0.056] \\
+\bottomrule
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-preds-diff2}Difference in Predicted Probabilities in
+Confidence that voters will be safe to vote in-person between Treatment
+and Control}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={{\fontsize{0.75em}{0.75em}\selectfont Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+column{1,2,3,4,5,6,7}={}{font=\fontsize{0.8em}{1.1em}\selectfont,},
+}                     %% tabularray inner close
+\toprule
+Voter Safety & hypothesis & estimate & std.error & z & Pr(>|z|) & conf.int \\ \midrule %% TinyTableHeader
+Not at all confident & (Treatment) - (Control) & -0.0166 & 0.0048 & -3.4331 & 0.0006 & [-0.0260, -0.0071] \\
+Not too confident & (Treatment) - (Control) & -0.0444 & 0.0120 & -3.6929 & 0.0002 & [-0.0680, -0.0208] \\
+Somewhat confident & (Treatment) - (Control) & -0.0198 & 0.0066 & -3.0095 & 0.0026 & [-0.0327, -0.0069] \\
+Very confident & (Treatment) - (Control) & 0.0808 & 0.0215 & 3.7637 & 0.0002 & [ 0.0387,  0.1228] \\
+\bottomrule
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\newpage
+
 \subsection{Conclusion}\label{conclusion}
 
 Publicized announcements that election officials are actively recruiting
 former military service members to work as election staff and volunteers
-is associated with slightly greater confidence in elections compared to
-election worker recruitment announcements that do not explicitly mention
-targeted recruitment of former military service members. Moreover,
-increased levels of confidence is limited to elections beyond one's
-local area and, of course, in anticipation of election night. Whether
-the increase in confidence is sustained post-election night cannot be
-inferred from these results.
+is associated with greater confidence in elections compared to election
+worker recruitment announcements that do not explicitly mention targeted
+efforts to recruit former military service members. In addition, such
+public announcements eased concerns about violence and increased
+confidence that voters would be safe to vote in person at election
+sites. Of course, the higher levels of confidence in elections and voter
+safety observed among the treatment group were limited to considerations
+about elections held in Maricopa County, AZ---presumably beyond one's
+local area. This is to be expected bearing in mind that confidence in
+elections for one's local area is usually higher than for those beyond.
+Thus, there's already more insecurity concerning elections elsewhere for
+whatever reason.
 
-Bear in mind that confidence in elections for one's local area is
-already higher than for those beyond. Thus, there's already more
-insecurity concerning elections elsewhere for whatever reason. In the
-anticipatory period prior to national elections, publicized efforts to
-recruit veterans to work as election staff and volunteers may be a
-small, but positive, step towards reducing insecurity in elections that
-occur elsewhere. Especially among those who maintained a steadataast
-degree of distrust in elections. Despite a lack of evidence that
-systematic electoral fraud had occurred in the 2020 election, a
-substantial proportion of the population were unwilling to affirm the
-legitimacy of the results. However, despite such legitimacy beliefs,
-most were not consistent as they expressed varying levels of trust in
-different aspects of elections administration.
+One obvious contribution of these results shows that the perceived
+trustworthiness of elections administration is amendable to generalized
+impressions about the kind and character of the people who work and
+volunteer as election staff. Whatever election officials do to boost
+public confidence may be overshadowed by impressions about who is
+staffing election sites.
 
-These results speaks more to the influence that military veterans have
-among those who distrust the electoral process and refute the legitimacy
-of prior outcomes than it does to the public more generally. In general,
-public confidence appears strongest when the elections under
+It should be noted that these results are limited to one's expectations
+in anticipation of election night. Whether the increase in confidence is
+sustained post-election night cannot be inferred from these results.
+Moreover, It is yet unclear whether actually encountering and
+interacting with veterans working as staff or volunteers at election
+sites does much to improve voter confidence after election night
+compared to anyone else. It may be the case that assumptions that
+veterans are filling spots as election workers and volunteers simply
+primes positive expectations as one heads into an election site,
+potentially improving voters perceptions of their own experience on the
+way out. Further research would be needed to test such an idea.
+
+In general, public confidence appears strongest when the elections under
 consideration regard those within one's local community. Yet, such
 strong confidence is not generalized outward to the institution of
 elections administration as a whole. Insecurity in the integrity of the
@@ -1261,9 +1349,22 @@ elections that occur further from home. Whether that is due to some
 local favorability bias or some outward negativity bias is hard to say.
 And seeing as how insecurity presents vulnerability, it is perhaps far
 easier to inspire a general sense of distrust in the process and its
-administration in places not near and around one's local area.
+administration in places more abstract.
 
-\newpage
+In the anticipatory period prior to national elections, publicized
+efforts to recruit veterans to work as election staff and volunteers may
+be a small, but positive, step towards reducing insecurity in elections
+that occur elsewhere. Especially among those who maintained a steadfast
+degree of distrust in elections. Despite a lack of evidence that
+systematic electoral fraud had occurred in the 2020 election, a
+substantial proportion of the population were unwilling to affirm the
+legitimacy of the results. However, despite such legitimacy beliefs,
+most were not consistent as they expressed varying levels of trust in
+different aspects of elections administration. These results say more
+about the influence that military veterans have among those who are most
+insecure than it does about the public more generally.
+
+\newpage{}
 
 \section{Appendix A: Survey Experiment Vignettes and Survey
 Items}\label{appendix-a-survey-experiment-vignettes-and-survey-items}
@@ -1326,9 +1427,7 @@ the process and the outcome of the election.''
 
 \end{figure}%
 
-\newpage
-
-\subsection{Survey Items}\label{survey-items}
+\newpage{}
 
 \begin{table}
 
@@ -1336,22 +1435,64 @@ the process and the outcome of the election.''
 
 \centering{
 
-\begingroup\fontsize{8}{10}\selectfont
-
-\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{7cm}>{\raggedright\arraybackslash}p{4cm}}
+\centering
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={1\linewidth},
+colspec={X[0.7]X[0.3]},
+column{1,2}={}{font=\fontsize{0.8em}{1.1em}\selectfont, halign=l,},
+}                     %% tabularray inner close
 \toprule
-Question & response\\
-\midrule
-In general, how favorable or unfavorable is your impression of local election officials? & {}[Strongly unfavorable, Somewhat unfavorable, Neither, Somewhat favorable, Strongly favorable]\\
-\addlinespace
-Regardless of whom you supported in the 2020 election, do you think Joe Biden's election as president was legitimate, or was he not legitimately elected? & Legitimate, Not legitimate\\
-\addlinespace
-Thinking about Maricopa County, AZ, how concerned should voters feel about potential violence, threats of violence, or intimidation while voting in person at their local polling place? & Very concerned, Somewhat concerned, Not too concerned, Not at all concerned\\
-\addlinespace
-How confident, if at all, are you that in person polling places in Maricopa County, AZ will be safe places for voters to cast their ballots during the upcoming elections in November? & Not at all confident, Not too confident, Somewhat confident, Very confident\\
+Questions & Response \\ \midrule %% TinyTableHeader
+Regardless of whom you supported in the 2020 election, do you think Joe Biden's election as president was legitimate, or was he not legitimately elected? & \minipage{\textwidth}\begin{itemize}
+\item Legitimate
+
+\item Not legitimate
+
+\end{itemize}\endminipage \\
+Thinking about Maricopa County, AZ, how concerned should voters feel about potential violence, threats of violence, or intimidation while voting in person at their local polling place? & \minipage{\textwidth}\begin{itemize}
+\item Very concerned
+
+\item Somewhat concerned
+
+\item Not too concerned
+
+\item Not at all concerned
+
+\end{itemize}\endminipage \\
+How confident, if at all, are you that in person polling places in Maricopa County, AZ will be safe places for voters to cast their ballots during the upcoming elections in November? & \minipage{\textwidth}\begin{itemize}
+\item Not at all confident
+
+\item Not too confident
+
+\item Somewhat confident
+
+\item Very confident
+
+\end{itemize}\endminipage \\
+Thinking about your local area, how concerned should voters feel about potential violence, threats of violence, or intimidation while voting in person at their local polling place? & \minipage{\textwidth}\begin{itemize}
+\item Very concerned
+
+\item Somewhat concerned
+
+\item Somewhat unconcerned
+
+\item Not at all concerned
+
+\end{itemize}\endminipage \\
+How confident, if at all, are you that in person polling places in your local area will be safe places for voters to cast their ballots during the upcoming elections in November? & \minipage{\textwidth}\begin{itemize}
+\item Not at all confident
+
+\item Not too confident
+
+\item Somewhat confident
+
+\item Very confident
+
+\end{itemize}\endminipage \\
 \bottomrule
-\end{tabu}
-\endgroup{}
+\end{tblr}
 
 }
 
@@ -1380,7 +1521,7 @@ by Republicans at \(42.59\%\). The proportion of true
 Independents\footnote{Independent `leaners' were grouped into the
   respective party affiliation in which they lean.} was \(12.78\%\).
 
-\begin{table}
+\begin{table}[H]
 
 \caption{\label{tbl-demog}Sample Demographics}
 
@@ -1455,11 +1596,10 @@ Table~\ref{tbl-logit} shows results of a logistic regression test of
 random assignment to the treatment group. Demographics such as age,
 gender, race, educational attainment, and party ID are included as
 predictor variables. Note that 19 missing observations were deleted. A
-\(\chi^2(15) = 11.010\), with 15 degrees of freedom and associated
-p-value \textgreater{} 0.05 (\(p = 0.75\)) confirms that none of the
-demographic predictor variables significantly increased the
-log-odds---in turn, the probability---of being assigned to the treatment
-group.
+\(\chi^2 = 11.010\), with 15 degrees of freedom and associated p-value
+\textgreater{} 0.05 (\(p = 0.75\)) confirms that none of the demographic
+predictor variables significantly increased the log-odds---in turn, the
+probability---of being assigned to the treatment group.
 
 \begin{table}
 
@@ -1468,55 +1608,57 @@ Treatment}
 
 \centering{
 
-\centering\begingroup\fontsize{9}{11}\selectfont
-
-\begin{tabular}{lcccc}
+\centering
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.8\linewidth},
+colspec={X[]X[]X[]},
+column{1,2,3}={}{font=\fontsize{0.8em}{1.1em}\selectfont,},
+hline{27}={1,2,3}{solid, black, 0.1em},
+}                     %% tabularray inner close
 \toprule
-  & \textbf{Treatment N} & \textbf{log(OR)} & \textbf{95\% CI} & \textbf{p-value}\\
-\midrule
-\textbf{(Intercept)} & 640 & 0.17 & -0.25, 0.59 & 0.4\\
-\textbf{Age} & 640 &  &  & 0.14\\
-\hspace{1em}18-34 & 179 & — & — & \\
-\hspace{1em}35-54 & 230 & -0.17 & -0.45, 0.12 & 0.2\\
-\hspace{1em}55-74 & 190 & -0.15 & -0.46, 0.15 & 0.3\\
-\addlinespace
-\hspace{1em}75-85+ & 41 & 0.40 & -0.15, 0.97 & 0.2\\
-\textbf{Gender} & 640 &  &  & 0.5\\
-\hspace{1em}Male & 308 & — & — & \\
-\hspace{1em}Female & 326 & -0.07 & -0.29, 0.15 & 0.5\\
-\hspace{1em}Other/Refused & 6 & -0.62 & -1.8, 0.42 & 0.2\\
-\addlinespace
-\textbf{Race (includes Hispanic as race)} & 640 &  &  & 0.9\\
-\hspace{1em}White & 495 & — & — & \\
-\hspace{1em}Asian & 26 & 0.03 & -0.55, 0.60 & >0.9\\
-\hspace{1em}Black & 79 & -0.08 & -0.43, 0.27 & 0.6\\
-\hspace{1em}Other & 11 & 0.05 & -0.82, 0.93 & >0.9\\
-\addlinespace
-\hspace{1em}Hispanic & 20 & -0.24 & -0.86, 0.38 & 0.5\\
-\hspace{1em}American Indian & 9 & 0.50 & -0.58, 1.7 & 0.4\\
-\textbf{Educational Attainment} & 640 &  &  & 0.6\\
-\hspace{1em}H.S. or less & 188 & — & — & \\
-\hspace{1em}Some college no degree & 140 & -0.10 & -0.42, 0.21 & 0.5\\
-\addlinespace
-\hspace{1em}College degree & 223 & -0.16 & -0.45, 0.12 & 0.3\\
-\hspace{1em}Postgraduate degree & 89 & 0.02 & -0.35, 0.40 & >0.9\\
-\textbf{Party ID} & 640 &  &  & 0.8\\
-\hspace{1em}Independent & 79 & — & — & \\
-\hspace{1em}Republican & 278 & 0.12 & -0.24, 0.48 & 0.5\\
-\addlinespace
-\hspace{1em}Democrat & 283 & 0.05 & -0.31, 0.40 & 0.8\\
+& \textbf{log(OR)} & \textbf{95\% CI} \\ \midrule %% TinyTableHeader
+\textbf{Age} &  &  \\
+18-34 &  &  \\
+35-54 & -0.17 & -0.45, 0.12 \\
+55-74 & -0.15 & -0.46, 0.15 \\
+75-85+ & 0.40 & -0.15, 0.97 \\
+\textbf{Gender} &  &  \\
+Male &  &  \\
+Female & -0.07 & -0.29, 0.15 \\
+Other/Refused & -0.62 & -1.8, 0.42 \\
+\textbf{Race/Ethnicity} &  &  \\
+White &  &  \\
+Asian & 0.03 & -0.55, 0.60 \\
+Black & -0.08 & -0.43, 0.27 \\
+Other & 0.05 & -0.82, 0.93 \\
+Hispanic & -0.24 & -0.86, 0.38 \\
+American Indian & 0.50 & -0.58, 1.7 \\
+\textbf{Education} &  &  \\
+H.S. or less &  &  \\
+Some college no degree & -0.10 & -0.42, 0.21 \\
+College degree & -0.16 & -0.45, 0.12 \\
+Postgraduate degree & 0.02 & -0.35, 0.40 \\
+\textbf{Party ID} &  &  \\
+Independent &  &  \\
+Republican & 0.12 & -0.24, 0.48 \\
+Democrat & 0.05 & -0.31, 0.40 \\
+Num.Obs & 1268 &  \\
+Log.Lik & -873.349 &  \\
+DF & 15 &  \\
+\(\chi^2\) & 11.01 &  \\
+\(P(>\chi^2)\) & 0.752 &  \\
+Deviance & 1746.698 &  \\
+Null Deviance & 1757.708 &  \\
 \bottomrule
-\multicolumn{5}{l}{\rule{0pt}{1em}\textit{Note: }}\\
-\multicolumn{5}{l}{\rule{0pt}{1em}Chi-Squared = 11.01, d.f. = 15, p = 0.75}\\
-\multicolumn{5}{l}{\rule{0pt}{1em}Abbreviations: CI = Confidence Interval, OR = Odds Ratio}\\
-\end{tabular}
-\endgroup{}
+\end{tblr}
 
 }
 
 \end{table}%
 
-\newpage
+\newpage{}
 
 \section{Appendix C: Polychoric Item and Score Correlations of Trust and
 Distrust}\label{appendix-c-polychoric-item-and-score-correlations-of-trust-and-distrust}
@@ -1599,7 +1741,126 @@ items (For the local item scale score correlation: \(\rho = -0.52\),
 negative correlation between the trust and distrust items and scores
 makes intuitive sense.
 
-\newpage
+\newpage{}
+
+\section{Appendix D: Predicted Probabilities of Safety Concerns by
+Treatment
+Condition}\label{appendix-d-predicted-probabilities-of-safety-concerns-by-treatment-condition}
+
+\begin{table}[H]
+
+\caption{\label{tbl-safety-logit}Ordinal Logistic Regression of Concerns
+for Violence and Confidence in Voter Safety Regressed on Experiment
+Condition}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={{\fontsize{0.75em}{0.75em}\selectfont + p < 0.1, * p < 0.05, ** p < 0.01, *** p < 0.001}},
+note{ }={{\fontsize{0.75em}{0.75em}\selectfont Parameter estimate (and confidence intervals) exponentiated to show odds ratios.}},
+note{  }={{\fontsize{0.75em}{0.75em}\selectfont Uncertainty intervals (profile-likelihood) and p-values (two-tailed) computed using a Wald t-distribution approximation}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]},
+column{2,3}={}{halign=c, font=\fontsize{0.8em}{1.1em}\selectfont,},
+column{1}={}{halign=l, font=\fontsize{0.8em}{1.1em}\selectfont,},
+hline{16}={1,2,3}{solid, black, 0.05em},
+}                     %% tabularray inner close
+\toprule
+& Concerns for Violence (OR) & Confidence in Voter Safety (OR) \\ \midrule %% TinyTableHeader
+Treatment & 1.289* & 1.494*** \\
+& [1.055, 1.576] & [1.211, 1.844] \\
+Very concerned | Somewhat concerned & 0.153*** &  \\
+& [0.127, 0.186] &  \\
+Somewhat concerned | Not too concerned & 1.125 &  \\
+& [0.969, 1.305] &  \\
+Not too concerned | Not at all concerned & 6.762*** &  \\
+& [5.595, 8.171] &  \\
+Not at all confident | Not too confident &  & 0.055*** \\
+&  & [0.041, 0.073] \\
+Not too confident | Somewhat confident &  & 0.280*** \\
+&  & [0.237, 0.332] \\
+Somewhat confident | Very confident &  & 3.150*** \\
+&  & [2.667, 3.721] \\
+Num.Obs. & 1286 & 1285 \\
+RMSE & 2.44 & 2.91 \\
+\bottomrule
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}[H]
+
+\caption{\label{tbl-safety-preds1}Unit-level predicted probabilities of
+selecting response or higher comparing experiment condition}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={{\fontsize{0.75em}{0.75em}\selectfont Thinking about Maricopa County, AZ, how concerned should voters feel about potential violence, threats of violence, or intimidation while voting in person at their local polling place?}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+column{1,2,3,4,5,6,7}={}{font=\fontsize{0.8em}{1.1em}\selectfont,},
+}                     %% tabularray inner close
+\toprule
+Violence & Condition & estimate & std.error & z & Pr(>|z|) & conf.int \\ \midrule %% TinyTableHeader
+Very concerned & Control & 0.133 & 0.011 & 11.746 & 7.442e-32 & [0.111, 0.155] \\
+Very concerned & Treatment & 0.106 & 0.010 & 10.977 & 4.955e-28 & [0.087, 0.125] \\
+Somewhat concerned & Control & 0.396 & 0.016 & 25.430 & 1.175e-142 & [0.366, 0.427] \\
+Somewhat concerned & Treatment & 0.360 & 0.015 & 23.556 & 1.081e-122 & [0.330, 0.389] \\
+Not too concerned & Control & 0.342 & 0.015 & 23.296 & 4.890e-120 & [0.313, 0.371] \\
+Not too concerned & Treatment & 0.374 & 0.015 & 24.825 & 4.779e-136 & [0.344, 0.403] \\
+Not at all concerned & Control & 0.129 & 0.011 & 11.895 & 1.263e-32 & [0.108, 0.150] \\
+Not at all concerned & Treatment & 0.160 & 0.012 & 12.882 & 5.678e-38 & [0.136, 0.185] \\
+\bottomrule
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}[H]
+
+\caption{\label{tbl-safety-preds2}Unit-level predicted probabilities of
+selecting response or higher conditional to the Treatment experiment
+condition}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={{\fontsize{0.75em}{0.75em}\selectfont How confident, if at all, are you that in person polling places in Maricopa County, AZ will be safe places for voters to cast their ballots during the upcoming elections in November?}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+column{1,2,3,4,5,6,7}={}{font=\fontsize{0.8em}{1.1em}\selectfont,},
+}                     %% tabularray inner close
+\toprule
+Voter Safety & Condition & estimate & std.error & z & Pr(>|z|) & conf.int \\ \midrule %% TinyTableHeader
+Not at all confident & Control & 0.052 & 0.007 & 7.302 & 2.845e-13 & [0.038, 0.066] \\
+Not at all confident & Treatment & 0.035 & 0.005 & 6.932 & 4.141e-12 & [0.025, 0.045] \\
+Not too confident & Control & 0.167 & 0.013 & 13.268 & 3.563e-40 & [0.142, 0.192] \\
+Not too confident & Treatment & 0.123 & 0.010 & 11.924 & 8.875e-33 & [0.102, 0.143] \\
+Somewhat confident & Control & 0.540 & 0.014 & 38.037 & 0.000 & [0.512, 0.568] \\
+Somewhat confident & Treatment & 0.520 & 0.014 & 36.134 & 6.715e-286 & [0.492, 0.549] \\
+Very confident & Control & 0.241 & 0.016 & 15.519 & 2.583e-54 & [0.211, 0.271] \\
+Very confident & Treatment & 0.322 & 0.017 & 18.550 & 8.104e-77 & [0.288, 0.356] \\
+\bottomrule
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\newpage{}
 
 \section*{References}\label{bibliography}
 \addcontentsline{toc}{section}{References}

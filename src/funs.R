@@ -180,9 +180,9 @@ custom_barplot <- function(data, x, group, title = NULL, subtitle = NULL,
   scale_fill_grey(start = 0.5, end = 0.1)
   
   b <- b + ggplot2::labs(
-    title = stringr::str_wrap(title, width = 85),
-    subtitle = stringr::str_wrap(subtitle, width = 85),
-    caption = stringr::str_wrap(caption, width = 85),
+    title = title,
+    subtitle = subtitle,
+    caption = stringr::str_wrap(caption, width = 99),
     fill = legend_fill,
     y = "Percentage",
     x = stringr::str_wrap(xlab, width = 85))
@@ -329,3 +329,38 @@ clockin <- function(date = TRUE, time = FALSE, seconds = FALSE){
 
 
 
+# fun: var_label_tab :::::::::::::::::::::::::::::::::::::::::::::::::::::::####
+
+var_label_tab <- function(x){
+    purrr::map(x, ~attr(., "label")) |>
+    purrr::map(~ifelse(purrr::is_null(.), "No label", .)) |> 
+    tibble::enframe(name = "var", value = "var_label") |>
+    tidyr::unnest(cols = c(var_label))
+}
+
+# fun: logistic regression model goodness-of-fit statistics ::::::::::::::::####
+
+# creating my own for now
+# logistic regression model goodness-of-fit statistics
+lrm.gof.stats <- function(x, ...){
+  
+  out <- data.frame(
+    null.deviance = x$null.deviance,
+    df.null = x$df.null,
+    logLik = as.numeric(stats::logLik(x)),
+    AIC = stats::AIC(x),
+    BIC = stats::BIC(x),
+    deviance = stats::deviance(x),
+    df.residual = stats::df.residual(x),
+    nobs = stats::nobs(x),
+    chisq = as.numeric(x$null.deviance - stats::deviance(x)),
+    df = as.numeric(x$df.null - stats::df.residual(x)),
+    'P(>chi)' = pchisq(q=x$null.deviance - stats::deviance(x),
+                       df = x$df.null - stats::df.residual(x), 
+                       lower.tail = F)
+  )
+  out <- dplyr::as_tibble(out)
+  return(out)
+}
+
+lrm.gof.stats(m1)

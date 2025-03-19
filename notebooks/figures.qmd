@@ -122,6 +122,38 @@ likert_plot <- function(data, x, ...,
   p
 
 }
+```
+
+```{r}
+#| label: custom-barplot
+
+# function for creating barplots
+custom_barplot <- function(data, x, group, title = NULL, subtitle = NULL,
+                           caption = NULL, legend_fill = NULL,
+                           xlab = NULL){
+  b <- data |> 
+    group_by({{ group }}, {{ x }}) |> 
+    count() |> 
+    drop_na() |> 
+    group_by({{ group }}) |> 
+  mutate(prop = round(n/sum(n), digits = 3),
+         pct = prop*100,
+         res = str_c(pct,'% (', n, ')', sep = "")) |> 
+  ggplot(aes(x = {{ x }}, y = pct, fill = {{ group }}))+
+  geom_bar(position = 'dodge', stat = 'identity')+
+  geom_text(aes(label = res), position = position_dodge(1.0), size = 2.5, vjust = -0.5)+
+  scale_fill_grey(start = 0.5, end = 0.1)
+  
+  b <- b + ggplot2::labs(
+    title = title,
+    subtitle = subtitle,
+    caption = stringr::str_wrap(caption, width = 99),
+    fill = legend_fill,
+    y = "Percentage",
+    x = stringr::str_wrap(xlab, width = 85))
+  b
+}
+
 
 
 ```
@@ -936,12 +968,15 @@ safety.concern.treat.likert <- data |>
     facet_rows = vars(.question),
     facet_label_wrap = 15,
     variable_labels = c(q25 = 'Thinking about Maricopa County, AZ', q36 = "Thinking about Local Area"),
-    title = "Concern for Voter Intimidation, Threats, or Violence by Treatment Condition",
     subtitle = str_wrap(
       "How concerned should voters feel about potential violence, threats of violence, or intimidation while voting in person at their local polling place?",
       width = 99
     )
-  )
+  )+
+  theme(
+    text = element_text(family = 'TeX Gyre Pagella'), 
+    axis.title.y.left = element_blank())
+
 ```
 
 
@@ -959,22 +994,96 @@ safety.conf.treat.likert <- data |>
       q26 = "In Maricopa County, AZ",
       q37 = "In your local area"
     ),
-    title = str_wrap("Confidence for In-person voter safety at Polling Sites by Treatment", width = 95),
     subtitle = str_wrap("How confident, if at all, are you that in person polling places will be safe places for voters to cast their ballots during the upcoming elections in November?", width = 95)
-  )
+  )+
+  theme(
+    text = element_text(family = 'TeX Gyre Pagella'), 
+    axis.title.y.left = element_blank())
 
 
 ```
 
 ```{r}
 #| label: fig-patch15
+#| fig-height: 4.5
+#| fig-width: 8
 
 p15.safety.treat <- safety.concern.treat.likert/safety.conf.treat.likert+
-  patchwork::plot_layout(guides = "keep")
+  patchwork::plot_layout(guides = "keep")+
+  patchwork::plot_annotation(
+    title = str_wrap("Safety Concerns by Experiment Condition", width = 80), 
+    tag_levels = "a")
 
-
+p15.safety.treat
 
 ```
+
+An alternative
+
+```{r}
+#| label: fig-safety
+#| layout-nrow: 2
+#| fig-height: 3.5
+#| fig-cap: "Safety Concerns by Experiment Condition"
+#| fig-subcap: 
+#|   - "Confidence for In-person voter safety at Election Sites"
+#|   - "Concern for Voter Intimidation, Threats, or Violence"
+
+# safety concerns by treatment
+safety.concern.treat.likert <- data |>
+  # Need to slightly modify text of factor levels
+  mutate(across(
+    c(q25, q36),
+    ~ pewmethods::fct_case_when(
+      .x == "Very concerned" ~ "Very concerned",
+      .x == "Somewhat concerned" ~ "Somewhat concerned",
+      .x %in% c("Not too concerned", "Somewhat unconcerned") ~ "Not too concerned",
+      .x == "Not at all concerned" ~ "Not at all concerned",
+      TRUE ~ NA
+    )
+  )) |>
+  likert_plot(
+    x = c(q25, q36),
+    y = 'group',
+    facet_rows = vars(.question),
+    facet_label_wrap = 15,
+    variable_labels = c(q25 = 'Thinking about Maricopa County, AZ', q36 = "Thinking about Local Area"),
+    subtitle = str_wrap(
+      "How concerned should voters feel about potential violence, threats of violence, or intimidation while voting in person at their local polling place?",
+      width = 99
+    )
+  )+
+  theme(
+    text = element_text(family = 'TeX Gyre Pagella'), 
+    axis.title.y.left = element_blank())
+
+# In-person voter safety at election sites by treatment
+safety.conf.treat.likert <- data |>
+  likert_plot(
+    x = c(q26, q37), 
+    y = 'group',
+    facet_label_wrap = 15,
+    facet_rows = vars(.question),
+    variable_labels = c(
+      q26 = "In Maricopa County, AZ",
+      q37 = "In your local area"
+    ),
+    subtitle = str_wrap("How confident, if at all, are you that in person polling places will be safe places for voters to cast their ballots during the upcoming elections in November?", width = 95)
+  )+
+  theme(
+    text = element_text(family = 'TeX Gyre Pagella'), 
+    axis.title.y.left = element_blank())
+
+
+# fig a
+safety.concern.treat.likert
+
+# fig b
+safety.conf.treat.likert
+
+```
+
+
 
 ## Distribution of Confidence in Elections
 
@@ -1151,7 +1260,161 @@ plot(item.cor) + theme(axis.text.x = element_text(angle = 45, vjust = 0.6))
 ```
 
 
+## Barplots
 
+
+```{r}
+#| label: fig-bars-create
+#| eval: true
+#| include: false
+
+
+bar_q25 <- custom_barplot(
+    data = data,
+    x = q25,
+    group = group
+  ) +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+bar_q26 <- custom_barplot(
+  data = data,
+  x = q26,
+  group = group
+)  +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+
+bar_q36 <- custom_barplot(
+  data = data,
+  x = q36,
+  group = group
+)  +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+bar_q37 <- custom_barplot(
+  data = data,
+  x = q37,
+  group = group 
+) +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+```
+
+```{r}
+#| label: fig-bars1
+#| layout-ncol: 1
+#| layout-nrow: 2
+#| fig-cap: "Safety Concerns by Experiment Condition"
+#| fig-subcap: 
+#|   - "Concern for Violence in Maricopa County, AZ Elections"
+#|   - "Confidence in Voter Saftey at Election Sites in Maricopa County, AZ"
+
+bar_q25
+bar_q26
+
+```
+
+```{r}
+#| label: fig-bars2
+#| layout-ncol: 1
+#| layout-nrow: 2
+#| fig-cap: "Safety Concerns by Experiment Condition"
+#| fig-subcap: 
+#|   - "Concern for Violence in Local Area Elections"
+#|   - "Confidence in Voter Saftey at Election Sites in Local Area"
+
+bar_q36
+bar_q37
+
+```
+
+```{r}
+#| label: fig-bars-alt
+#| layout-nrow: 2
+#| fig-cap: "Safety Concerns by Experiment Condition"
+#| fig-subcap: 
+#|   - "Concern for Violence in Maricopa County, AZ Elections"
+#|   - "Confidence in Voter Saftey at Election Sites in Maricopa County, AZ"
+
+
+bar_q25 <- custom_barplot(
+    data = data,
+    x = q25,
+    group = group
+  ) +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+bar_q26 <- custom_barplot(
+  data = data,
+  x = q26,
+  group = group
+)  +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+
+bar_q36 <- custom_barplot(
+  data = data,
+  x = q36,
+  group = group
+)  +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+bar_q37 <- custom_barplot(
+  data = data,
+  x = q37,
+  group = group 
+) +
+  coord_cartesian(ylim = c(0,60), expand = T)
+
+bars1 <- (bar_q25 + bar_q26)+
+  patchwork::plot_layout(guides = "collect") &
+  theme(
+    text = element_text(family = "TeX Gyre Pagella"),
+    legend.position = "bottom", 
+    axis.title.y.left = element_blank(), 
+    axis.text.y.left = element_blank(), 
+    axis.ticks.y = element_blank())
+
+bars2 <- (bar_q36 + bar_q37)+
+  patchwork::plot_layout(guides = "collect") &
+  theme(
+    text = element_text(family = "TeX Gyre Pagella"),
+    legend.position = "bottom", 
+    axis.title.y.left = element_blank(), 
+    axis.text.y.left = element_blank(), 
+    axis.ticks.y = element_blank())
+
+bars1
+bars2
+
+```
+
+
+```{r}
+#| label: fig-bars-alt2
+#| layout-ncol: 2
+#| layout-nrow: 2
+#| fig-cap: "Concerns for Safety"
+#| fig-subcap:
+#|    - "Concern for Violence in Maricopa County, AZ Elections"
+#|    - "Confidence in Voter Saftey at Election Sites in Maricopa County, AZ"
+#|    - "Concern for Violence in Local Area Elections"
+#|    - "Confidence in Voter Saftey at Election Sites in Local Area"
+
+bar_q25 <- custom_barplot(data = data, x = q25, group = group)
+
+bar_q26 <- custom_barplot(data = data, x = q26, group = group)
+
+bar_q36 <- custom_barplot(data = data, x = q36, group = group)
+
+bar_q37 <- custom_barplot(data = data, x = q37, group = group)
+
+bar_q25
+bar_q26
+bar_q36
+bar_q37
+
+```
 
 
 

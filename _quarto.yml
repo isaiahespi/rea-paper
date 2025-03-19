@@ -1,6 +1,6 @@
 project:
   type: manuscript
-  execute-dir: project
+  # execute-dir: project
   output-dir: docs
   render: 
     - index.qmd
@@ -65,46 +65,9 @@ format:
     theme: 
       light: [bookup.scss]
       dark: [bookup.scss, bookup_dark.scss]
-  # docx: default
-  jats: default
-
-  # (other formats)
-  pdf: 
-    pdf-engine: xelatex
-    documentclass: scrartcl
-    keep-tex: false
-    # mainfont: Palatino Linotype
-    mainfont: TeX Gyre Pagella
-    mathfont: TeX Gyre Pagella Math
-    fontsize: 11pt
-    indent: true # indented paragraphs (indent=true) vs space between paragraphs
-    linestretch: 1.25
-    number-sections: false
-    citecolor: RoyalBlue
-    cap-location: top
-    fig-height: 4
-    fig-width: 7.5
-    link-citations: true
-    papersize: a4
-    geometry:
-      - inner=3cm
-      - outer=4cm
-      - top=3cm
-      - bottom=4cm
-      - headsep=22pt
-      - headheight=11pt
-      - footskip=33pt
-      - ignorehead
-      - ignorefoot
-      - heightrounded
-    include-in-header: 
-      - include-in-header.tex
-    template-partials:
-      - title.tex
-      - before-body.tex
-      
   #     
   aog-article-pdf:
+    pdf-engine: latexmk
     keep-tex: false
     papersize: letter
     # mainfont: Palatino Linotype
@@ -125,46 +88,87 @@ format:
     reference-location: document
     include-in-header: 
       - text: |
-          \usepackage{dcolumn} 
-
-  submittable-pdf:
-    keep-tex: false
-    endnotes: false
-    titlepage: false
-    mainfont: TeX Gyre Pagella
-    mathfont: TeX Gyre Pagella Math
-    fig-height: 4
-    fig-width: 7.5
-    cap-location: top
-    fontsize: 12pt
-    linestretch: 1.25
-    papersize: letter
-    link-citations: true
-    colorlinks: true
-    urlcolor: RoyalBlue
-    include-in-header: 
-      - text: |
           \usepackage{dcolumn}
-          \usepackage{booktabs}
 
-  submittable-docx:
-    keep-md: false
+  # submittable-pdf:
+  #   keep-tex: false
+  #   endnotes: false
+  #   titlepage: false
+  #   mainfont: TeX Gyre Pagella
+  #   mathfont: TeX Gyre Pagella Math
+  #   fig-height: 4
+  #   fig-width: 7.5
+  #   cap-location: top
+  #   fontsize: 12pt
+  #   linestretch: 1.25
+  #   papersize: letter
+  #   link-citations: true
+  #   colorlinks: true
+  #   urlcolor: RoyalBlue
+  #   include-in-header: 
+  #     - text: |
+  #         \usepackage{dcolumn}
+  #         \usepackage{booktabs}
+
+  # submittable-docx:
+  #   keep-md: false
   # preprint-typst: 
   #   mainfont: Libertinus Serif
   #   running-head: Running head # preprint-typst format
   #   bibliography: references.bib
   #   bibliographystyle: "chicago-author-date"
 
+  # docx: default
+  # jats: default
+
+  # (other formats)
+  # pdf: 
+  #   pdf-engine: latexmk
+  #   pdf-engine-opts: 
+  #     - xelatex
+  #   documentclass: scrartcl
+  #   keep-tex: false
+  #   # mainfont: Palatino Linotype
+  #   mainfont: TeX Gyre Pagella
+  #   mathfont: TeX Gyre Pagella Math
+  #   fontsize: 11pt
+  #   indent: true # indented paragraphs (indent=true) vs space between paragraphs
+  #   linestretch: 1.25
+  #   number-sections: false
+  #   citecolor: RoyalBlue
+  #   cap-location: top
+  #   fig-height: 4
+  #   fig-width: 7.5
+  #   link-citations: true
+  #   papersize: a4
+  #   geometry:
+  #     - inner=3cm
+  #     - outer=4cm
+  #     - top=3cm
+  #     - bottom=4cm
+  #     - headsep=22pt
+  #     - headheight=11pt
+  #     - footskip=33pt
+  #     - ignorehead
+  #     - ignorefoot
+  #     - heightrounded
+  #   include-in-header: 
+  #     - include-in-header.tex
+  #   template-partials:
+  #     - title.tex
+  #     - before-body.tex
+
 format-links:
-    - html
-    - format: submittable-pdf
+    - format: bookup-html
+      text: HTML
+    - format: aog-article-pdf
       text: PDF
       icon: file-pdf
-    - format: submittable-docx
-      text: MS Word
-      icon: file-word
+    # - format: submittable-pdf
+    #   text: Submission Style PDF
+    #   icon: file-pdf
+
 execute:
   freeze: auto
-
 
 
