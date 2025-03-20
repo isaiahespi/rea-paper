@@ -2,6 +2,7 @@
 title: "Figures"
 execute:
   enabled: true
+  warning: false
 ---
 
 
@@ -437,6 +438,8 @@ distrust.az.educ.likert <- data |>
   likert_plot(x = all_of(distrust.az.items), y = 'educ_3cat', facet_rows=vars(.question),
               facet_label_wrap = 15, variable_labels = distrust.az.varlabels,
               subtitle = "Maricopa County, AZ")
+
+
 ```
 
 
@@ -464,9 +467,12 @@ distrust.lcl.educ.likert <- data |>
 
 ```{r}
 #| label: fig-patch5
+#| fig-cap: "Distrust by Educational Attainment"
+#| fig-width: 8
+#| column: body-outset
 
 p5.distrust.az.educ <- distrust.az.educ.likert + distrust.lcl.educ.likert +
-    patchwork::plot_layout(guides = "collect") & 
+    patchwork::plot_layout(guides = "collect", axes = "collect") & 
     theme(legend.position = "bottom")
 
 
@@ -506,16 +512,21 @@ distrust.az.gender.likert <- data |>
 
 ```{r}
 #| label: fig-patch6
+#| fig-cap: "Trust in Maricopa County, AZ Elections by Gender"
+#| fig-height: 8
 
-p6.trust.az.gender <- trust.az.gender.likert / distrust.az.gender.likert +
+p6.trust.az.gender <- (trust.az.gender.likert + distrust.az.gender.likert) +
   patchwork::plot_annotation(
     caption = str_wrap(
       "Gender Non-binary (n=7) and those who preferred not to say (n=9) response categories omitted for lack of observations. Missing values omitted (n=15)",
-      width = 150
+      width = 80
     ),
-    theme = theme(text = element_text(family = "Palatino Linotype"))
+    theme = theme(text = element_text(family = "TeX Gyre Pagella"))
   ) +
-  patchwork::plot_layout(guides = 'keep') &
+  patchwork::plot_layout(
+    ncol = 1, 
+    nrow = 2,
+    guides = 'keep', axes = "collect") &
   theme(legend.position = "bottom")
 
 p6.trust.az.gender
@@ -526,6 +537,8 @@ p6.trust.az.gender
 
 ```{r}
 #| label: fig-p13
+#| warning: false
+#| message: false
 
 
 # plot of trust in local area elections by gender
@@ -557,14 +570,20 @@ distrust.lcl.gender.likert <- data |>
 
 ```{r}
 #| label: fig-patch7
+#| fig-cap: "Trust in Local Area Elections by Gender"
+#| fig-height: 8
+
 
 p7.trust.lcl.gender <- trust.lcl.gender.likert/distrust.lcl.gender.likert+
   patchwork::plot_annotation(
     caption = str_wrap("Gender Non-binary (n=7) and those who preferred not to say (n=9) response categories omitted for lack of observations. Missing values omitted (n=15)",
-                       width = 150), 
-    theme = theme(text = element_text(family = "Palatino Linotype")))+
-    patchwork::plot_layout(guides = 'keep') & 
-    theme(legend.position = "bottom")
+                       width = 80), 
+    theme = theme(text = element_text(family = "TeX Gyre Pagella"))) +
+  patchwork::plot_layout(guides = 'keep', axes = "collect") &
+  theme(legend.position = "bottom")
+
+p7.trust.lcl.gender
+
 ```
 
 
@@ -604,10 +623,11 @@ distrust.az.party.likert <- data |>
 
 ```{r}
 #| label: fig-patch8
+#| fig-height: 8
 
-p8.trust.az.party <- trust.az.party.likert/distrust.az.party.likert+
-    patchwork::plot_layout(guides = 'keep') & 
-    theme(legend.position = "bottom")
+p8.trust.az.party <- trust.az.party.likert/distrust.az.party.likert +
+  patchwork::plot_layout(guides = 'keep', axes = "collect") &
+  theme(legend.position = "bottom")
 
 p8.trust.az.party
 
@@ -651,10 +671,11 @@ distrust.lcl.party.likert <- data |>
 
 ```{r}
 #| label: fig-patch9
+#| fig-height: 8
 
 p9.trust.lcl.party <- trust.lcl.party.likert/distrust.lcl.party.likert+
-    patchwork::plot_layout(guides = 'keep') & 
-    theme(legend.position = "bottom")
+  patchwork::plot_layout(guides = 'keep', axes = "collect") &
+  theme(legend.position = "bottom")
 
 p9.trust.lcl.party
 
@@ -673,8 +694,6 @@ trust.likert.treat.az <- data |>
     facet_rows = vars(.question),
     subtitle = "Maricopa County, Arizona")+
   theme(strip.text.y.right = element_blank())
-
-trust.likert.treat.az
 
 ```
 
@@ -695,8 +714,6 @@ trust.likert.treat.lcl <- data |>
     strip.text.y.right = element_text(angle = 0, size = 8)
   )
 
-trust.likert.treat.lcl
-
 ```
 
 
@@ -704,6 +721,7 @@ trust.likert.treat.lcl
 #| label: fig-patch10
 #| fig-cap: "Trust in Election Administration by Experiment Condition"
 #| fig-height: 4.5
+#| fig-width: 8
 #| fig-pos: "h"
 
 p10.trust.treat <- trust.likert.treat.az + trust.likert.treat.lcl+
@@ -778,7 +796,7 @@ trust.az.treat.partyid <- data |>
     facet_cols = vars(group),
     facet_label_wrap = 15,
     variable_labels = trust.az.varlabels,
-    title = "Trust in Maricopa County, AZ Elections by Treatment and Partisanship")
+    subtitle = "Maricopa County, AZ")
 ```
 
 
@@ -795,11 +813,13 @@ trust.lcl.treat.partyid <- data |>
     facet_cols = vars(group),
     facet_label_wrap = 15,
     variable_labels = trust.lcl.varlabels,
-    title = "Trust in Local Area Elections by Treatment and Partisanship")
+    subtitle = "Local Area")
 ```
 
 ```{r}
 #| label: fig-patch12
+#| fig-cap: "Trust in Elections by Treatment and Partisanship"
+#| fig-height: 8
 
 p12.trust.treat.partyid <- trust.az.treat.partyid / trust.lcl.treat.partyid+
   patchwork::plot_layout(guides = 'collect')
@@ -1007,7 +1027,7 @@ safety.conf.treat.likert <- data |>
 
 ```{r}
 #| label: fig-patch15
-#| fig-height: 4.5
+#| fig-height: 5.5
 #| fig-width: 8
 
 p15.safety.treat <- safety.concern.treat.likert/safety.conf.treat.likert+

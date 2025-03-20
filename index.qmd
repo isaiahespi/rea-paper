@@ -432,75 +432,50 @@ Concerning distrust among those who refuted the 2020 election results, responses
 
 In order to substantiate the overall influence of the treatment on confidence in elections, I regressed the dependent variable confidence on legitimacy beliefs while controlling for partisanship.  
 
-::: {.content-visible when-format="html" unless-format="pdf"}
-
 ```{r}
-#| tbl-cap: "Confidence in Elections by Treatment and Legitimacy Beliefs"
-#| tbl-pos: H
-
-# All continuous variables are mean-centered and scaled by 1 standard deviation.
-m1 <- lm(scale(conf.scores.az) ~ group + q7 + partyid_3cat, data = data)
-m2 <- lm(scale(conf.scores.az) ~ group * q7 + partyid_3cat, data = data)
-
-texreg::htmlreg(
-  list(m1, m2), 
-  single.row = T,
-  caption.above = T,
-  custom.model.names = c("Confidence in AZ Elections", "w/Interaction"),
-  custom.coef.names = c(
-    "(Intercept)",
-    "Treatment",
-    "Not Legitimate",
-    "Republican",
-    "Democrat",
-    "Not Legitimate * Treatment"
-    )
-)
-
-
-```
-
-:::
-
-::: {.content-visible when-format="pdf" unless-format="html"}
-
-```{r}
-#| tbl-cap: "Confidence in Elections by Treatment and Legitimacy Beliefs"
-#| tbl-pos: H
 #| label: tbl-legit
-#| results: asis
-
-
+#| tbl-cap: "Confidence in Elections by Treatment and Legitimacy Beliefs"
+#| tbl-pos: H
 
 # All continuous variables are mean-centered and scaled by 1 standard deviation.
 m1 <- lm(scale(conf.scores.az) ~ group + q7 + partyid_3cat, data = data)
 m2 <- lm(scale(conf.scores.az) ~ group * q7 + partyid_3cat, data = data)
 
-texreg::texreg(
-  list(m1, m2),
-  single.row = T,
-  caption = NULL,
-  caption.above = T,
-  use.packages = F,
-  table = F, # set `table = FALSE`. Quarto handles table cross-ref env
-  custom.model.names = c("Confidence in AZ Elections", "w/Interaction"),
-  custom.coef.names = c(
-    "(Intercept)",
-    "Treatment",
-    "Not Legitimate",
-    "Republican",
-    "Democrat",
-    "Not Legitimate * Treatment"
-    )
+tab_legit <- modelsummary::modelsummary(
+  models = list(m1, m2), fmt = 2,
+  estimate = "{estimate} ({std.error}){stars}",
+  statistic = NULL,
+  stars = T,
+  coef_rename = c(
+    "(Intercept)"                        = "(Intercept)",
+    "groupTreatment"                     = "Treatment",
+    "q7Not legitimate"                   = "Not Legitimate",
+    "partyid_3catRepublican"             = "Republican",
+    "partyid_3catDemocrat"               = "Democrat",
+    "groupTreatment x q7Not legitimate"  = "Not Legitimate * Treatment"),
+  gof_map = c("nobs", "r2", "adj.r.squared"),
+  notes = list(
+    "Outcome variable mean-centered and scaled by 1 standard deviation",
+    "+ p < 0.1, * p < 0.05, ** p < 0.01, *** p < 0.001"),
+  width = 0.8
 )
+
+colnames(tab_legit) <- c(" ", "Confidence in AZ Elections", "w/Interaction")
+
+tab_legit |> 
+  tinytable::style_tt(
+    fontsize = 0.80, # fontsize of text in table in em units (0.75*default)
+    align = "lcc"
+    ) |>  
+  tinytable::style_tt(i = 6, line = "t") |> 
+  tinytable::style_tt(i = "notes", fontsize = 0.75)
 
 
 
 ```
 
-:::
 
-The first model in Table \ref{tbl-legit} shows that overall confidence in elections among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at $90\%$ confidence level ($p = 0.055$). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.
+The first model in @tbl-legit shows that overall confidence in elections among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at $90\%$ confidence level ($p = 0.055$). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.
 
 There's a positive interaction effect of the treatment vignette among those who believe that the 2020 election was not legitimate, on average and controlling for partisanship. This shows that the treatment effect was most influential upon those who believe the 2020 election results were illegitimate. The treatment alone does not reverse such beliefs, but this shows where its influence was most potent.
 
@@ -916,8 +891,8 @@ gof_stats <- lrm.gof.stats(m1) |>
     "Deviance"      = "deviance",
     "DF"            = "df",
     "Log.Lik"       = "logLik",
-    "\\chi^2"       = "chisq",
-    "P(>\\chi^2)"   = "P..chi."
+    "chisq"       = "chisq",
+    "P(>chisq)"   = "P..chi."
   ) |> 
   # pivot into two column long-form dataframe
   tidyr::pivot_longer(cols = everything(),names_to = " ", values_to = '**log(OR)**') |>

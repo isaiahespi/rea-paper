@@ -1131,29 +1131,37 @@ Legitimacy Beliefs}
 
 \centering{
 
-\begin{tabular}{l c c}
-\hline
- & Confidence in AZ Elections & w/Interaction \\
-\hline
-(Intercept)                & $0.03 \; (0.08)$        & $0.07 \; (0.08)$        \\
-Treatment                  & $0.18 \; (0.05)^{***}$  & $0.09 \; (0.06)$        \\
-Not Legitimate             & $-0.72 \; (0.07)^{***}$ & $-0.86 \; (0.09)^{***}$ \\
-Republican                 & $0.11 \; (0.08)$        & $0.12 \; (0.08)$        \\
-Democrat                   & $0.17 \; (0.09)$        & $0.17 \; (0.09)^{*}$    \\
-Not Legitimate * Treatment &                         & $0.27 \; (0.11)^{*}$    \\
-\hline
-R$^2$                      & $0.14$                  & $0.14$                  \\
-Adj. R$^2$                 & $0.13$                  & $0.14$                  \\
-Num. obs.                  & $1263$                  & $1263$                  \\
-\hline
-\multicolumn{3}{l}{\scriptsize{$^{***}p<0.001$; $^{**}p<0.01$; $^{*}p<0.05$}}
-\end{tabular}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={{\fontsize{0.75em}{0.75em}\selectfont Outcome variable mean-centered and scaled by 1 standard deviation}},
+note{ }={{\fontsize{0.75em}{0.75em}\selectfont + p < 0.1, * p < 0.05, ** p < 0.01, *** p < 0.001}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.8\linewidth},
+colspec={X[]X[]X[]},
+column{2,3}={}{halign=c, font=\fontsize{0.8em}{1.1em}\selectfont, halign=c,},
+column{1}={}{halign=l, font=\fontsize{0.8em}{1.1em}\selectfont, halign=l,},
+hline{7}={1,2,3}{solid, black, 0.1em},
+}                     %% tabularray inner close
+\toprule
+& Confidence in AZ Elections & w/Interaction \\ \midrule %% TinyTableHeader
+(Intercept) & \num{0.03} (\num{0.08}) & \num{0.07} (\num{0.08}) \\
+Treatment & \num{0.18} (\num{0.05})*** & \num{0.09} (\num{0.06}) \\
+Not Legitimate & \num{-0.72} (\num{0.07})*** & \num{-0.86} (\num{0.09})*** \\
+Republican & \num{0.11} (\num{0.08}) & \num{0.12} (\num{0.08}) \\
+Democrat & \num{0.17} (\num{0.09})+ & \num{0.17} (\num{0.09})* \\
+Treatment:Not Legitimate &  & \num{0.27} (\num{0.11})* \\
+Num.Obs. & \num{1263} & \num{1263} \\
+R2 Adj. & \num{0.134} & \num{0.138} \\
+\bottomrule
+\end{talltblr}
 
 }
 
 \end{table}%
 
-The first model in Table \ref{tbl-legit} shows that overall confidence
+The first model in Table~\ref{tbl-legit} shows that overall confidence
 in elections among those who read the treatment vignette was
 significantly (statistically) greater than those who read the control,
 on average and netting out the effects of partisanship and legitimacy
@@ -1637,8 +1645,8 @@ Democrat & 0.05 & -0.31, 0.40 \\
 Num.Obs & 1268 &  \\
 Log.Lik & -873.349 &  \\
 DF & 15 &  \\
-\(\chi^2\) & 11.01 &  \\
-\(P(>\chi^2)\) & 0.752 &  \\
+\(chisq\) & 11.01 &  \\
+\(P(>chisq)\) & 0.752 &  \\
 Deviance & 1746.698 &  \\
 Null Deviance & 1757.708 &  \\
 \bottomrule

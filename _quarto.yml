@@ -128,7 +128,7 @@ format:
           \AtEndEnvironment{longtblr}{\end{singlespacing}}
   
   submittable-docx: default
-  jats: default
+  # jats: default
   # docx:
   #   toc: false
   #   keep-md: true
