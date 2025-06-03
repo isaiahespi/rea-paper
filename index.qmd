@@ -42,9 +42,11 @@ library(patchwork)
 
 # set some session options for `tinytable`
 options(tinytable_tt_digits = 3)
-# options(tinytable_theme_placement_latex_float = "H")
-options(tinytable_html_mathjax = TRUE) # set option to render math in html
+# set option to render tinytable math in html
+options(tinytable_html_mathjax = TRUE) 
 
+# options(tinytable_quarto_disable_processing = FALSE)
+# options(tinytable_theme_placement_latex_float = "H")
 
 # load data
 load("data/research-paper-data-20241029.Rdata")
@@ -260,7 +262,8 @@ A set of five survey items measured public trust in elections by inquiring into 
 #| tbl-cap: "Survey Items for Trust and Distrust in Elections"
 
 
-trust_txt <- data |> select(q19, q20, q21, q22, q24) |>
+trust_txt <- data |> 
+  dplyr::select(q19, q20, q21, q22, q24) |>
   labelled::set_variable_labels(
     q21 = "How commited do you think election staff and volunteers in Maricopa County, AZ will be to making sure the elections are fair and accurate?"
   ) |> 
@@ -268,16 +271,17 @@ trust_txt <- data |> select(q19, q20, q21, q22, q24) |>
   dplyr::as_tibble() |> 
   dplyr::select(Trust=label)
 
-distrust_txt <- data |> select(q28_1:q28_5) |>
+distrust_txt <- data |> 
+  dplyr::select(q28_1:q28_5) |>
   labelled::generate_dictionary() |> 
   dplyr::as_tibble() |> 
   dplyr::select(Distrust=label)
 
 conf_items_text <- trust_txt |> 
-  mutate(Distrust = pull(distrust_txt))
+  dplyr::mutate(Distrust = dplyr::pull(distrust_txt))
 
 tinytable::tt(conf_items_text, width = c(.5, .5)) |> 
-  tinytable::style_tt(fontsize = 0.80)
+  tinytable::style_tt(fontsize = 0.80, align = "ll")
 
 ```
 
@@ -336,7 +340,10 @@ tab_ttest <- dplyr::bind_rows(
     .before = Diff) |> 
   insight::format_table(stars = T)
 
-# Output using `tinytable` R Package
+# convert from `data.frame` to `tinytable` class object
+tab_ttest <- tinytable::tt(tab_ttest)
+
+# modify column names of table
 colnames(tab_ttest) <- c(
   "Place",
   "$\\bar{x}_{diff}$",
@@ -349,13 +356,17 @@ colnames(tab_ttest) <- c(
   "df",
   "CI")
 
-tinytable::tt(tab_ttest) |>
+
+# Output using `tinytable` R Package
+tab_ttest |> 
   tinytable::format_tt(
-    j = 2:6, # specify columns  
+    j = 2:6, # specify columns
     math = T # apply mathmode to specified columns
   ) |> 
-  tinytable::style_tt(fontsize = 0.75) # fontsize in em units (0.75*default fontsize)
-
+  tinytable::style_tt(
+    fontsize = 0.75, # fontsize in em units (0.75*default fontsize)
+    align = "lccccccccc"
+    )
 
 ```
 
@@ -596,7 +607,8 @@ tinytable::tt(
   tab_q25_pdiff,
   notes = "Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher") |> 
   tinytable::style_tt(
-    fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
+    fontsize = 0.80, # fontsize of text in table in em units (0.75*default)
+    align = "lcccccc"
     ) |>  
   tinytable::style_tt(i = "notes", fontsize = 0.75)
 
@@ -629,7 +641,8 @@ tinytable::tt(
   tab_q26_pdiff,
   notes = "Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher") |>  
   tinytable::style_tt(
-    fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
+    fontsize = 0.80, # fontsize of text in table in em units (0.75*default)
+    align = "lcccccc"
     ) |>  
   tinytable::style_tt(i = "notes", fontsize = 0.75) # style font of table notes
 
@@ -712,7 +725,7 @@ Fabricated Article Vignettes utilized as Experimental Stimulus
 
 ```{r}
 #| label: tbl-4
-#| tbl-cap: "Survey Items and Response Options"
+#| tbl-cap: "Pre-Treatment Survey Items and Response Options"
 #| tbl-colwidths: [70, 30]
 
 var_label_tab <- function(x){
@@ -830,7 +843,7 @@ tbl.desc |>
   tinytable::tt(theme = "spacing") |> 
   tinytable::format_tt(markdown = T) |> 
   tinytable::format_tt(replace = " ") |> 
-  tinytable::style_tt(fontsize = 0.70)
+  tinytable::style_tt(fontsize = 0.70, align = "lccc")
 
 ```
 
@@ -906,7 +919,7 @@ tinytable::rbind2(logit_tab, gof_stats, use_names = F, headers = F) |>
   # add horizontal line just above fit stats
   tinytable::style_tt(i = 26, line = "t", line_color = "black", line_width = 0.1) |>
   # adjust fontsize of text within table
-  tinytable::style_tt(fontsize = 0.8) |>
+  tinytable::style_tt(fontsize = 0.8, align = "lcc") |>
   # finally, format markdown and blank out any NA fillers
   tinytable::format_tt(markdown = T, replace = " ")
 
@@ -1028,7 +1041,7 @@ tbl_safety_logit |>
   tinytable::style_tt(
     fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
     ) |> 
-  tinytable::style_tt(i = "notes", fontsize = 0.75)
+  tinytable::style_tt(i = "notes", fontsize = 0.75, align = "l")
 
 ```
 
@@ -1058,9 +1071,9 @@ tinytable::tt(
   tab_safety_preds1, digits = 3,
   notes = attr(data$q25, "label")) |> 
   tinytable::style_tt(
-    fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
-    ) |> 
-  tinytable::style_tt(i = "notes", fontsize = 0.75)
+    fontsize = 0.80, # fontsize of text in table in em units (0.75*default)
+    align = "llccccc") |> 
+  tinytable::style_tt(i = "notes", fontsize = 0.75, align = "l")
 
 
 ```
@@ -1092,7 +1105,8 @@ tinytable::tt(
   tab_safety_preds2, digits = 3,
   notes = attr(data$q26, "label")) |>  
   tinytable::style_tt(
-    fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
+    fontsize = 0.80, # fontsize of text in table in em units (0.75*default)
+    align = "llccccc"
     ) |> 
   tinytable::style_tt(i = "notes", fontsize = 0.75)
 

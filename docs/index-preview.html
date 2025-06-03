@@ -180,7 +180,22 @@
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
-     <style>html{ scroll-behavior: smooth; }</style>   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script> 
+     <style>html{ scroll-behavior: smooth; }</style>   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+<script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+</script>
+<script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"> 
       <meta name="citation_title" content="Inspiring Confidence and Easing Insecurity in the Pre-election period: The Effect of Recruiting Military Veterans on Confidence in 2024 US Elections">
 <meta name="citation_abstract" content="In this paper, I report results from a recent survey experiment administered to test whether publicized efforts to recruit veterans to work as election staff and volunteers would improve public trust in elections and ease election insecurity. Results of the survey experiment support the notion that emphasizing veterans as the target of election worker recruitment efforts eases pre-election insecurity. Expectations of electoral fraud and concerns for voter safety were lower among those who read an announcement that veterans are being recruited to work as election staff and volunteers compared to those who read a control vignette where veterans were not mentioned. Notable is that there was a significant difference in confidence among those in the treatment condition who believe that results of the 2020 election were illegitimate. In addition, concerns over voter safety and potential for violence were lower among those who received the treatment.
 ">
@@ -354,7 +369,7 @@
                 <div>
             <div class="quarto-title-meta-heading">Modified</div>
             <div class="quarto-title-meta-contents">
-              <p class="date-modified">2025-3-20</p>
+              <p class="date-modified">2025-6-3</p>
             </div>
           </div>
                 
@@ -450,23 +465,27 @@ The following object is masked from 'package:dplyr':
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code># Attaching packages: easystats 0.7.4
-✔ bayestestR  0.15.2   ✔ correlation 0.8.7 
-✔ datawizard  1.0.1    ✔ effectsize  1.0.0 
-✔ insight     1.1.0    ✔ modelbased  0.10.0
-✔ performance 0.13.0   ✔ parameters  0.24.2
-✔ report      0.6.1    ✔ see         0.11.0</code></pre>
+<pre><code># Attaching packages: easystats 0.7.4 (red = needs update)
+✖ bayestestR  0.15.2   ✔ correlation 0.8.7 
+✖ datawizard  1.0.2    ✖ effectsize  1.0.0 
+✖ insight     1.1.0    ✖ modelbased  0.10.0
+✖ performance 0.13.0   ✖ parameters  0.24.2
+✔ report      0.6.1    ✔ see         0.11.0
+
+Restart the R-Session and update packages with `easystats::easystats_update()`.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># set some session options for `tinytable`</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tinytable_tt_digits =</span> <span class="dv">3</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># options(tinytable_theme_placement_latex_float = "H")</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tinytable_html_mathjax =</span> <span class="cn">TRUE</span>) <span class="co"># set option to render math in html</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set option to render tinytable math in html</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tinytable_html_mathjax =</span> <span class="cn">TRUE</span>) </span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"data/research-paper-data-20241029.Rdata"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># options(tinytable_quarto_disable_processing = FALSE)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># options(tinytable_theme_placement_latex_float = "H")</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"data/research-paper-data-20241029.Rdata"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># custom function used to create Likert Plots</span></span>
@@ -611,7 +630,7 @@ The following object is masked from 'package:dplyr':
 </section>
 <section id="experiment-design-and-survey-measures" class="level2">
 <h2 class="anchored" data-anchor-id="experiment-design-and-survey-measures">Experiment Design and Survey Measures</h2>
-<p>To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would improve confidence in elections and ease insecurity, a recent experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland. The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment (<span class="math inline">\(n =\)</span> 650) control (<span class="math inline">\(n =\)</span> 637) conditions<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would improve confidence in elections and ease insecurity, a recent experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland. The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment (<span class="math inline">n =</span> 650) control (<span class="math inline">n =</span> 637) conditions<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <p>Survey participants read either a treatment or control vignette, which resembled a news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. The treatment vignette referred to a program designed to recruit veterans and their family members and describes an interviewee “Jordan Braxton” as an Army veteran. The control vignette simply omitted any mention of veterans and their family members, and didn’t describe “Jordan Braxton” as an Army veteran. Beyond those small differences and the headlines, the article vignettes are identical. Therefore, effects can be attributed to the information about veterans in the treatment vignette<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <p>It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignette due to the increased scrutiny levied toward election administration there after the 2020 election <span class="citation" data-cites="giles2021 maricopacountyelectionsdepartment2022">(<a href="#ref-giles2021" role="doc-biblioref">Giles 2021</a>; <a href="#ref-maricopacountyelectionsdepartment2022" role="doc-biblioref">Maricopa County Elections Department 2022</a>)</span>. Because of this, treatment effects are potentially limited or constrained to attitudes concerning the location specified in the vignette. A block of survey items asked specifically about Maricopa County, AZ, followed by an identical block of items that asked the same questions about one’s local area. I compare and discuss results between the items pertaining to different settings.</p>
 <p>Over the past two decades it became commonplace for national polls to gauge public confidence in election administration (i.e., voter confidence) by asking some variety of the question, “How confident are you that your vote [will be/was] counted as you intended in the most recent election?” <span class="citation" data-cites="hall2009 sances2015 stewart2022">(<a href="#ref-hall2009" role="doc-biblioref">T. E. Hall, Quin Monson, and Patterson 2009</a>; <a href="#ref-sances2015" role="doc-biblioref">Sances and Stewart 2015</a>; <a href="#ref-stewart2022" role="doc-biblioref">Stewart 2022</a>)</span>. In addition, since 2008, the Survey of the Performance of American Elections (SPAE) has included a good number of relevant questions to more thoroughly assess trust and confidence in election administration. Such questions inquire into the voter experience with the institution more directly. This study borrows, modifies, or takes inspiration from certain question items found within the 2022 SPAE and other survey items from the Pew Research Center’s 2018 American Trends Panel wave 38 <span class="citation" data-cites="dunn2018">(<a href="#ref-dunn2018" role="doc-biblioref">Dunn 2018</a>)</span>.</p>
@@ -624,24 +643,26 @@ The following object is masked from 'package:dplyr':
 <p>A set of five survey items measured public trust in elections by inquiring into the degree of confidence that votes will be counted as voters intend, confidence that electoral systems are secure from technological threats, perceived commitment of election staff, confidence that outcomes will be fair, and confidence that the voting process will be fair. Each item in this series presented four response options from “Not at all [confident/committed]”, “Not too [confident/committed]”, “Somewhat [confident/committed]”, and “Very [confident/committed]”. In total, five survey items measure different aspects of trust in elections administration.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
 
-<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>trust_txt <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">select</span>(q19, q20, q21, q22, q24) <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">set_variable_labels</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">q21 =</span> <span class="st">"How commited do you think election staff and volunteers in Maricopa County, AZ will be to making sure the elections are fair and accurate?"</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">generate_dictionary</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">Trust=</span>label)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>distrust_txt <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> <span class="fu">select</span>(q28_1<span class="sc">:</span>q28_5) <span class="sc">|&gt;</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">generate_dictionary</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">Distrust=</span>label)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>conf_items_text <span class="ot">&lt;-</span> trust_txt <span class="sc">|&gt;</span> </span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Distrust =</span> <span class="fu">pull</span>(distrust_txt))</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>tinytable<span class="sc">::</span><span class="fu">tt</span>(conf_items_text, <span class="at">width =</span> <span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">5</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">fontsize =</span> <span class="fl">0.80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>trust_txt <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(q19, q20, q21, q22, q24) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">set_variable_labels</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">q21 =</span> <span class="st">"How commited do you think election staff and volunteers in Maricopa County, AZ will be to making sure the elections are fair and accurate?"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">generate_dictionary</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">Trust=</span>label)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>distrust_txt <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(q28_1<span class="sc">:</span>q28_5) <span class="sc">|&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">generate_dictionary</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">Distrust=</span>label)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>conf_items_text <span class="ot">&lt;-</span> trust_txt <span class="sc">|&gt;</span> </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Distrust =</span> dplyr<span class="sc">::</span><span class="fu">pull</span>(distrust_txt))</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>tinytable<span class="sc">::</span><span class="fu">tt</span>(conf_items_text, <span class="at">width =</span> <span class="fu">c</span>(.<span class="dv">5</span>, .<span class="dv">5</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">fontsize =</span> <span class="fl">0.80</span>, <span class="at">align =</span> <span class="st">"ll"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Survey Items for Trust and Distrust in Elections
@@ -716,9 +737,9 @@ Table&nbsp;1: Survey Items for Trust and Distrust in Elections
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 5, j: 0 }, { i: 5, j: 1 },  ], css_id: '3',}, 
-          { positions: [ { i: 1, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 3, j: 1 }, { i: 2, j: 0 }, { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 4, j: 1 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 1 },  ], css_id: '1',}, 
+          { positions: [ { i: 5, j: 0 }, { i: 5, j: 1 },  ], css_id: 'tinytable_css_ii68ypflmrxky27i3ji6',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 3, j: 1 }, { i: 2, j: 0 }, { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 4, j: 1 },  ], css_id: 'tinytable_css_ypzk58ilsf1nt5tieldm',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 1 },  ], css_id: 'tinytable_css_0zri8tgl5kkvcg151faz',}, 
           ];
 
           // Loop over the arrays to style the cells
@@ -732,9 +753,9 @@ Table&nbsp;1: Survey Items for Trust and Distrust in Elections
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_ii68ypflmrxky27i3ji6, .table th.tinytable_css_ii68ypflmrxky27i3ji6 { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; width: 50%; }
-      .table td.tinytable_css_ypzk58ilsf1nt5tieldm, .table th.tinytable_css_ypzk58ilsf1nt5tieldm { font-size: 0.8em; width: 50%; }
-      .table td.tinytable_css_0zri8tgl5kkvcg151faz, .table th.tinytable_css_0zri8tgl5kkvcg151faz { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; width: 50%; }
+      .table td.tinytable_css_ii68ypflmrxky27i3ji6, .table th.tinytable_css_ii68ypflmrxky27i3ji6 { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; width: 50%; }
+      .table td.tinytable_css_ypzk58ilsf1nt5tieldm, .table th.tinytable_css_ypzk58ilsf1nt5tieldm { font-size: 0.8em; text-align: left; width: 50%; }
+      .table td.tinytable_css_0zri8tgl5kkvcg151faz, .table th.tinytable_css_0zri8tgl5kkvcg151faz { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; width: 50%; }
     </style>
     <div class="container">
       <table class="table table-borderless" id="tinytable_lyf2l9lo2ipm5j6v5qb7" style="table-layout: fixed; width: 100% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
@@ -778,7 +799,7 @@ Table&nbsp;1: Survey Items for Trust and Distrust in Elections
 </div></div>
 <p>Another series of five survey items captured an individual’s level of <em>distrust</em> in elections administration based on the extent to which they expect electoral fraud to occur. These items were prefaced with the question, “How likely do you think any or all of the following will happen during this year´s elections in [Maricopa County, AZ/ your local area]?” Each item presented four response options: “Not likely at all”, “Not too likely”, “Somewhat likely”, and “Very likely”.</p>
 <p>Similar to the items capturing trust in elections (<a href="#tbl-1" class="quarto-xref">Table&nbsp;1</a>), I computed a summated score for each respondent reflecting the extent of their distrust in elections.</p>
-<p>Upon construction of the two summated scales of <em>trust</em> and <em>distrust</em>, internal consistency reliability coefficient <span class="math inline">\(\alpha\)</span> were estimated for both and found to be adequate (<span class="math inline">\(\alpha\)</span> &gt; 0.8); the trust in elections scale <span class="math inline">\(\alpha\)</span> = 0.93 and the distrust scale <span class="math inline">\(\alpha\)</span> = 0.86. In other words, the items in each of the scales were intercorrelated well enough for each to compose a single scale presuming a unidimensional construct for each<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</p>
+<p>Upon construction of the two summated scales of <em>trust</em> and <em>distrust</em>, internal consistency reliability coefficient <span class="math inline">\alpha</span> were estimated for both and found to be adequate (<span class="math inline">\alpha</span> &gt; 0.8); the trust in elections scale <span class="math inline">\alpha</span> = 0.93 and the distrust scale <span class="math inline">\alpha</span> = 0.86. In other words, the items in each of the scales were intercorrelated well enough for each to compose a single scale presuming a unidimensional construct for each<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</p>
 </section>
 </section>
 <section id="data-specification" class="level2">
@@ -865,7 +886,7 @@ Figure&nbsp;1: Overlapping Distribution of Confidence in Elections for AZ and Lo
 </div>
 </div></div>
 </div>
-<p>Overall, the sample expressed more trust in elections relative to distrust seeing as how the distribution of confidence is largely positive. However, there’s a clear difference between confidence in Maricopa county, AZ elections and elections within one’s local area. A paired t-test confirms that this difference was statistically significant, though somewhat small (mean difference <span class="math inline">\(= 0.325\)</span>, <span class="math inline">\(95\%\)</span> CI <span class="math inline">\([0.27, 0.38]\)</span>, <span class="math inline">\(t(1286) = 11.61\)</span>, <span class="math inline">\(p &lt; .001\)</span>). Nonetheless, respondents appeared less confident regarding elections in Maricopa County, AZ, but held more confidence in elections administration in their local area. This complements previous research that demonstrates a similar bias favorable to one’s local area <span class="citation" data-cites="stewart2022">(<a href="#ref-stewart2022" role="doc-biblioref">Stewart 2022</a>)</span>.</p>
+<p>Overall, the sample expressed more trust in elections relative to distrust seeing as how the distribution of confidence is largely positive. However, there’s a clear difference between confidence in Maricopa county, AZ elections and elections within one’s local area. A paired t-test confirms that this difference was statistically significant, though somewhat small (mean difference <span class="math inline">= 0.325</span>, <span class="math inline">95\%</span> CI <span class="math inline">[0.27, 0.38]</span>, <span class="math inline">t(1286) = 11.61</span>, <span class="math inline">p &lt; .001</span>). Nonetheless, respondents appeared less confident regarding elections in Maricopa County, AZ, but held more confidence in elections administration in their local area. This complements previous research that demonstrates a similar bias favorable to one’s local area <span class="citation" data-cites="stewart2022">(<a href="#ref-stewart2022" role="doc-biblioref">Stewart 2022</a>)</span>.</p>
 <p>Accordingly, when confidence levels are distinguished by experiment condition, the treatment vignette only had an effect upon survey items pertaining to elections in Maricopa County, AZ. Conducting an independent samples t-test (i.e., Welch Two Sample t-test) suggests that the effect of the treatment compared to the control condition is positive and statistically significant.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell" data-tbl-colwidths="80" data-tbl-pos="H">
 
@@ -893,25 +914,33 @@ Figure&nbsp;1: Overlapping Distribution of Confidence in Elections for AZ and Lo
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">.before =</span> Diff) <span class="sc">|&gt;</span> </span>
 <span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  insight<span class="sc">::</span><span class="fu">format_table</span>(<span class="at">stars =</span> T)</span>
 <span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Output using `tinytable` R Package</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(tab_ttest) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Place"</span>,</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">bar{x}_{diff}$"</span>,</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">bar{x}_{treat}$"</span>,</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">bar{x}_{control}$"</span>,</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$n_{treat}$"</span>,</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$n_{control}$"</span>,</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"t"</span>,</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"p"</span>,</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"df"</span>,</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"CI"</span>)</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>tinytable<span class="sc">::</span><span class="fu">tt</span>(tab_ttest) <span class="sc">|&gt;</span></span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">format_tt</span>(</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">j =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>, <span class="co"># specify columns  </span></span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">math =</span> T <span class="co"># apply mathmode to specified columns</span></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">fontsize =</span> <span class="fl">0.75</span>) <span class="co"># fontsize in em units (0.75*default fontsize)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-ttest" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-tbl-colwidths="80">
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co"># convert from `data.frame` to `tinytable` class object</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>tab_ttest <span class="ot">&lt;-</span> tinytable<span class="sc">::</span><span class="fu">tt</span>(tab_ttest)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co"># modify column names of table</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(tab_ttest) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Place"</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">bar{x}_{diff}$"</span>,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">bar{x}_{treat}$"</span>,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$</span><span class="sc">\\</span><span class="st">bar{x}_{control}$"</span>,</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$n_{treat}$"</span>,</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"$n_{control}$"</span>,</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"t"</span>,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"p"</span>,</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"df"</span>,</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"CI"</span>)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Output using `tinytable` R Package</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>tab_ttest <span class="sc">|&gt;</span> </span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">format_tt</span>(</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">j =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>, <span class="co"># specify columns</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">math =</span> T <span class="co"># apply mathmode to specified columns</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.75</span>, <span class="co"># fontsize in em units (0.75*default fontsize)</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">"lccccccccc"</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-ttest" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80" data-tbl-pos="H">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ttest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;2: Mean Difference of Treatment Compared to Control Condition
@@ -986,9 +1015,12 @@ Table&nbsp;2: Mean Difference of Treatment Compared to Control Condition
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 2, j: 0 }, { i: 2, j: 1 }, { i: 2, j: 4 }, { i: 2, j: 3 }, { i: 2, j: 2 }, { i: 2, j: 5 }, { i: 2, j: 8 }, { i: 2, j: 7 }, { i: 2, j: 6 }, { i: 2, j: 9 },  ], css_id: '3',}, 
-          { positions: [ { i: 1, j: 0 }, { i: 1, j: 3 }, { i: 1, j: 1 }, { i: 1, j: 4 }, { i: 1, j: 7 }, { i: 1, j: 2 }, { i: 1, j: 5 }, { i: 1, j: 8 }, { i: 1, j: 6 }, { i: 1, j: 9 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 3 }, { i: 0, j: 2 }, { i: 0, j: 1 }, { i: 0, j: 4 }, { i: 0, j: 7 }, { i: 0, j: 6 }, { i: 0, j: 5 }, { i: 0, j: 8 }, { i: 0, j: 9 },  ], css_id: '1',}, 
+          { positions: [ { i: 2, j: 1 }, { i: 2, j: 4 }, { i: 2, j: 3 }, { i: 2, j: 2 }, { i: 2, j: 5 }, { i: 2, j: 8 }, { i: 2, j: 7 }, { i: 2, j: 6 }, { i: 2, j: 9 },  ], css_id: 'tinytable_css_zqddhlcjua2u9hp23ukx',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 1, j: 4 }, { i: 1, j: 3 }, { i: 1, j: 2 }, { i: 1, j: 5 }, { i: 1, j: 8 }, { i: 1, j: 7 }, { i: 1, j: 6 }, { i: 1, j: 9 },  ], css_id: 'tinytable_css_7fbmvezcdiw3ndu9ccqe',}, 
+          { positions: [ { i: 0, j: 1 }, { i: 0, j: 4 }, { i: 0, j: 3 }, { i: 0, j: 2 }, { i: 0, j: 5 }, { i: 0, j: 8 }, { i: 0, j: 7 }, { i: 0, j: 6 }, { i: 0, j: 9 },  ], css_id: 'tinytable_css_cw5lywk3dqgq9gdleqca',}, 
+          { positions: [ { i: 2, j: 0 },  ], css_id: 'tinytable_css_cr1zj1g3l9niccqmeti9',}, 
+          { positions: [ { i: 1, j: 0 },  ], css_id: 'tinytable_css_o114m8qeljxanb4ueuzm',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_lcqhmu1nodavrwwvek9x',}, 
           ];
 
           // Loop over the arrays to style the cells
@@ -1002,9 +1034,12 @@ Table&nbsp;2: Mean Difference of Treatment Compared to Control Condition
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_cr1zj1g3l9niccqmeti9, .table th.tinytable_css_cr1zj1g3l9niccqmeti9 { font-size: 0.75em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_o114m8qeljxanb4ueuzm, .table th.tinytable_css_o114m8qeljxanb4ueuzm { font-size: 0.75em; }
-      .table td.tinytable_css_lcqhmu1nodavrwwvek9x, .table th.tinytable_css_lcqhmu1nodavrwwvek9x { font-size: 0.75em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_zqddhlcjua2u9hp23ukx, .table th.tinytable_css_zqddhlcjua2u9hp23ukx { font-size: 0.75em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_7fbmvezcdiw3ndu9ccqe, .table th.tinytable_css_7fbmvezcdiw3ndu9ccqe { font-size: 0.75em; text-align: center; }
+      .table td.tinytable_css_cw5lywk3dqgq9gdleqca, .table th.tinytable_css_cw5lywk3dqgq9gdleqca { font-size: 0.75em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_cr1zj1g3l9niccqmeti9, .table th.tinytable_css_cr1zj1g3l9niccqmeti9 { font-size: 0.75em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_o114m8qeljxanb4ueuzm, .table th.tinytable_css_o114m8qeljxanb4ueuzm { font-size: 0.75em; text-align: left; }
+      .table td.tinytable_css_lcqhmu1nodavrwwvek9x, .table th.tinytable_css_lcqhmu1nodavrwwvek9x { font-size: 0.75em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
       <table class="table table-borderless" id="tinytable_52zzayws0tri9kcbsuw9" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
@@ -1058,7 +1093,7 @@ Table&nbsp;2: Mean Difference of Treatment Compared to Control Condition
 </figure>
 </div></div></div>
 </div></div>
-<p>The results of <a href="#tbl-ttest" class="quarto-xref">Table&nbsp;2</a> show that, on a scale ranging from -3 to 3, the effect of the treatment is associated with a <span class="math inline">\(0.20\)</span> average difference in confidence in elections in Maricopa County, AZ, compared to the control group. When the dependent variable is centered to have a mean of <span class="math inline">\(0\)</span> and standard deviation of <span class="math inline">\(1\)</span>, standardized parameters permit interpretation of the treatment effect in terms of standard deviations; the standardized difference in confidence between treatment and control is <span class="math inline">\(0.16\)</span> (CI <span class="math inline">\([0.06, 0.27]\)</span>).</p>
+<p>The results of <a href="#tbl-ttest" class="quarto-xref">Table&nbsp;2</a> show that, on a scale ranging from -3 to 3, the effect of the treatment is associated with a <span class="math inline">0.20</span> average difference in confidence in elections in Maricopa County, AZ, compared to the control group. When the dependent variable is centered to have a mean of <span class="math inline">0</span> and standard deviation of <span class="math inline">1</span>, standardized parameters permit interpretation of the treatment effect in terms of standard deviations; the standardized difference in confidence between treatment and control is <span class="math inline">0.16</span> (CI <span class="math inline">[0.06, 0.27]</span>).</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell" data-layout-nrow="2">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coef plot of treatment effect on confidence distinguished by location</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>conf.coef1 <span class="ot">&lt;-</span> jtools<span class="sc">::</span><span class="fu">plot_summs</span>(</span>
@@ -1237,8 +1272,8 @@ Table&nbsp;3: Confidence in Elections by Treatment and Legitimacy Beliefs
 
     <script>
 
-      function styleCell_zqddhlcjua2u9hp23ukx(i, j, css_id) {
-          var table = document.getElementById("tinytable_zqddhlcjua2u9hp23ukx");
+      function styleCell_9nj5xsmen0wj5ukr8wy5(i, j, css_id) {
+          var table = document.getElementById("tinytable_9nj5xsmen0wj5ukr8wy5");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -1248,7 +1283,7 @@ Table&nbsp;3: Confidence in Elections by Treatment and Legitimacy Beliefs
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_zqddhlcjua2u9hp23ukx');
+        var table = document.getElementById('tinytable_9nj5xsmen0wj5ukr8wy5');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -1256,8 +1291,8 @@ Table&nbsp;3: Confidence in Elections by Treatment and Legitimacy Beliefs
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_zqddhlcjua2u9hp23ukx(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_zqddhlcjua2u9hp23ukx");
+      function spanCell_9nj5xsmen0wj5ukr8wy5(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_9nj5xsmen0wj5ukr8wy5");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -1287,20 +1322,20 @@ Table&nbsp;3: Confidence in Elections by Treatment and Legitimacy Beliefs
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 8, j: 1 }, { i: 8, j: 2 },  ], css_id: '8',}, 
-          { positions: [ { i: 6, j: 1 }, { i: 6, j: 2 },  ], css_id: '7',}, 
-          { positions: [ { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 7, j: 1 }, { i: 3, j: 2 }, { i: 5, j: 1 }, { i: 5, j: 2 }, { i: 2, j: 2 }, { i: 7, j: 2 }, { i: 4, j: 2 },  ], css_id: '6',}, 
-          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 },  ], css_id: '5',}, 
-          { positions: [ { i: 8, j: 0 },  ], css_id: '4',}, 
-          { positions: [ { i: 6, j: 0 },  ], css_id: '3',}, 
-          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 5, j: 0 }, { i: 7, j: 0 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 },  ], css_id: '1',}, 
+          { positions: [ { i: 8, j: 1 }, { i: 8, j: 2 },  ], css_id: 'tinytable_css_fv3twpcexckvnpaim2gd',}, 
+          { positions: [ { i: 6, j: 1 }, { i: 6, j: 2 },  ], css_id: 'tinytable_css_6wxtbb6ls7qilal07vhi',}, 
+          { positions: [ { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 7, j: 1 }, { i: 3, j: 2 }, { i: 5, j: 1 }, { i: 5, j: 2 }, { i: 2, j: 2 }, { i: 7, j: 2 }, { i: 4, j: 2 },  ], css_id: 'tinytable_css_bzq2wwfayglwjfsvv4um',}, 
+          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 },  ], css_id: 'tinytable_css_auxpmw6zmmr41pmzkrsk',}, 
+          { positions: [ { i: 8, j: 0 },  ], css_id: 'tinytable_css_yy6abb8xsmm3c6cvbjc8',}, 
+          { positions: [ { i: 6, j: 0 },  ], css_id: 'tinytable_css_dberxdwq7stvk2uluw65',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 5, j: 0 }, { i: 7, j: 0 },  ], css_id: 'tinytable_css_v6d66c60tyeirwnepfx0',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_uhoklgh1wkat6mjavdlq',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_zqddhlcjua2u9hp23ukx(cell.i, cell.j, group.css_id);
+                  styleCell_9nj5xsmen0wj5ukr8wy5(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1308,17 +1343,17 @@ Table&nbsp;3: Confidence in Elections by Treatment and Legitimacy Beliefs
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_auxpmw6zmmr41pmzkrsk, .table th.tinytable_css_auxpmw6zmmr41pmzkrsk { text-align: center; font-size: 0.8em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_yy6abb8xsmm3c6cvbjc8, .table th.tinytable_css_yy6abb8xsmm3c6cvbjc8 { text-align: center; border-bottom: solid black 0.05em; font-size: 0.8em; text-align: center; border-top: solid black 0.1em; }
-      .table td.tinytable_css_dberxdwq7stvk2uluw65, .table th.tinytable_css_dberxdwq7stvk2uluw65 { text-align: center; font-size: 0.8em; text-align: center; }
-      .table td.tinytable_css_v6d66c60tyeirwnepfx0, .table th.tinytable_css_v6d66c60tyeirwnepfx0 { text-align: center; font-size: 0.8em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
-      .table td.tinytable_css_uhoklgh1wkat6mjavdlq, .table th.tinytable_css_uhoklgh1wkat6mjavdlq { text-align: left; font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_9nj5xsmen0wj5ukr8wy5, .table th.tinytable_css_9nj5xsmen0wj5ukr8wy5 { text-align: left; border-bottom: solid black 0.05em; font-size: 0.8em; text-align: left; border-top: solid black 0.1em; }
-      .table td.tinytable_css_esth61iepfnkosp6v5wc, .table th.tinytable_css_esth61iepfnkosp6v5wc { text-align: left; font-size: 0.8em; text-align: left; }
-      .table td.tinytable_css_erintmqtb2uyj3cfuakz, .table th.tinytable_css_erintmqtb2uyj3cfuakz { text-align: left; font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_fv3twpcexckvnpaim2gd, .table th.tinytable_css_fv3twpcexckvnpaim2gd { text-align: center; font-size: 0.8em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_6wxtbb6ls7qilal07vhi, .table th.tinytable_css_6wxtbb6ls7qilal07vhi { text-align: center; border-bottom: solid black 0.05em; font-size: 0.8em; text-align: center; border-top: solid black 0.1em; }
+      .table td.tinytable_css_bzq2wwfayglwjfsvv4um, .table th.tinytable_css_bzq2wwfayglwjfsvv4um { text-align: center; font-size: 0.8em; text-align: center; }
+      .table td.tinytable_css_auxpmw6zmmr41pmzkrsk, .table th.tinytable_css_auxpmw6zmmr41pmzkrsk { text-align: center; font-size: 0.8em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_yy6abb8xsmm3c6cvbjc8, .table th.tinytable_css_yy6abb8xsmm3c6cvbjc8 { text-align: left; font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_dberxdwq7stvk2uluw65, .table th.tinytable_css_dberxdwq7stvk2uluw65 { text-align: left; border-bottom: solid black 0.05em; font-size: 0.8em; text-align: left; border-top: solid black 0.1em; }
+      .table td.tinytable_css_v6d66c60tyeirwnepfx0, .table th.tinytable_css_v6d66c60tyeirwnepfx0 { text-align: left; font-size: 0.8em; text-align: left; }
+      .table td.tinytable_css_uhoklgh1wkat6mjavdlq, .table th.tinytable_css_uhoklgh1wkat6mjavdlq { text-align: left; font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_zqddhlcjua2u9hp23ukx" style="table-layout: fixed; width: 80% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_9nj5xsmen0wj5ukr8wy5" style="table-layout: fixed; width: 80% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -1379,7 +1414,7 @@ Table&nbsp;3: Confidence in Elections by Treatment and Legitimacy Beliefs
 </figure>
 </div></div></div>
 </div></div>
-<p>The first model in <a href="#tbl-legit" class="quarto-xref">Table&nbsp;3</a> shows that overall confidence in elections among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at <span class="math inline">\(90\%\)</span> confidence level (<span class="math inline">\(p = 0.055\)</span>). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.</p>
+<p>The first model in <a href="#tbl-legit" class="quarto-xref">Table&nbsp;3</a> shows that overall confidence in elections among those who read the treatment vignette was significantly (statistically) greater than those who read the control, on average and netting out the effects of partisanship and legitimacy beliefs. Democratic partisanship remains marginally significant at <span class="math inline">90\%</span> confidence level (<span class="math inline">p = 0.055</span>). Not believing the 2020 election of Joe Biden was legitimate is negatively associated with confidence in elections. In order to assess the magnitude of this interaction effect of the treatment on those who refuted the 2020 election results, I ran a model where confidence in elections was regressed on the interaction between the treatment and legitimacy beliefs, controlling for partisanship.</p>
 <p>There’s a positive interaction effect of the treatment vignette among those who believe that the 2020 election was not legitimate, on average and controlling for partisanship. This shows that the treatment effect was most influential upon those who believe the 2020 election results were illegitimate. The treatment alone does not reverse such beliefs, but this shows where its influence was most potent.</p>
 </section>
 <section id="concerns-for-violence-and-voter-safety" class="level3">
@@ -1444,9 +1479,9 @@ Figure&nbsp;5: Safety Concerns and Confidence by Treatment Condition
 </div>
 </figure>
 </div>
-<p>Briefly reviewing <a href="#fig-safety-bars" class="quarto-xref">Figure&nbsp;5</a>, those in the treatment condition felt less concern over the potential for violence compared to those in the control. As for confidence in voter safety at election sites, it appears that more respondents in the treatment condition expressed that they were “Very confident” compared to those in the control, by approximately <span class="math inline">\(8\)</span> percentage points.</p>
+<p>Briefly reviewing <a href="#fig-safety-bars" class="quarto-xref">Figure&nbsp;5</a>, those in the treatment condition felt less concern over the potential for violence compared to those in the control. As for confidence in voter safety at election sites, it appears that more respondents in the treatment condition expressed that they were “Very confident” compared to those in the control, by approximately <span class="math inline">8</span> percentage points.</p>
 <p>It would appear that the treatment vignette increased the likelihood that a respondent would select a higher response option compared to those in the control group. In order to assess whether that was the case, I conducted an ordered logistic regression on the relevant items using the experimental condition as a dichotomous predictor.</p>
-<p>Those in the treatment condition had lower probability to express that they were ‘Very’ or ‘Somewhat’ concerned for violence in Maricopa County, AZ Elections, yet higher probability of expressing ‘Not too’ or ‘Not at all’ concerned. As for confidence in voter safety, moving from treatment to control, the difference in predicted probability of a respondent selecting “Very Confident” was <span class="math inline">\(0.08\)</span>. <a href="#tbl-preds-diff1" class="quarto-xref">Table&nbsp;4</a> and <a href="#tbl-preds-diff2" class="quarto-xref">Table&nbsp;5</a> show the significant differences in predicted probabilities at 95<span class="math inline">\(\%\)</span> confidence<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>.</p>
+<p>Those in the treatment condition had lower probability to express that they were ‘Very’ or ‘Somewhat’ concerned for violence in Maricopa County, AZ Elections, yet higher probability of expressing ‘Not too’ or ‘Not at all’ concerned. As for confidence in voter safety, moving from treatment to control, the difference in predicted probability of a respondent selecting “Very Confident” was <span class="math inline">0.08</span>. <a href="#tbl-preds-diff1" class="quarto-xref">Table&nbsp;4</a> and <a href="#tbl-preds-diff2" class="quarto-xref">Table&nbsp;5</a> show the significant differences in predicted probabilities at 95<span class="math inline">\%</span> confidence<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># needed to duplicate `group` variable with different column name due to</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># conflict with marginaleffects R package</span></span>
@@ -1509,9 +1544,10 @@ Figure&nbsp;5: Safety Concerns and Confidence by Treatment Condition
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  tab_q25_pdiff,</span>
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">notes =</span> <span class="st">"Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span> <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span>  </span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-preds-diff1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80">
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span>, <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">"lcccccc"</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span>  </span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-preds-diff1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-preds-diff1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;4: Difference in Predicted Probabilities in Concern for violence, Threats of Violence, or Intimidation between Treatment and Control
@@ -1536,8 +1572,8 @@ Table&nbsp;4: Difference in Predicted Probabilities in Concern for violence, Thr
 
     <script>
 
-      function styleCell_fv3twpcexckvnpaim2gd(i, j, css_id) {
-          var table = document.getElementById("tinytable_fv3twpcexckvnpaim2gd");
+      function styleCell_2332rx8ooh2qomll05al(i, j, css_id) {
+          var table = document.getElementById("tinytable_2332rx8ooh2qomll05al");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -1547,7 +1583,7 @@ Table&nbsp;4: Difference in Predicted Probabilities in Concern for violence, Thr
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_fv3twpcexckvnpaim2gd');
+        var table = document.getElementById('tinytable_2332rx8ooh2qomll05al');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -1555,8 +1591,8 @@ Table&nbsp;4: Difference in Predicted Probabilities in Concern for violence, Thr
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_fv3twpcexckvnpaim2gd(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_fv3twpcexckvnpaim2gd");
+      function spanCell_2332rx8ooh2qomll05al(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_2332rx8ooh2qomll05al");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -1586,15 +1622,18 @@ Table&nbsp;4: Difference in Predicted Probabilities in Concern for violence, Thr
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 4, j: 0 }, { i: 4, j: 1 }, { i: 4, j: 2 }, { i: 4, j: 3 }, { i: 4, j: 4 }, { i: 4, j: 5 }, { i: 4, j: 6 },  ], css_id: '3',}, 
-          { positions: [ { i: 3, j: 0 }, { i: 3, j: 1 }, { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 2, j: 1 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 3, j: 4 }, { i: 3, j: 5 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 5 }, { i: 2, j: 6 }, { i: 3, j: 6 }, { i: 1, j: 5 }, { i: 1, j: 6 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 1 }, { i: 0, j: 2 }, { i: 0, j: 3 }, { i: 0, j: 4 }, { i: 0, j: 5 }, { i: 0, j: 6 },  ], css_id: '1',}, 
+          { positions: [ { i: 4, j: 1 }, { i: 4, j: 2 }, { i: 4, j: 3 }, { i: 4, j: 4 }, { i: 4, j: 5 }, { i: 4, j: 6 },  ], css_id: 'tinytable_css_45ev7e23pwv9mpl3qqju',}, 
+          { positions: [ { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 3, j: 2 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 3, j: 4 }, { i: 1, j: 3 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 5 }, { i: 3, j: 5 }, { i: 3, j: 6 }, { i: 1, j: 5 }, { i: 1, j: 6 }, { i: 2, j: 6 },  ], css_id: 'tinytable_css_zlih5n1lnt7x2dd65abp',}, 
+          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 }, { i: 0, j: 3 }, { i: 0, j: 4 }, { i: 0, j: 5 }, { i: 0, j: 6 },  ], css_id: 'tinytable_css_wc8umcv2bg4i97l7rga6',}, 
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_2vtu6ox0xnunfqjqcihi',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 },  ], css_id: 'tinytable_css_4lsyopf3r8qwwog7q7cs',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_1uxnu6wyrnt4mmhwnpgu',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_fv3twpcexckvnpaim2gd(cell.i, cell.j, group.css_id);
+                  styleCell_2332rx8ooh2qomll05al(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1602,12 +1641,15 @@ Table&nbsp;4: Difference in Predicted Probabilities in Concern for violence, Thr
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_2332rx8ooh2qomll05al, .table th.tinytable_css_2332rx8ooh2qomll05al { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_ab0pvr2w1fwnqznx6ifd, .table th.tinytable_css_ab0pvr2w1fwnqznx6ifd { font-size: 0.8em; }
-      .table td.tinytable_css_9ea2wt06bir7ilipqq9l, .table th.tinytable_css_9ea2wt06bir7ilipqq9l { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_45ev7e23pwv9mpl3qqju, .table th.tinytable_css_45ev7e23pwv9mpl3qqju { font-size: 0.8em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_zlih5n1lnt7x2dd65abp, .table th.tinytable_css_zlih5n1lnt7x2dd65abp { font-size: 0.8em; text-align: center; }
+      .table td.tinytable_css_wc8umcv2bg4i97l7rga6, .table th.tinytable_css_wc8umcv2bg4i97l7rga6 { font-size: 0.8em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_2vtu6ox0xnunfqjqcihi, .table th.tinytable_css_2vtu6ox0xnunfqjqcihi { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_4lsyopf3r8qwwog7q7cs, .table th.tinytable_css_4lsyopf3r8qwwog7q7cs { font-size: 0.8em; text-align: left; }
+      .table td.tinytable_css_1uxnu6wyrnt4mmhwnpgu, .table th.tinytable_css_1uxnu6wyrnt4mmhwnpgu { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_fv3twpcexckvnpaim2gd" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_2332rx8ooh2qomll05al" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -1688,9 +1730,10 @@ Table&nbsp;4: Difference in Predicted Probabilities in Concern for violence, Thr
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  tab_q26_pdiff,</span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">notes =</span> <span class="st">"Results derived from proportional odds logistic regression model. Estimates are differences in predicted probabilities transformed from log odds ratios, and represent difference in estimated prediction of choosing a particular response or higher"</span>) <span class="sc">|&gt;</span>  </span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span> <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span>  </span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>) <span class="co"># style font of table notes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-preds-diff2" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80">
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span>, <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">"lcccccc"</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span>  </span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>) <span class="co"># style font of table notes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-preds-diff2" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-preds-diff2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;5: Difference in Predicted Probabilities in Confidence that voters will be safe to vote in-person between Treatment and Control
@@ -1715,8 +1758,8 @@ Table&nbsp;5: Difference in Predicted Probabilities in Confidence that voters wi
 
     <script>
 
-      function styleCell_2vtu6ox0xnunfqjqcihi(i, j, css_id) {
-          var table = document.getElementById("tinytable_2vtu6ox0xnunfqjqcihi");
+      function styleCell_rtcv1md7s1635rt167gs(i, j, css_id) {
+          var table = document.getElementById("tinytable_rtcv1md7s1635rt167gs");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -1726,7 +1769,7 @@ Table&nbsp;5: Difference in Predicted Probabilities in Confidence that voters wi
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_2vtu6ox0xnunfqjqcihi');
+        var table = document.getElementById('tinytable_rtcv1md7s1635rt167gs');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -1734,8 +1777,8 @@ Table&nbsp;5: Difference in Predicted Probabilities in Confidence that voters wi
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_2vtu6ox0xnunfqjqcihi(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_2vtu6ox0xnunfqjqcihi");
+      function spanCell_rtcv1md7s1635rt167gs(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_rtcv1md7s1635rt167gs");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -1765,15 +1808,18 @@ Table&nbsp;5: Difference in Predicted Probabilities in Confidence that voters wi
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 4, j: 0 }, { i: 4, j: 1 }, { i: 4, j: 2 }, { i: 4, j: 3 }, { i: 4, j: 4 }, { i: 4, j: 5 }, { i: 4, j: 6 },  ], css_id: '3',}, 
-          { positions: [ { i: 3, j: 0 }, { i: 3, j: 1 }, { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 2, j: 1 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 3, j: 4 }, { i: 3, j: 5 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 5 }, { i: 2, j: 6 }, { i: 3, j: 6 }, { i: 1, j: 5 }, { i: 1, j: 6 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 1 }, { i: 0, j: 2 }, { i: 0, j: 3 }, { i: 0, j: 4 }, { i: 0, j: 5 }, { i: 0, j: 6 },  ], css_id: '1',}, 
+          { positions: [ { i: 4, j: 1 }, { i: 4, j: 2 }, { i: 4, j: 3 }, { i: 4, j: 4 }, { i: 4, j: 5 }, { i: 4, j: 6 },  ], css_id: 'tinytable_css_y7b53smbqq95w83u3cxo',}, 
+          { positions: [ { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 3, j: 2 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 3, j: 4 }, { i: 1, j: 3 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 5 }, { i: 3, j: 5 }, { i: 3, j: 6 }, { i: 1, j: 5 }, { i: 1, j: 6 }, { i: 2, j: 6 },  ], css_id: 'tinytable_css_i65yrh4vylc1i9fdofm7',}, 
+          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 }, { i: 0, j: 3 }, { i: 0, j: 4 }, { i: 0, j: 5 }, { i: 0, j: 6 },  ], css_id: 'tinytable_css_ly8w3lgqbfjrahyn2td8',}, 
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_m83y3gatok24zbyiz12b',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 },  ], css_id: 'tinytable_css_hzs6sbrx6ugb0p5jvn8f',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_tu0dbbrb110k7xj70ydp',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_2vtu6ox0xnunfqjqcihi(cell.i, cell.j, group.css_id);
+                  styleCell_rtcv1md7s1635rt167gs(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1781,12 +1827,15 @@ Table&nbsp;5: Difference in Predicted Probabilities in Confidence that voters wi
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_45ev7e23pwv9mpl3qqju, .table th.tinytable_css_45ev7e23pwv9mpl3qqju { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_zlih5n1lnt7x2dd65abp, .table th.tinytable_css_zlih5n1lnt7x2dd65abp { font-size: 0.8em; }
-      .table td.tinytable_css_wc8umcv2bg4i97l7rga6, .table th.tinytable_css_wc8umcv2bg4i97l7rga6 { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_y7b53smbqq95w83u3cxo, .table th.tinytable_css_y7b53smbqq95w83u3cxo { font-size: 0.8em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_i65yrh4vylc1i9fdofm7, .table th.tinytable_css_i65yrh4vylc1i9fdofm7 { font-size: 0.8em; text-align: center; }
+      .table td.tinytable_css_ly8w3lgqbfjrahyn2td8, .table th.tinytable_css_ly8w3lgqbfjrahyn2td8 { font-size: 0.8em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_m83y3gatok24zbyiz12b, .table th.tinytable_css_m83y3gatok24zbyiz12b { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_hzs6sbrx6ugb0p5jvn8f, .table th.tinytable_css_hzs6sbrx6ugb0p5jvn8f { font-size: 0.8em; text-align: left; }
+      .table td.tinytable_css_tu0dbbrb110k7xj70ydp, .table th.tinytable_css_tu0dbbrb110k7xj70ydp { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_2vtu6ox0xnunfqjqcihi" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_rtcv1md7s1635rt167gs" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -1953,7 +2002,7 @@ Figure&nbsp;6: Fabricated Article Vignettes utilized as Experimental Stimulus
 <span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-4" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="[70,30]">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6: Survey Items and Response Options
+Table&nbsp;6: Pre-Treatment Survey Items and Response Options
 </figcaption>
 <div aria-describedby="tbl-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1975,8 +2024,8 @@ Table&nbsp;6: Survey Items and Response Options
 
     <script>
 
-      function styleCell_7gstu0dbbrb110k7xj70(i, j, css_id) {
-          var table = document.getElementById("tinytable_7gstu0dbbrb110k7xj70");
+      function styleCell_ptjlp7n1iaxrjvn340c0(i, j, css_id) {
+          var table = document.getElementById("tinytable_ptjlp7n1iaxrjvn340c0");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -1986,7 +2035,7 @@ Table&nbsp;6: Survey Items and Response Options
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_7gstu0dbbrb110k7xj70');
+        var table = document.getElementById('tinytable_ptjlp7n1iaxrjvn340c0');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -1994,8 +2043,8 @@ Table&nbsp;6: Survey Items and Response Options
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_7gstu0dbbrb110k7xj70(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_7gstu0dbbrb110k7xj70");
+      function spanCell_ptjlp7n1iaxrjvn340c0(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ptjlp7n1iaxrjvn340c0");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -2025,18 +2074,18 @@ Table&nbsp;6: Survey Items and Response Options
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 5, j: 1 },  ], css_id: '6',}, 
-          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 },  ], css_id: '5',}, 
-          { positions: [ { i: 0, j: 1 },  ], css_id: '4',}, 
-          { positions: [ { i: 5, j: 0 },  ], css_id: '3',}, 
-          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 },  ], css_id: '1',}, 
+          { positions: [ { i: 5, j: 1 },  ], css_id: 'tinytable_css_hjvb8vv54z3vav2cekkp',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 },  ], css_id: 'tinytable_css_6zfm9tav7yuk1qhyxree',}, 
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_lz8mzjk5lu4dkpdjuyr9',}, 
+          { positions: [ { i: 5, j: 0 },  ], css_id: 'tinytable_css_8f742rxbzisattaqp0ql',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 },  ], css_id: 'tinytable_css_x05h2v5is8466kktvul9',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_az8fsryvhls7946okt3n',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_7gstu0dbbrb110k7xj70(cell.i, cell.j, group.css_id);
+                  styleCell_ptjlp7n1iaxrjvn340c0(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -2044,15 +2093,15 @@ Table&nbsp;6: Survey Items and Response Options
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_cxoam6g0tn76mazi0crn, .table th.tinytable_css_cxoam6g0tn76mazi0crn { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; width: 30%; }
-      .table td.tinytable_css_fm7y7b53smbqq95w83u3, .table th.tinytable_css_fm7y7b53smbqq95w83u3 { font-size: 0.8em; text-align: left; width: 30%; }
-      .table td.tinytable_css_td8i65yrh4vylc1i9fdo, .table th.tinytable_css_td8i65yrh4vylc1i9fdo { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; width: 30%; }
-      .table td.tinytable_css_12bly8w3lgqbfjrahyn2, .table th.tinytable_css_12bly8w3lgqbfjrahyn2 { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; width: 70%; }
-      .table td.tinytable_css_n8fm83y3gatok24zbyiz, .table th.tinytable_css_n8fm83y3gatok24zbyiz { font-size: 0.8em; text-align: left; width: 70%; }
-      .table td.tinytable_css_ydphzs6sbrx6ugb0p5jv, .table th.tinytable_css_ydphzs6sbrx6ugb0p5jv { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; width: 70%; }
+      .table td.tinytable_css_hjvb8vv54z3vav2cekkp, .table th.tinytable_css_hjvb8vv54z3vav2cekkp { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; width: 30%; }
+      .table td.tinytable_css_6zfm9tav7yuk1qhyxree, .table th.tinytable_css_6zfm9tav7yuk1qhyxree { font-size: 0.8em; text-align: left; width: 30%; }
+      .table td.tinytable_css_lz8mzjk5lu4dkpdjuyr9, .table th.tinytable_css_lz8mzjk5lu4dkpdjuyr9 { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; width: 30%; }
+      .table td.tinytable_css_8f742rxbzisattaqp0ql, .table th.tinytable_css_8f742rxbzisattaqp0ql { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; width: 70%; }
+      .table td.tinytable_css_x05h2v5is8466kktvul9, .table th.tinytable_css_x05h2v5is8466kktvul9 { font-size: 0.8em; text-align: left; width: 70%; }
+      .table td.tinytable_css_az8fsryvhls7946okt3n, .table th.tinytable_css_az8fsryvhls7946okt3n { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; width: 70%; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_7gstu0dbbrb110k7xj70" style="table-layout: fixed; width: 100% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_ptjlp7n1iaxrjvn340c0" style="table-layout: fixed; width: 100% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -2122,7 +2171,7 @@ Table&nbsp;6: Survey Items and Response Options
 <h1 class="appendix">Appendix B: Sample Demographics and Balance</h1>
 <section id="sample-demographics" class="level2">
 <h2 class="anchored" data-anchor-id="sample-demographics">Sample Demographics</h2>
-<p>The median age was 46 (mean age was <span class="math inline">\(47\)</span>), <span class="math inline">\(51.7\%\)</span> (<span class="math inline">\(n = 658\)</span>) women, <span class="math inline">\(47\%\)</span> (<span class="math inline">\(n = 598\)</span>) men, and approximately <span class="math inline">\(1.3\%\)</span> who identified as either Non-binary/third gender (<span class="math inline">\(n = 7\)</span>) or preferred not to say (<span class="math inline">\(n = 9\)</span>). A large proportion of the sample identified as White or Caucasian (<span class="math inline">\(n = 975, 76.65\%\)</span>), while all other non-White respondents comprised <span class="math inline">\(27.83\%\)</span> (<span class="math inline">\(n = 297\)</span>) of the sample. Those who held a graduate level degree (e.g., Master’s, Doctorate, or Professional level) comprised <span class="math inline">\(13\%\)</span> of the sample; those with either degree at the Associate or Bachelor’s level comprised <span class="math inline">\(36.24\%\)</span>, while <span class="math inline">\(22.25\%\)</span> had some college but no degree; and <span class="math inline">\(28.46\%\)</span> had either a high school level or equivalent education or less than high school. The largest proportion of the sample identified as Democrat at <span class="math inline">\(44.64\%\)</span>, followed by Republicans at <span class="math inline">\(42.59\%\)</span>. The proportion of true Independents<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> was <span class="math inline">\(12.78\%\)</span>.</p>
+<p>The median age was 46 (mean age was <span class="math inline">47</span>), <span class="math inline">51.7\%</span> (<span class="math inline">n = 658</span>) women, <span class="math inline">47\%</span> (<span class="math inline">n = 598</span>) men, and approximately <span class="math inline">1.3\%</span> who identified as either Non-binary/third gender (<span class="math inline">n = 7</span>) or preferred not to say (<span class="math inline">n = 9</span>). A large proportion of the sample identified as White or Caucasian (<span class="math inline">n = 975, 76.65\%</span>), while all other non-White respondents comprised <span class="math inline">27.83\%</span> (<span class="math inline">n = 297</span>) of the sample. Those who held a graduate level degree (e.g., Master’s, Doctorate, or Professional level) comprised <span class="math inline">13\%</span> of the sample; those with either degree at the Associate or Bachelor’s level comprised <span class="math inline">36.24\%</span>, while <span class="math inline">22.25\%</span> had some college but no degree; and <span class="math inline">28.46\%</span> had either a high school level or equivalent education or less than high school. The largest proportion of the sample identified as Democrat at <span class="math inline">44.64\%</span>, followed by Republicans at <span class="math inline">42.59\%</span>. The proportion of true Independents<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> was <span class="math inline">12.78\%</span>.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [22]:</pre></div><div class="cell" data-tbl-cap="Sample Demographics" data-tbl-pos="H">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gtsummary<span class="sc">::</span><span class="fu">theme_gtsummary_compact</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -2165,7 +2214,7 @@ Table&nbsp;6: Survey Items and Response Options
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">tt</span>(<span class="at">theme =</span> <span class="st">"spacing"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">format_tt</span>(<span class="at">markdown =</span> T) <span class="sc">|&gt;</span> </span>
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">format_tt</span>(<span class="at">replace =</span> <span class="st">" "</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">fontsize =</span> <span class="fl">0.70</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-demog" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-tbl-colwidths="80">
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">fontsize =</span> <span class="fl">0.70</span>, <span class="at">align =</span> <span class="st">"lccc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-demog" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80" data-tbl-pos="H">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-demog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;7: Sample Demographics
@@ -2190,8 +2239,8 @@ Table&nbsp;7: Sample Demographics
 
     <script>
 
-      function styleCell_mtv5vi16moz5u9eau78n(i, j, css_id) {
-          var table = document.getElementById("tinytable_mtv5vi16moz5u9eau78n");
+      function styleCell_fxeen9mciyhpa7q17hgx(i, j, css_id) {
+          var table = document.getElementById("tinytable_fxeen9mciyhpa7q17hgx");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -2201,7 +2250,7 @@ Table&nbsp;7: Sample Demographics
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_mtv5vi16moz5u9eau78n');
+        var table = document.getElementById('tinytable_fxeen9mciyhpa7q17hgx');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -2209,8 +2258,8 @@ Table&nbsp;7: Sample Demographics
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_mtv5vi16moz5u9eau78n(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_mtv5vi16moz5u9eau78n");
+      function spanCell_fxeen9mciyhpa7q17hgx(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_fxeen9mciyhpa7q17hgx");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -2240,18 +2289,21 @@ Table&nbsp;7: Sample Demographics
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 29, j: 3 },  ], css_id: '6',}, 
-          { positions: [ { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 4, j: 3 }, { i: 5, j: 3 }, { i: 6, j: 3 }, { i: 7, j: 3 }, { i: 8, j: 3 }, { i: 9, j: 3 }, { i: 10, j: 3 }, { i: 11, j: 3 }, { i: 12, j: 3 }, { i: 13, j: 3 }, { i: 14, j: 3 }, { i: 15, j: 3 }, { i: 16, j: 3 }, { i: 17, j: 3 }, { i: 18, j: 3 }, { i: 19, j: 3 }, { i: 20, j: 3 }, { i: 21, j: 3 }, { i: 22, j: 3 }, { i: 23, j: 3 }, { i: 24, j: 3 }, { i: 25, j: 3 }, { i: 26, j: 3 }, { i: 27, j: 3 }, { i: 28, j: 3 },  ], css_id: '5',}, 
-          { positions: [ { i: 0, j: 3 },  ], css_id: '4',}, 
-          { positions: [ { i: 29, j: 1 }, { i: 29, j: 0 }, { i: 29, j: 2 },  ], css_id: '3',}, 
-          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 }, { i: 11, j: 0 }, { i: 12, j: 0 }, { i: 13, j: 0 }, { i: 14, j: 0 }, { i: 15, j: 0 }, { i: 16, j: 0 }, { i: 4, j: 0 }, { i: 18, j: 0 }, { i: 19, j: 0 }, { i: 7, j: 0 }, { i: 21, j: 0 }, { i: 22, j: 0 }, { i: 23, j: 0 }, { i: 24, j: 0 }, { i: 25, j: 0 }, { i: 26, j: 0 }, { i: 27, j: 0 }, { i: 28, j: 0 }, { i: 9, j: 2 }, { i: 17, j: 0 }, { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 8, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 }, { i: 11, j: 1 }, { i: 12, j: 1 }, { i: 13, j: 1 }, { i: 14, j: 1 }, { i: 15, j: 1 }, { i: 16, j: 1 }, { i: 17, j: 1 }, { i: 18, j: 1 }, { i: 19, j: 1 }, { i: 20, j: 1 }, { i: 21, j: 1 }, { i: 22, j: 1 }, { i: 23, j: 1 }, { i: 24, j: 1 }, { i: 25, j: 1 }, { i: 26, j: 1 }, { i: 27, j: 1 }, { i: 28, j: 1 }, { i: 12, j: 2 }, { i: 20, j: 0 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 5, j: 2 }, { i: 6, j: 2 }, { i: 7, j: 2 }, { i: 8, j: 2 }, { i: 22, j: 2 }, { i: 10, j: 2 }, { i: 11, j: 2 }, { i: 25, j: 2 }, { i: 13, j: 2 }, { i: 14, j: 2 }, { i: 15, j: 2 }, { i: 16, j: 2 }, { i: 17, j: 2 }, { i: 18, j: 2 }, { i: 19, j: 2 }, { i: 20, j: 2 }, { i: 21, j: 2 }, { i: 26, j: 2 }, { i: 23, j: 2 }, { i: 24, j: 2 }, { i: 27, j: 2 }, { i: 28, j: 2 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 2 }, { i: 0, j: 1 },  ], css_id: '1',}, 
+          { positions: [ { i: 29, j: 3 },  ], css_id: 'tinytable_css_epit6yp8gejlvznmtovp',}, 
+          { positions: [ { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 4, j: 3 }, { i: 5, j: 3 }, { i: 6, j: 3 }, { i: 7, j: 3 }, { i: 8, j: 3 }, { i: 9, j: 3 }, { i: 10, j: 3 }, { i: 11, j: 3 }, { i: 12, j: 3 }, { i: 13, j: 3 }, { i: 14, j: 3 }, { i: 15, j: 3 }, { i: 16, j: 3 }, { i: 17, j: 3 }, { i: 18, j: 3 }, { i: 19, j: 3 }, { i: 20, j: 3 }, { i: 21, j: 3 }, { i: 22, j: 3 }, { i: 23, j: 3 }, { i: 24, j: 3 }, { i: 25, j: 3 }, { i: 26, j: 3 }, { i: 27, j: 3 }, { i: 28, j: 3 },  ], css_id: 'tinytable_css_ndenal8k2kqf2t4g6p7l',}, 
+          { positions: [ { i: 0, j: 3 },  ], css_id: 'tinytable_css_nxqe86j17ytq62su1xu7',}, 
+          { positions: [ { i: 29, j: 1 }, { i: 29, j: 2 },  ], css_id: 'tinytable_css_23wfaq8ysp3xlx6gu8nu',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 8, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 }, { i: 11, j: 1 }, { i: 12, j: 1 }, { i: 13, j: 1 }, { i: 14, j: 1 }, { i: 15, j: 1 }, { i: 16, j: 1 }, { i: 4, j: 1 }, { i: 18, j: 1 }, { i: 19, j: 1 }, { i: 20, j: 1 }, { i: 21, j: 1 }, { i: 22, j: 1 }, { i: 23, j: 1 }, { i: 24, j: 1 }, { i: 25, j: 1 }, { i: 26, j: 1 }, { i: 27, j: 1 }, { i: 28, j: 1 }, { i: 12, j: 2 }, { i: 17, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 5, j: 2 }, { i: 6, j: 2 }, { i: 7, j: 2 }, { i: 8, j: 2 }, { i: 9, j: 2 }, { i: 10, j: 2 }, { i: 11, j: 2 }, { i: 25, j: 2 }, { i: 13, j: 2 }, { i: 14, j: 2 }, { i: 15, j: 2 }, { i: 16, j: 2 }, { i: 17, j: 2 }, { i: 18, j: 2 }, { i: 19, j: 2 }, { i: 20, j: 2 }, { i: 21, j: 2 }, { i: 22, j: 2 }, { i: 23, j: 2 }, { i: 24, j: 2 }, { i: 26, j: 2 }, { i: 27, j: 2 }, { i: 28, j: 2 },  ], css_id: 'tinytable_css_986t0afx59eevybfi2sw',}, 
+          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 },  ], css_id: 'tinytable_css_bcnjkbgzq1qvtqwn4vp0',}, 
+          { positions: [ { i: 29, j: 0 },  ], css_id: 'tinytable_css_wi8rulctv5b7cg54lp4f',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 8, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 }, { i: 11, j: 0 }, { i: 12, j: 0 }, { i: 13, j: 0 }, { i: 14, j: 0 }, { i: 15, j: 0 }, { i: 16, j: 0 }, { i: 17, j: 0 }, { i: 18, j: 0 }, { i: 19, j: 0 }, { i: 20, j: 0 }, { i: 21, j: 0 }, { i: 22, j: 0 }, { i: 23, j: 0 }, { i: 24, j: 0 }, { i: 25, j: 0 }, { i: 26, j: 0 }, { i: 27, j: 0 }, { i: 28, j: 0 },  ], css_id: 'tinytable_css_5lvx13xvid1l1327ry9h',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_vs4744d7egegz5035hi2',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_mtv5vi16moz5u9eau78n(cell.i, cell.j, group.css_id);
+                  styleCell_fxeen9mciyhpa7q17hgx(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -2259,15 +2311,18 @@ Table&nbsp;7: Sample Demographics
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_3pxpkjc0swfyth5yf3wl, .table th.tinytable_css_3pxpkjc0swfyth5yf3wl { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_wd3gr5fbebil541t2lye, .table th.tinytable_css_wd3gr5fbebil541t2lye { font-size: 0.7em; padding-bottom: 0.1em; }
-      .table td.tinytable_css_yf5bqopam5tovhgm4ko4, .table th.tinytable_css_yf5bqopam5tovhgm4ko4 { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; padding-bottom: 0.1em; }
-      .table td.tinytable_css_pxssbaw0vmpdl4t9ik0b, .table th.tinytable_css_pxssbaw0vmpdl4t9ik0b { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; }
-      .table td.tinytable_css_ps9nm0714inm6yst5ucm, .table th.tinytable_css_ps9nm0714inm6yst5ucm { font-size: 0.7em; padding-right: 0.5em; padding-bottom: 0.1em; }
-      .table td.tinytable_css_rai1nd3dcz71kgpd7hxg, .table th.tinytable_css_rai1nd3dcz71kgpd7hxg { font-size: 0.7em; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_epit6yp8gejlvznmtovp, .table th.tinytable_css_epit6yp8gejlvznmtovp { font-size: 0.7em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_ndenal8k2kqf2t4g6p7l, .table th.tinytable_css_ndenal8k2kqf2t4g6p7l { font-size: 0.7em; text-align: center; padding-bottom: 0.1em; }
+      .table td.tinytable_css_nxqe86j17ytq62su1xu7, .table th.tinytable_css_nxqe86j17ytq62su1xu7 { font-size: 0.7em; text-align: center; border-bottom: solid #d3d8dc 0.1em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_23wfaq8ysp3xlx6gu8nu, .table th.tinytable_css_23wfaq8ysp3xlx6gu8nu { font-size: 0.7em; text-align: center; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; }
+      .table td.tinytable_css_986t0afx59eevybfi2sw, .table th.tinytable_css_986t0afx59eevybfi2sw { font-size: 0.7em; text-align: center; padding-right: 0.5em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_bcnjkbgzq1qvtqwn4vp0, .table th.tinytable_css_bcnjkbgzq1qvtqwn4vp0 { font-size: 0.7em; text-align: center; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_wi8rulctv5b7cg54lp4f, .table th.tinytable_css_wi8rulctv5b7cg54lp4f { font-size: 0.7em; text-align: left; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; }
+      .table td.tinytable_css_5lvx13xvid1l1327ry9h, .table th.tinytable_css_5lvx13xvid1l1327ry9h { font-size: 0.7em; text-align: left; padding-right: 0.5em; padding-bottom: 0.1em; }
+      .table td.tinytable_css_vs4744d7egegz5035hi2, .table th.tinytable_css_vs4744d7egegz5035hi2 { font-size: 0.7em; text-align: left; border-bottom: solid #d3d8dc 0.1em; padding-right: 0.5em; padding-bottom: 0.1em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_mtv5vi16moz5u9eau78n" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_fxeen9mciyhpa7q17hgx" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -2465,7 +2520,7 @@ Table&nbsp;7: Sample Demographics
 </section>
 <section id="test-of-random-assignment-to-experiment-condition" class="level2">
 <h2 class="anchored" data-anchor-id="test-of-random-assignment-to-experiment-condition">Test of Random Assignment to Experiment Condition</h2>
-<p><a href="#tbl-logit" class="quarto-xref">Table&nbsp;8</a> shows results of a logistic regression test of random assignment to the treatment group. Demographics such as age, gender, race, educational attainment, and party ID are included as predictor variables. Note that 19 missing observations were deleted. A <span class="math inline">\(\chi^2 = 11.010\)</span>, with 15 degrees of freedom and associated p-value &gt; 0.05 (<span class="math inline">\(p = 0.75\)</span>) confirms that none of the demographic predictor variables significantly increased the log-odds—in turn, the probability—of being assigned to the treatment group.</p>
+<p><a href="#tbl-logit" class="quarto-xref">Table&nbsp;8</a> shows results of a logistic regression test of random assignment to the treatment group. Demographics such as age, gender, race, educational attainment, and party ID are included as predictor variables. Note that 19 missing observations were deleted. A <span class="math inline">\chi^2 = 11.010</span>, with 15 degrees of freedom and associated p-value &gt; 0.05 (<span class="math inline">p = 0.75</span>) confirms that none of the demographic predictor variables significantly increased the log-odds—in turn, the probability—of being assigned to the treatment group.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [25]:</pre></div><div class="cell">
 
 <div class="cell-container"><div class="cell-decorator"><pre>In [26]:</pre></div><div><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simple logit of test of random assignment to treatment</span></span>
@@ -2530,7 +2585,7 @@ Table&nbsp;7: Sample Demographics
 <span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add horizontal line just above fit stats</span></span>
 <span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="dv">26</span>, <span class="at">line =</span> <span class="st">"t"</span>, <span class="at">line_color =</span> <span class="st">"black"</span>, <span class="at">line_width =</span> <span class="fl">0.1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># adjust fontsize of text within table</span></span>
-<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">fontsize =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">fontsize =</span> <span class="fl">0.8</span>, <span class="at">align =</span> <span class="st">"lcc"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># finally, format markdown and blank out any NA fillers</span></span>
 <span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">format_tt</span>(<span class="at">markdown =</span> T, <span class="at">replace =</span> <span class="st">" "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-logit" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2557,8 +2612,8 @@ Table&nbsp;8: Logistic Regression of Random Assignment to Treatment
 
     <script>
 
-      function styleCell_ixfj9vzhchipbgsavcaz(i, j, css_id) {
-          var table = document.getElementById("tinytable_ixfj9vzhchipbgsavcaz");
+      function styleCell_eqhmtn8s4vtymky17b01(i, j, css_id) {
+          var table = document.getElementById("tinytable_eqhmtn8s4vtymky17b01");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -2568,7 +2623,7 @@ Table&nbsp;8: Logistic Regression of Random Assignment to Treatment
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_ixfj9vzhchipbgsavcaz');
+        var table = document.getElementById('tinytable_eqhmtn8s4vtymky17b01');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -2576,8 +2631,8 @@ Table&nbsp;8: Logistic Regression of Random Assignment to Treatment
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_ixfj9vzhchipbgsavcaz(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_ixfj9vzhchipbgsavcaz");
+      function spanCell_eqhmtn8s4vtymky17b01(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_eqhmtn8s4vtymky17b01");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -2607,16 +2662,20 @@ Table&nbsp;8: Logistic Regression of Random Assignment to Treatment
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 32, j: 1 }, { i: 32, j: 0 }, { i: 32, j: 2 },  ], css_id: '4',}, 
-          { positions: [ { i: 26, j: 1 }, { i: 26, j: 0 }, { i: 26, j: 2 },  ], css_id: '3',}, 
-          { positions: [ { i: 2, j: 0 }, { i: 4, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 }, { i: 11, j: 0 }, { i: 12, j: 0 }, { i: 13, j: 0 }, { i: 1, j: 0 }, { i: 15, j: 0 }, { i: 16, j: 0 }, { i: 17, j: 0 }, { i: 18, j: 0 }, { i: 19, j: 0 }, { i: 7, j: 0 }, { i: 21, j: 0 }, { i: 22, j: 0 }, { i: 23, j: 0 }, { i: 24, j: 0 }, { i: 25, j: 0 }, { i: 6, j: 1 }, { i: 14, j: 0 }, { i: 28, j: 0 }, { i: 29, j: 0 }, { i: 30, j: 0 }, { i: 31, j: 0 }, { i: 12, j: 1 }, { i: 20, j: 0 }, { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 }, { i: 5, j: 1 }, { i: 19, j: 1 }, { i: 27, j: 0 }, { i: 8, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 }, { i: 11, j: 1 }, { i: 25, j: 1 }, { i: 13, j: 1 }, { i: 14, j: 1 }, { i: 15, j: 1 }, { i: 16, j: 1 }, { i: 17, j: 1 }, { i: 18, j: 1 }, { i: 12, j: 2 }, { i: 7, j: 1 }, { i: 21, j: 1 }, { i: 22, j: 1 }, { i: 23, j: 1 }, { i: 24, j: 1 }, { i: 5, j: 2 }, { i: 6, j: 2 }, { i: 27, j: 1 }, { i: 28, j: 1 }, { i: 29, j: 1 }, { i: 30, j: 1 }, { i: 31, j: 1 }, { i: 25, j: 2 }, { i: 20, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 18, j: 2 }, { i: 19, j: 2 }, { i: 7, j: 2 }, { i: 8, j: 2 }, { i: 9, j: 2 }, { i: 10, j: 2 }, { i: 11, j: 2 }, { i: 16, j: 2 }, { i: 13, j: 2 }, { i: 14, j: 2 }, { i: 15, j: 2 }, { i: 20, j: 2 }, { i: 17, j: 2 }, { i: 31, j: 2 }, { i: 23, j: 2 }, { i: 24, j: 2 }, { i: 21, j: 2 }, { i: 22, j: 2 }, { i: 27, j: 2 }, { i: 28, j: 2 }, { i: 29, j: 2 }, { i: 30, j: 2 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 2 }, { i: 0, j: 1 },  ], css_id: '1',}, 
+          { positions: [ { i: 32, j: 1 }, { i: 32, j: 2 },  ], css_id: 'tinytable_css_7m5weo9p3jrgaz9gwnpx',}, 
+          { positions: [ { i: 26, j: 2 }, { i: 26, j: 1 },  ], css_id: 'tinytable_css_nipv0yu6vgki7n4bppkv',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 4, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 3, j: 1 }, { i: 8, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 }, { i: 11, j: 1 }, { i: 12, j: 1 }, { i: 13, j: 1 }, { i: 14, j: 1 }, { i: 15, j: 1 }, { i: 16, j: 1 }, { i: 17, j: 1 }, { i: 18, j: 1 }, { i: 19, j: 1 }, { i: 7, j: 1 }, { i: 21, j: 1 }, { i: 22, j: 1 }, { i: 23, j: 1 }, { i: 24, j: 1 }, { i: 25, j: 1 }, { i: 6, j: 2 }, { i: 27, j: 1 }, { i: 28, j: 1 }, { i: 29, j: 1 }, { i: 30, j: 1 }, { i: 31, j: 1 }, { i: 12, j: 2 }, { i: 20, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 5, j: 2 }, { i: 19, j: 2 }, { i: 7, j: 2 }, { i: 8, j: 2 }, { i: 9, j: 2 }, { i: 10, j: 2 }, { i: 11, j: 2 }, { i: 25, j: 2 }, { i: 13, j: 2 }, { i: 14, j: 2 }, { i: 15, j: 2 }, { i: 16, j: 2 }, { i: 17, j: 2 }, { i: 18, j: 2 }, { i: 23, j: 2 }, { i: 20, j: 2 }, { i: 21, j: 2 }, { i: 22, j: 2 }, { i: 27, j: 2 }, { i: 24, j: 2 }, { i: 29, j: 2 }, { i: 30, j: 2 }, { i: 31, j: 2 }, { i: 28, j: 2 },  ], css_id: 'tinytable_css_dvhkuo3abranujg7fsys',}, 
+          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 },  ], css_id: 'tinytable_css_slejktxdspziovxa8pna',}, 
+          { positions: [ { i: 32, j: 0 },  ], css_id: 'tinytable_css_nn5txnh930jrzfpm0xqm',}, 
+          { positions: [ { i: 26, j: 0 },  ], css_id: 'tinytable_css_fadleqzcasjk2124lueu',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 8, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 }, { i: 11, j: 0 }, { i: 12, j: 0 }, { i: 13, j: 0 }, { i: 14, j: 0 }, { i: 15, j: 0 }, { i: 16, j: 0 }, { i: 17, j: 0 }, { i: 18, j: 0 }, { i: 19, j: 0 }, { i: 20, j: 0 }, { i: 21, j: 0 }, { i: 22, j: 0 }, { i: 23, j: 0 }, { i: 24, j: 0 }, { i: 25, j: 0 }, { i: 30, j: 0 }, { i: 27, j: 0 }, { i: 28, j: 0 }, { i: 29, j: 0 }, { i: 31, j: 0 },  ], css_id: 'tinytable_css_j86ulz4i79dr5k80e2iq',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_ods368yy4wjyn7vadayn',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_ixfj9vzhchipbgsavcaz(cell.i, cell.j, group.css_id);
+                  styleCell_eqhmtn8s4vtymky17b01(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -2624,13 +2683,17 @@ Table&nbsp;8: Logistic Regression of Random Assignment to Treatment
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_en9mciyhpa7q17hgxvs4, .table th.tinytable_css_en9mciyhpa7q17hgxvs4 { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_5tggklyt672v6mj3ufxe, .table th.tinytable_css_5tggklyt672v6mj3ufxe { border-top: solid black 0.1em; font-size: 0.8em; }
-      .table td.tinytable_css_vv3s14hfhzt3gua2i0o7, .table th.tinytable_css_vv3s14hfhzt3gua2i0o7 { font-size: 0.8em; }
-      .table td.tinytable_css_zly226hd5jfzesk4t4nw, .table th.tinytable_css_zly226hd5jfzesk4t4nw { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_7m5weo9p3jrgaz9gwnpx, .table th.tinytable_css_7m5weo9p3jrgaz9gwnpx { font-size: 0.8em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_nipv0yu6vgki7n4bppkv, .table th.tinytable_css_nipv0yu6vgki7n4bppkv { border-top: solid black 0.1em; font-size: 0.8em; text-align: center; }
+      .table td.tinytable_css_dvhkuo3abranujg7fsys, .table th.tinytable_css_dvhkuo3abranujg7fsys { font-size: 0.8em; text-align: center; }
+      .table td.tinytable_css_slejktxdspziovxa8pna, .table th.tinytable_css_slejktxdspziovxa8pna { font-size: 0.8em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_nn5txnh930jrzfpm0xqm, .table th.tinytable_css_nn5txnh930jrzfpm0xqm { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_fadleqzcasjk2124lueu, .table th.tinytable_css_fadleqzcasjk2124lueu { border-top: solid black 0.1em; font-size: 0.8em; text-align: left; }
+      .table td.tinytable_css_j86ulz4i79dr5k80e2iq, .table th.tinytable_css_j86ulz4i79dr5k80e2iq { font-size: 0.8em; text-align: left; }
+      .table td.tinytable_css_ods368yy4wjyn7vadayn, .table th.tinytable_css_ods368yy4wjyn7vadayn { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_ixfj9vzhchipbgsavcaz" style="table-layout: fixed; width: 80% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_eqhmtn8s4vtymky17b01" style="table-layout: fixed; width: 80% !important; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -2877,7 +2940,7 @@ Figure&nbsp;7: Polychoric Item Correlation Matrix
 <p>Indeed, this is what is revealed by the correlation matrix (<a href="#fig-polycor" class="quarto-xref">Figure&nbsp;7</a>). Trust items correlate positively, strongly, and are significant regardless of location at which the items pertain. The same goes for distrust items. Also, items meant to measure trust negatively correlate with the items that measure distrust. However, the positive correlations are not nearly as high as would be expected supposing that the items are nearly identical theoretical indicators of the same hypothetical constructs, i.e., trust and distrust respectively.</p>
 <p>If the items accurately measure trust/distrust in elections regardless of where those elections are said to take place, then positive correlations between the AZ and Local area items should approach perfect correlation as though the same exact questions were asked twice. This result, however, suggests that the location of which the survey items pertain (and perhaps other factors) makes a substantial difference in the pattern of responses, but also raises valid questions as to whether the items accurately measure the latent variable constructs in the first place.</p>
 <p>Although I do not explicitly assume that the survey instruments perfectly measure the hypothetical constructs of interest (i.e., trust and distrust), perfect measurement is implicitly assumed by the method of combining multiple item responses into a sum or mean composite score.</p>
-<p>In short, I expected item responses from the trust and distrust scales to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Polychoric correlations between the trust and distrust items negatively correlate as expected, as does the correlation between the two sum score scales. Given the ordinal nature of the variable items, I conducted a Spearman’s rank correlation test <span class="citation" data-cites="spearman1907">(<a href="#ref-spearman1907" role="doc-biblioref">Spearman 1907</a>)</span> and found a negative correlation of <span class="math inline">\(\rho = -0.49\)</span> (<span class="math inline">\(95\%\)</span> CI [-0.53, -0.44]; Kendall’s <span class="math inline">\(\tau = -0.39\)</span>) between scores on the two scales for the AZ items (For the local item scale score correlation: <span class="math inline">\(\rho = -0.52\)</span>, <span class="math inline">\(95\%\)</span> CI [-0.56, -0.48]; Kendall’s <span class="math inline">\(\tau = -0.39\)</span>). The negative correlation between the trust and distrust items and scores makes intuitive sense.</p>
+<p>In short, I expected item responses from the trust and distrust scales to be inversely correlated among the sample, but not mutually exclusive. Indeed, this is what I find. Polychoric correlations between the trust and distrust items negatively correlate as expected, as does the correlation between the two sum score scales. Given the ordinal nature of the variable items, I conducted a Spearman’s rank correlation test <span class="citation" data-cites="spearman1907">(<a href="#ref-spearman1907" role="doc-biblioref">Spearman 1907</a>)</span> and found a negative correlation of <span class="math inline">\rho = -0.49</span> (<span class="math inline">95\%</span> CI [-0.53, -0.44]; Kendall’s <span class="math inline">\tau = -0.39</span>) between scores on the two scales for the AZ items (For the local item scale score correlation: <span class="math inline">\rho = -0.52</span>, <span class="math inline">95\%</span> CI [-0.56, -0.48]; Kendall’s <span class="math inline">\tau = -0.39</span>). The negative correlation between the trust and distrust items and scores makes intuitive sense.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -2920,7 +2983,7 @@ Figure&nbsp;7: Polychoric Item Correlation Matrix
 <span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(</span>
 <span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span> <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
 <span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-safety-logit" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-tbl-colwidths="80" data-tbl-cap-location="top">
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>, <span class="at">align =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-safety-logit" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80" data-tbl-pos="H" data-tbl-cap-location="top">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-safety-logit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;9: Ordinal Logistic Regression of Concerns for Violence and Confidence in Voter Safety Regressed on Experiment Condition
@@ -2945,8 +3008,8 @@ Table&nbsp;9: Ordinal Logistic Regression of Concerns for Violence and Confidenc
 
     <script>
 
-      function styleCell_rulctv5b7cg54lp4fbcn(i, j, css_id) {
-          var table = document.getElementById("tinytable_rulctv5b7cg54lp4fbcn");
+      function styleCell_cnaenoyvhhbhp4txdprq(i, j, css_id) {
+          var table = document.getElementById("tinytable_cnaenoyvhhbhp4txdprq");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -2956,7 +3019,7 @@ Table&nbsp;9: Ordinal Logistic Regression of Concerns for Violence and Confidenc
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_rulctv5b7cg54lp4fbcn');
+        var table = document.getElementById('tinytable_cnaenoyvhhbhp4txdprq');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -2964,8 +3027,8 @@ Table&nbsp;9: Ordinal Logistic Regression of Concerns for Violence and Confidenc
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_rulctv5b7cg54lp4fbcn(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_rulctv5b7cg54lp4fbcn");
+      function spanCell_cnaenoyvhhbhp4txdprq(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_cnaenoyvhhbhp4txdprq");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -2995,20 +3058,20 @@ Table&nbsp;9: Ordinal Logistic Regression of Concerns for Violence and Confidenc
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 16, j: 1 }, { i: 16, j: 2 },  ], css_id: '8',}, 
-          { positions: [ { i: 14, j: 1 }, { i: 14, j: 2 },  ], css_id: '7',}, 
-          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 8, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 }, { i: 11, j: 1 }, { i: 12, j: 1 }, { i: 13, j: 1 }, { i: 10, j: 2 }, { i: 15, j: 1 }, { i: 12, j: 2 }, { i: 4, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 5, j: 2 }, { i: 6, j: 2 }, { i: 7, j: 2 }, { i: 8, j: 2 }, { i: 9, j: 2 }, { i: 11, j: 2 }, { i: 13, j: 2 }, { i: 15, j: 2 },  ], css_id: '6',}, 
-          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 },  ], css_id: '5',}, 
-          { positions: [ { i: 16, j: 0 },  ], css_id: '4',}, 
-          { positions: [ { i: 14, j: 0 },  ], css_id: '3',}, 
-          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 8, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 }, { i: 11, j: 0 }, { i: 12, j: 0 }, { i: 13, j: 0 }, { i: 15, j: 0 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 },  ], css_id: '1',}, 
+          { positions: [ { i: 16, j: 1 }, { i: 16, j: 2 },  ], css_id: 'tinytable_css_97opdzud6m8vegosichs',}, 
+          { positions: [ { i: 14, j: 1 }, { i: 14, j: 2 },  ], css_id: 'tinytable_css_71oqesubdwkwopbbjvxn',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 8, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 }, { i: 11, j: 1 }, { i: 12, j: 1 }, { i: 13, j: 1 }, { i: 10, j: 2 }, { i: 15, j: 1 }, { i: 12, j: 2 }, { i: 4, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 5, j: 2 }, { i: 6, j: 2 }, { i: 7, j: 2 }, { i: 8, j: 2 }, { i: 9, j: 2 }, { i: 11, j: 2 }, { i: 13, j: 2 }, { i: 15, j: 2 },  ], css_id: 'tinytable_css_n3lznf5olcvsmxl3t291',}, 
+          { positions: [ { i: 0, j: 1 }, { i: 0, j: 2 },  ], css_id: 'tinytable_css_l1im8xv617oc0gmmnwcu',}, 
+          { positions: [ { i: 16, j: 0 },  ], css_id: 'tinytable_css_3g2kkwkeygnsvxgy1vf1',}, 
+          { positions: [ { i: 14, j: 0 },  ], css_id: 'tinytable_css_rj41kxu1i7rm8etvrl48',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 8, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 }, { i: 11, j: 0 }, { i: 12, j: 0 }, { i: 13, j: 0 }, { i: 15, j: 0 },  ], css_id: 'tinytable_css_dd5g7wxcfadwxacqjosg',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_picob8jqhukpszwif4vi',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_rulctv5b7cg54lp4fbcn(cell.i, cell.j, group.css_id);
+                  styleCell_cnaenoyvhhbhp4txdprq(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3016,17 +3079,17 @@ Table&nbsp;9: Ordinal Logistic Regression of Concerns for Violence and Confidenc
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_xn0efxbcrqux2rtdyf01, .table th.tinytable_css_xn0efxbcrqux2rtdyf01 { text-align: center; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_bqhifruzl1q97yfl170q, .table th.tinytable_css_bqhifruzl1q97yfl170q { text-align: center; border-bottom: solid black 0.05em; font-size: 0.8em; }
-      .table td.tinytable_css_t6yp8gejlvznmtovp1wp, .table th.tinytable_css_t6yp8gejlvznmtovp1wp { text-align: center; font-size: 0.8em; }
-      .table td.tinytable_css_nal8k2kqf2t4g6p7lepi, .table th.tinytable_css_nal8k2kqf2t4g6p7lepi { text-align: center; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
-      .table td.tinytable_css_e86j17ytq62su1xu7nde, .table th.tinytable_css_e86j17ytq62su1xu7nde { text-align: left; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_faq8ysp3xlx6gu8nunxq, .table th.tinytable_css_faq8ysp3xlx6gu8nunxq { text-align: left; border-bottom: solid black 0.05em; font-size: 0.8em; }
-      .table td.tinytable_css_t0afx59eevybfi2sw23w, .table th.tinytable_css_t0afx59eevybfi2sw23w { text-align: left; font-size: 0.8em; }
-      .table td.tinytable_css_jkbgzq1qvtqwn4vp0986, .table th.tinytable_css_jkbgzq1qvtqwn4vp0986 { text-align: left; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_97opdzud6m8vegosichs, .table th.tinytable_css_97opdzud6m8vegosichs { text-align: center; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_71oqesubdwkwopbbjvxn, .table th.tinytable_css_71oqesubdwkwopbbjvxn { text-align: center; border-bottom: solid black 0.05em; font-size: 0.8em; }
+      .table td.tinytable_css_n3lznf5olcvsmxl3t291, .table th.tinytable_css_n3lznf5olcvsmxl3t291 { text-align: center; font-size: 0.8em; }
+      .table td.tinytable_css_l1im8xv617oc0gmmnwcu, .table th.tinytable_css_l1im8xv617oc0gmmnwcu { text-align: center; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_3g2kkwkeygnsvxgy1vf1, .table th.tinytable_css_3g2kkwkeygnsvxgy1vf1 { text-align: left; font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_rj41kxu1i7rm8etvrl48, .table th.tinytable_css_rj41kxu1i7rm8etvrl48 { text-align: left; border-bottom: solid black 0.05em; font-size: 0.8em; }
+      .table td.tinytable_css_dd5g7wxcfadwxacqjosg, .table th.tinytable_css_dd5g7wxcfadwxacqjosg { text-align: left; font-size: 0.8em; }
+      .table td.tinytable_css_picob8jqhukpszwif4vi, .table th.tinytable_css_picob8jqhukpszwif4vi { text-align: left; font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_rulctv5b7cg54lp4fbcn" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_cnaenoyvhhbhp4txdprq" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -3149,9 +3212,9 @@ Table&nbsp;9: Ordinal Logistic Regression of Concerns for Violence and Confidenc
 <span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  tab_safety_preds1, <span class="at">digits =</span> <span class="dv">3</span>,</span>
 <span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">notes =</span> <span class="fu">attr</span>(data<span class="sc">$</span>q25, <span class="st">"label"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(</span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span> <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-safety-preds1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-tbl-colwidths="80">
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span>, <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">"llccccc"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>, <span class="at">align =</span> <span class="st">"l"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-safety-preds1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80" data-tbl-pos="H">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-safety-preds1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;10: Unit-level predicted probabilities of selecting response or higher comparing experiment condition
@@ -3176,8 +3239,8 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
 
     <script>
 
-      function styleCell_jgl0w7zpq42yskiuduji(i, j, css_id) {
-          var table = document.getElementById("tinytable_jgl0w7zpq42yskiuduji");
+      function styleCell_mu7l0c7ynexzrk31ir8k(i, j, css_id) {
+          var table = document.getElementById("tinytable_mu7l0c7ynexzrk31ir8k");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -3187,7 +3250,7 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_jgl0w7zpq42yskiuduji');
+        var table = document.getElementById('tinytable_mu7l0c7ynexzrk31ir8k');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -3195,8 +3258,8 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_jgl0w7zpq42yskiuduji(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_jgl0w7zpq42yskiuduji");
+      function spanCell_mu7l0c7ynexzrk31ir8k(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_mu7l0c7ynexzrk31ir8k");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -3226,15 +3289,18 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 8, j: 2 }, { i: 8, j: 5 }, { i: 8, j: 1 }, { i: 8, j: 4 }, { i: 8, j: 0 }, { i: 8, j: 3 }, { i: 8, j: 6 },  ], css_id: '3',}, 
-          { positions: [ { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 7, j: 0 }, { i: 3, j: 2 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 }, { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 7, j: 1 }, { i: 3, j: 3 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 2, j: 2 }, { i: 7, j: 3 }, { i: 4, j: 2 }, { i: 1, j: 1 }, { i: 6, j: 2 }, { i: 7, j: 2 }, { i: 3, j: 4 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 2, j: 3 }, { i: 7, j: 4 }, { i: 4, j: 3 }, { i: 1, j: 2 }, { i: 6, j: 3 }, { i: 2, j: 5 }, { i: 3, j: 5 }, { i: 5, j: 2 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 7, j: 5 }, { i: 4, j: 4 }, { i: 1, j: 3 }, { i: 6, j: 4 }, { i: 2, j: 6 }, { i: 3, j: 6 }, { i: 5, j: 3 }, { i: 1, j: 5 }, { i: 6, j: 6 }, { i: 7, j: 6 }, { i: 4, j: 5 }, { i: 5, j: 5 }, { i: 6, j: 5 }, { i: 5, j: 4 }, { i: 1, j: 6 }, { i: 4, j: 6 }, { i: 5, j: 6 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 3 }, { i: 0, j: 6 }, { i: 0, j: 2 }, { i: 0, j: 5 }, { i: 0, j: 1 }, { i: 0, j: 4 },  ], css_id: '1',}, 
+          { positions: [ { i: 8, j: 5 }, { i: 8, j: 4 }, { i: 8, j: 2 }, { i: 8, j: 3 }, { i: 8, j: 6 },  ], css_id: 'tinytable_css_w5ez50a3jb6s5mzvjgez',}, 
+          { positions: [ { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 2, j: 2 }, { i: 7, j: 2 }, { i: 3, j: 4 }, { i: 6, j: 2 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 4, j: 3 }, { i: 1, j: 2 }, { i: 6, j: 3 }, { i: 7, j: 3 }, { i: 3, j: 5 }, { i: 5, j: 2 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 7, j: 5 }, { i: 4, j: 4 }, { i: 1, j: 3 }, { i: 6, j: 4 }, { i: 7, j: 4 }, { i: 3, j: 6 }, { i: 5, j: 3 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 7, j: 6 }, { i: 4, j: 5 }, { i: 5, j: 5 }, { i: 6, j: 5 }, { i: 2, j: 6 }, { i: 5, j: 4 }, { i: 1, j: 6 }, { i: 6, j: 6 }, { i: 4, j: 6 }, { i: 5, j: 6 },  ], css_id: 'tinytable_css_mxebczp7dj3up6tlb277',}, 
+          { positions: [ { i: 0, j: 2 }, { i: 0, j: 5 }, { i: 0, j: 6 }, { i: 0, j: 4 }, { i: 0, j: 3 },  ], css_id: 'tinytable_css_qpk3afjtk9ai5qgrddtw',}, 
+          { positions: [ { i: 8, j: 0 }, { i: 8, j: 1 },  ], css_id: 'tinytable_css_9o9mlndpstl905mvkrwk',}, 
+          { positions: [ { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 1, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 3, j: 1 }, { i: 5, j: 0 }, { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 7, j: 1 }, { i: 4, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 },  ], css_id: 'tinytable_css_my98syfse0sdmfr8i3hf',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 1 },  ], css_id: 'tinytable_css_lz0ja20c1g72bfn1yj57',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_jgl0w7zpq42yskiuduji(cell.i, cell.j, group.css_id);
+                  styleCell_mu7l0c7ynexzrk31ir8k(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3242,12 +3308,15 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_zuoxw323nbio4gmsl990, .table th.tinytable_css_zuoxw323nbio4gmsl990 { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_tvfwchulh80bncvgdiiw, .table th.tinytable_css_tvfwchulh80bncvgdiiw { font-size: 0.8em; }
-      .table td.tinytable_css_9xp1u4ddn8prwwrian3b, .table th.tinytable_css_9xp1u4ddn8prwwrian3b { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_w5ez50a3jb6s5mzvjgez, .table th.tinytable_css_w5ez50a3jb6s5mzvjgez { font-size: 0.8em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_mxebczp7dj3up6tlb277, .table th.tinytable_css_mxebczp7dj3up6tlb277 { font-size: 0.8em; text-align: center; }
+      .table td.tinytable_css_qpk3afjtk9ai5qgrddtw, .table th.tinytable_css_qpk3afjtk9ai5qgrddtw { font-size: 0.8em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_9o9mlndpstl905mvkrwk, .table th.tinytable_css_9o9mlndpstl905mvkrwk { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_my98syfse0sdmfr8i3hf, .table th.tinytable_css_my98syfse0sdmfr8i3hf { font-size: 0.8em; text-align: left; }
+      .table td.tinytable_css_lz0ja20c1g72bfn1yj57, .table th.tinytable_css_lz0ja20c1g72bfn1yj57 { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_jgl0w7zpq42yskiuduji" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_mu7l0c7ynexzrk31ir8k" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>
@@ -3363,9 +3432,10 @@ Table&nbsp;10: Unit-level predicted probabilities of selecting response or highe
 <span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  tab_safety_preds2, <span class="at">digits =</span> <span class="dv">3</span>,</span>
 <span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">notes =</span> <span class="fu">attr</span>(data<span class="sc">$</span>q26, <span class="st">"label"</span>)) <span class="sc">|&gt;</span>  </span>
 <span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span> <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-safety-preds2" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-tbl-colwidths="80">
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontsize =</span> <span class="fl">0.80</span>, <span class="co"># fontsize of text in table in em units (0.75*default)</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">"llccccc"</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  tinytable<span class="sc">::</span><span class="fu">style_tt</span>(<span class="at">i =</span> <span class="st">"notes"</span>, <span class="at">fontsize =</span> <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-safety-preds2" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="80" data-tbl-pos="H">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-safety-preds2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;11: Unit-level predicted probabilities of selecting response or higher conditional to the Treatment experiment condition
@@ -3390,8 +3460,8 @@ Table&nbsp;11: Unit-level predicted probabilities of selecting response or highe
 
     <script>
 
-      function styleCell_lcpnlixtxmtrvo9eq423(i, j, css_id) {
-          var table = document.getElementById("tinytable_lcpnlixtxmtrvo9eq423");
+      function styleCell_4608clcxq2q4m4684vmq(i, j, css_id) {
+          var table = document.getElementById("tinytable_4608clcxq2q4m4684vmq");
           var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
           if (cell) {
               console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
@@ -3401,7 +3471,7 @@ Table&nbsp;11: Unit-level predicted probabilities of selecting response or highe
           }
       }
       function insertSpanRow(i, colspan, content) {
-        var table = document.getElementById('tinytable_lcpnlixtxmtrvo9eq423');
+        var table = document.getElementById('tinytable_4608clcxq2q4m4684vmq');
         var newRow = table.insertRow(i);
         var newCell = newRow.insertCell(0);
         newCell.setAttribute("colspan", colspan);
@@ -3409,8 +3479,8 @@ Table&nbsp;11: Unit-level predicted probabilities of selecting response or highe
         // this may be unsafe, but innerText does not interpret <br>
         newCell.innerHTML = content;
       }
-      function spanCell_lcpnlixtxmtrvo9eq423(i, j, rowspan, colspan) {
-        var table = document.getElementById("tinytable_lcpnlixtxmtrvo9eq423");
+      function spanCell_4608clcxq2q4m4684vmq(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_4608clcxq2q4m4684vmq");
         const targetRow = table.rows[i];
         const targetCell = targetRow.cells[j];
         for (let r = 0; r < rowspan; r++) {
@@ -3440,15 +3510,18 @@ Table&nbsp;11: Unit-level predicted probabilities of selecting response or highe
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: 8, j: 2 }, { i: 8, j: 5 }, { i: 8, j: 1 }, { i: 8, j: 4 }, { i: 8, j: 0 }, { i: 8, j: 3 }, { i: 8, j: 6 },  ], css_id: '3',}, 
-          { positions: [ { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 7, j: 0 }, { i: 3, j: 2 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 4, j: 1 }, { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 7, j: 1 }, { i: 3, j: 3 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 2, j: 2 }, { i: 7, j: 3 }, { i: 4, j: 2 }, { i: 1, j: 1 }, { i: 6, j: 2 }, { i: 7, j: 2 }, { i: 3, j: 4 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 2, j: 3 }, { i: 7, j: 4 }, { i: 4, j: 3 }, { i: 1, j: 2 }, { i: 6, j: 3 }, { i: 2, j: 5 }, { i: 3, j: 5 }, { i: 5, j: 2 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 7, j: 5 }, { i: 4, j: 4 }, { i: 1, j: 3 }, { i: 6, j: 4 }, { i: 2, j: 6 }, { i: 3, j: 6 }, { i: 5, j: 3 }, { i: 1, j: 5 }, { i: 6, j: 6 }, { i: 7, j: 6 }, { i: 4, j: 5 }, { i: 5, j: 5 }, { i: 6, j: 5 }, { i: 5, j: 4 }, { i: 1, j: 6 }, { i: 4, j: 6 }, { i: 5, j: 6 },  ], css_id: '2',}, 
-          { positions: [ { i: 0, j: 0 }, { i: 0, j: 3 }, { i: 0, j: 6 }, { i: 0, j: 2 }, { i: 0, j: 5 }, { i: 0, j: 1 }, { i: 0, j: 4 },  ], css_id: '1',}, 
+          { positions: [ { i: 8, j: 5 }, { i: 8, j: 4 }, { i: 8, j: 2 }, { i: 8, j: 3 }, { i: 8, j: 6 },  ], css_id: 'tinytable_css_yshjt6v61agx8j84hrs1',}, 
+          { positions: [ { i: 3, j: 2 }, { i: 4, j: 2 }, { i: 2, j: 2 }, { i: 7, j: 2 }, { i: 3, j: 4 }, { i: 6, j: 2 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 4, j: 3 }, { i: 1, j: 2 }, { i: 6, j: 3 }, { i: 7, j: 3 }, { i: 3, j: 5 }, { i: 5, j: 2 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 7, j: 5 }, { i: 4, j: 4 }, { i: 1, j: 3 }, { i: 6, j: 4 }, { i: 7, j: 4 }, { i: 3, j: 6 }, { i: 5, j: 3 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 7, j: 6 }, { i: 4, j: 5 }, { i: 5, j: 5 }, { i: 6, j: 5 }, { i: 2, j: 6 }, { i: 5, j: 4 }, { i: 1, j: 6 }, { i: 6, j: 6 }, { i: 4, j: 6 }, { i: 5, j: 6 },  ], css_id: 'tinytable_css_8pa4lqpu6gfc050l7lv9',}, 
+          { positions: [ { i: 0, j: 2 }, { i: 0, j: 5 }, { i: 0, j: 6 }, { i: 0, j: 4 }, { i: 0, j: 3 },  ], css_id: 'tinytable_css_imu6aqmygtym4odwwzgi',}, 
+          { positions: [ { i: 8, j: 0 }, { i: 8, j: 1 },  ], css_id: 'tinytable_css_bhqi3pf6ter2c67keybm',}, 
+          { positions: [ { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 4, j: 0 }, { i: 1, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 3, j: 1 }, { i: 5, j: 0 }, { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 7, j: 1 }, { i: 4, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 },  ], css_id: 'tinytable_css_oa09l6fb1gt0kki4tzp9',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 1 },  ], css_id: 'tinytable_css_vwn9ub6x8jt24p6s3obv',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  styleCell_lcpnlixtxmtrvo9eq423(cell.i, cell.j, group.css_id);
+                  styleCell_4608clcxq2q4m4684vmq(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -3456,12 +3529,15 @@ Table&nbsp;11: Unit-level predicted probabilities of selecting response or highe
 
     <style>
       /* tinytable css entries after */
-      .table td.tinytable_css_a2xq7n8mv6j1scjiqvxl, .table th.tinytable_css_a2xq7n8mv6j1scjiqvxl { font-size: 0.8em; border-bottom: solid #d3d8dc 0.1em; }
-      .table td.tinytable_css_zj31s3fzy7hbbuaq2gn8, .table th.tinytable_css_zj31s3fzy7hbbuaq2gn8 { font-size: 0.8em; }
-      .table td.tinytable_css_4rq2d7d4hvdzbk8o9601, .table th.tinytable_css_4rq2d7d4hvdzbk8o9601 { font-size: 0.8em; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_yshjt6v61agx8j84hrs1, .table th.tinytable_css_yshjt6v61agx8j84hrs1 { font-size: 0.8em; text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_8pa4lqpu6gfc050l7lv9, .table th.tinytable_css_8pa4lqpu6gfc050l7lv9 { font-size: 0.8em; text-align: center; }
+      .table td.tinytable_css_imu6aqmygtym4odwwzgi, .table th.tinytable_css_imu6aqmygtym4odwwzgi { font-size: 0.8em; text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_bhqi3pf6ter2c67keybm, .table th.tinytable_css_bhqi3pf6ter2c67keybm { font-size: 0.8em; text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_oa09l6fb1gt0kki4tzp9, .table th.tinytable_css_oa09l6fb1gt0kki4tzp9 { font-size: 0.8em; text-align: left; }
+      .table td.tinytable_css_vwn9ub6x8jt24p6s3obv, .table th.tinytable_css_vwn9ub6x8jt24p6s3obv { font-size: 0.8em; text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
     </style>
     <div class="container">
-      <table class="table table-borderless" id="tinytable_lcpnlixtxmtrvo9eq423" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="table table-borderless" id="tinytable_4608clcxq2q4m4684vmq" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         <thead>
         
               <tr>

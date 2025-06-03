@@ -363,4 +363,4 @@ lrm.gof.stats <- function(x, ...){
   return(out)
 }
 
-lrm.gof.stats(m1)
+# lrm.gof.stats(m1)

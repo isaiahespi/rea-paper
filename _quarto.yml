@@ -67,7 +67,7 @@ format:
     page-layout: article
     appendix-style: none
     lightbox: true
-    html-math-method: mathjax
+    html-math-method: katex
     smooth-scroll: true
     link-external-icon: true
     link-external-newwindow: true
