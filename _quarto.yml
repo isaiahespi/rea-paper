@@ -128,11 +128,6 @@ format:
           \AtEndEnvironment{longtblr}{\end{singlespacing}}
   
   submittable-docx: default
-  hikmah-response-typst:
-    toc: false
-    mainfont: TeX Gyre Pagella
-    bibliography: references.bib
-    bibliographystyle: american-political-science-association.csl
   # jats: default
   # docx:
   #   toc: false

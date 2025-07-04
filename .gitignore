@@ -9,6 +9,12 @@
 /notes
 /data-raw
 
+data/cps_sep2024.Rdata
+data/cps_sep2024.csv
+data/cps_sep2024_codebook.csv
+data/likert_plots.rds
+data/cps_sep2024.rds
+
 .Rproj.user
 .Rhistory
 .Rdata

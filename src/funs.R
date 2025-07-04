@@ -103,6 +103,26 @@ run_crab <- function(data, row, col){
   return(out)
 }
 
+
+# fun: frequency tibble ::::::::::::::::::::::::::::::::::::::::::::::::::::####
+
+freq_tibble <- function(data, var1, var2) {
+  var1 <- rlang::enquo(var1)
+  var2 <- rlang::enquo(var2)
+  
+  data %>%
+    dplyr::count(!!var1, !!var2) %>%
+    tidyr::spread(!!var2, n, fill = 0) %>%
+    dplyr::mutate(Total := rowSums(dplyr::select(., -!!var1))) %>%
+    dplyr::bind_rows(dplyr::bind_cols(
+      !!rlang::quo_name(var1) := "Total",
+      dplyr::summarize_if(., is.numeric, sum)
+    ))
+}
+
+# example
+# freq_tibble(df, var1 = Gender, var2 = Condition)
+
 # fun: Likert Plots:::::::::::::::::::::::::::::::::::::::::::::::::::::::####
 # To avoid excessive copy/paste, I made a function to create Likert plots
 # it is mostly a wrapper around `ggstats::gglikert`, but with a specific set up
@@ -218,8 +238,7 @@ count_prop <- function(dat, x, drop_na = FALSE, sort = FALSE, pcts = FALSE){
 # count_prop <- function(df, var, sort = FALSE) {
 #   df |>
 #     count({{ var }}, sort = sort) |>
-#     mutate(prop = n / sum(n),
-#            n_miss = sum(is.na({{ var }})))
+#     mutate(prop = n / sum(n))
 # }
 
 
@@ -364,3 +383,50 @@ lrm.gof.stats <- function(x, ...){
 }
 
 # lrm.gof.stats(m1)
+
+# logistic regression model goodness-of-fit statistics
+lrm.gof.stats <- function(model, ...){
+  
+  out <- data.frame(
+    nobs = stats::nobs(model),
+    null.deviance = model$null.deviance,
+    df.null = model$df.null,
+    logLik = as.numeric(stats::logLik(model)),
+    deviance = stats::deviance(model),
+    df.residual = stats::df.residual(model),
+    chisq = as.numeric(model$null.deviance - stats::deviance(model)),
+    df = as.numeric(model$df.null - stats::df.residual(model)),
+    'P(>chi)' = pchisq(q=model$null.deviance - stats::deviance(model),
+                       df = model$df.null - stats::df.residual(model), 
+                       lower.tail = F)
+  )
+  out <- dplyr::as_tibble(out) |>  
+  # rename column variables
+  dplyr::rename(
+    "Num.Obs."      = "nobs",
+    "Log.Lik"       = "logLik",
+    "Deviance"      = "deviance",
+    "Deviance Null" = "null.deviance",
+    "DF"            = "df",
+    "chisq"          = "chisq",
+    "P(>chisq)"     = "P..chi."
+  )
+  return(out)
+}
+# tinytable theme: theme_mitex() :::::::::::::::::::::::::::::::::::::::::::####
+
+# see here: https://vincentarelbundock.github.io/tinytable/vignettes/theme.html#user-written-themes
+
+theme_mitex <- function(x, ...) {
+    fn <- function(table) {
+        if (isTRUE(table@output == "typst")) {
+          table@table_string <- gsub(
+            "\\$(.*?)\\$",
+            "#mitex(`\\1`)",
+            table@table_string)
+        }
+        return(table)
+    }
+    x <- style_tt(x, finalize = fn)
+    return(x)
+}

@@ -1,0 +1,359 @@
+---
+title: "Appendix A"
+subtitle: "Survey Experiment Vignettes and Survey Items"
+format:
+  typst: 
+    toc: false
+    keep-typ: true
+    papersize: us-letter
+    mainfont: TeX Gyre Pagella
+    fontsize: 11pt
+    include-in-header: 
+      - text: |
+        #show footnote.entry: set text(size: 10pt)
+execute: 
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+
+set.seed(1234)
+
+# load packages
+library(tidyverse)
+library(modelsummary)
+library(tinytable) # simple tables in html, LaTeX, markdown, word, pdf, typst
+library(litedown)
+
+# set some session options for `tinytable`
+options(tinytable_tt_digits = 3)
+# set option to render tinytable math in html
+options(tinytable_html_mathjax = TRUE) 
+
+# options(tinytable_quarto_disable_processing = FALSE)
+# options(tinytable_theme_placement_latex_float = "H")
+
+# load data
+load(here::here("data", "research-paper-data-20241029.Rdata"))
+# load("data/research-paper-data-20241029.Rdata")
+
+
+```
+
+```{r}
+#| label: functions
+#| include: false
+
+var_label_tab <- function(x){
+    purrr::map(x, ~attr(., "label")) |>
+    purrr::map(~ifelse(purrr::is_null(.), "No label", .)) |>
+    tibble::enframe(name = "var", value = "var_label") |>
+    tidyr::unnest(cols = c(var_label))
+}
+
+# only in LaTeX
+is_latex <- identical(knitr::pandoc_to(), "latex")
+
+# wrap in a minipage environment
+minipagify <- function(x) {
+  sprintf(
+    "\\minipage{\\textwidth}%s\\endminipage",
+    sapply(x, mark, "latex")
+  )
+}
+
+
+```
+
+
+::::: {#fig-vignettes layout-ncol="2"}
+::: {#fig-treatment}
+### Treatment Vignette
+
+| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+::: {#fig-control}
+### Control Vignette
+
+| **Local Residents Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+**Fabricated Article Vignettes utilized as Experimental Stimulus**
+:::::
+
+::::: {.content-hidden unless-format="pdf" layout="[0.45, -0.1, 0.45]"}
+::: {#first-column}
+### Treatment Vignette
+
+| **Local Military Veterans Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) — Election officials in Maricopa County, Arizona, announced a program designed to recruit military veterans and their family members from the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Army veteran Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I served my country in the Army, and I want to do my part as a veteran and a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+
+::: {#second-column}
+### Control Vignette
+
+| **Local Residents Recruited for Election Jobs in Maricopa County**
+| 
+|   PHOENIX (AP) —Election officials in Maricopa County, Arizona, announced a program to recruit members of the community to serve as election administrators, including election polling place workers, temporary workers, and full-time staff. As the U.S. general elections in November near, election officials must fill several thousand temporary positions and hundreds of other open positions to ensure sufficient staffing for the 2024 elections and beyond.
+| 
+|   Jordan Braxton just joined the elections workforce. Jordan believes their role is important to ensuring a secure, accurate, and transparent election, “Many places are short on staff this election cycle. I want to do my part as a citizen to ensure that everyone trusts the process and the outcome of the election.”
+:::
+:::::
+
+{{< pagebreak >}}
+
+
+## Survey Items
+
+
+
+```{r}
+#| label: tbl-1
+#| tbl-cap: "Pre-Treatment Survey Items and Response Options"
+
+
+
+pre_treat <- data |> 
+  dplyr::select(q5:q8, -legitimate, -not_legitimate) |> 
+  dplyr::rename_with(
+    .cols = everything(), 
+    .fn = ~snakecase::to_any_case(.,case = "upper_camel")
+    ) |> 
+  var_label_tab() |>
+  dplyr::select(Question = var_label) |> 
+  dplyr::pull(Question)
+
+# NOTE: when using format: typst, and creating a table using `tinytable`,
+# multi-line cells can be written by using `\\` to break lines.
+# see https://tex.stackexchange.com/a/599076
+
+res1 <- data.frame(
+  Items = pre_treat,
+  Response =c(
+    "Never \\
+    Sometimes\\
+    About half the time\\
+    Most of the Time\\
+    Always",
+    "Strongly unfavorable\\
+    Somewhat unfavorable\\
+    Neither favorable nor unfavorable\\
+    Somewhat favorable\\
+    Strongly favorable",
+    "Legitimate\\
+    Not legitimate",
+    "Never \\
+    Sometimes\\
+    About half the time\\
+    Most of the Time\\
+    Always")
+)
+
+tinytable::tt(res1, width = c(0.7, 0.3)) |>
+  tinytable::style_tt(i = 1:4, j = 1, fontsize = 0.8, align = "l") |>
+  tinytable::style_tt(i = 1:4, j = 2, fontsize = 0.65, align = "l") |>
+  tinytable::format_tt(markdown = TRUE) |>
+  tinytable::format_tt(j = 2, fn = if (is_latex) minipagify else NULL) 
+
+
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-2
+#| tbl-cap: "Trust Items and Response Options"
+
+trust.qs <- data |> 
+  dplyr::select(q19:q24, -q23, q30:q35, -q34) |> 
+  dplyr::rename_with(
+    .cols = everything(), 
+    .fn = ~snakecase::to_any_case(.,case = "upper_camel")
+    ) |> 
+  var_label_tab() |>
+  dplyr::select(Question = var_label) |> 
+  dplyr::pull(Question)
+
+
+# data |> 
+#   dplyr::select(q19:q24, -q23, q30:q35, -q34) |>
+#   purrr::map(~attr(., "levels"))
+
+
+res2 <- data.frame(
+  Trust = trust.qs,
+  Response = c(
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very committed",
+    "Not at all committed\\
+    Not too committed\\
+    Somewhat committed\\
+    Very committed",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident",
+    "Not at all committed\\
+    Not too committed\\
+    Somewhat committed\\
+    Very committed",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident")
+  )
+
+tinytable::tt(res2, width = c(0.7, 0.3)) |>
+  tinytable::style_tt(i = 1:12, j = 1, align = "l", fontsize = 0.8) |>
+  tinytable::style_tt(i = 1:12, j = 2, align = "l", fontsize = 0.65) |>
+  tinytable::group_tt(i = list("AZ" = 1, "Local Area" = 6), indent = 2) |> 
+  tinytable::style_tt(i = c(1,7), bold = T, line = "b", line_width = 0.05) |> 
+  tinytable::format_tt(markdown = TRUE) |> 
+  tinytable::theme_tt(theme = "resize", width = 0.9)
+
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-3
+#| tbl-cap: "Distrust Items and Response Options"
+
+
+distrust.qs <- data |> 
+  dplyr::select(q28_1:q28_5) |>  
+  dplyr::rename_with(
+    .cols = everything(), 
+    .fn = ~snakecase::to_any_case(.,case = "upper_camel")
+    ) |> 
+  var_label_tab() |>
+  dplyr::select(Question = var_label) |> 
+  dplyr::pull(Question)
+
+res3 <- data.frame(
+  Distrust = distrust.qs,
+  Response = c(
+    "Not likely at all\\
+    Not too likely\\
+    Somewhat likely\\
+    Very likely",
+    "Not likely at all\\
+    Not too likely\\
+    Somewhat likely\\
+    Very likely",
+    "Not likely at all\\
+    Not too likely\\
+    Somewhat likely\\
+    Very likely",
+    "Not likely at all\\
+    Not too likely\\
+    Somewhat likely\\
+    Very likely",
+    "Not likely at all\\
+    Not too likely\\
+    Somewhat likely\\
+    Very likely"
+  )
+)
+
+tinytable::tt(res3, width = c(0.7, 0.3)) |>
+  tinytable::style_tt(i = 1:10, j = 1, align = "l", fontsize = 0.8) |>
+  tinytable::style_tt(i = 1:10, j = 2, align = "l", fontsize = 0.65) |>
+  tinytable::group_tt(i = list(
+    "How likely do you think any or all of the following will happen during this year´s elections in Maricopa County, AZ/your local area?" = 1)) |> 
+  tinytable::style_tt(i = 1, bold = T, line = "b") |> 
+  tinytable::format_tt(markdown = TRUE) |> 
+  tinytable::theme_tt(theme = "resize", width = 0.9)
+
+
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-4
+#| tbl-cap: "Safety Items and Response Options"
+
+safety.qs <- data |>
+  dplyr::select(q25:q26, q36:q37) |>
+  dplyr::rename_with(
+    .cols = everything(),
+    .fn = ~ snakecase::to_any_case(., case = "upper_camel")) |>
+  var_label_tab() |>
+  dplyr::select(Question = var_label) |>
+  dplyr::pull(Question)
+
+res4 <- data.frame(
+  Safety = safety.qs,
+  Response =c(
+    "Very concerned\\
+    Somewhat concerned\\
+    Not too concerned\\
+    Not at all concerned",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident",
+    "Very concerned\\
+    Somewhat concerned\\
+    Somewhat unconcerned\\
+    Not at all concerned",
+    "Not at all confident\\
+    Not too confident\\
+    Somewhat confident\\
+    Very confident")
+)
+
+tinytable::tt(res4, width = c(0.7, 0.3)) |>
+  tinytable::style_tt(i = 1:6, j = 1, fontsize = 0.8, align = "l") |>
+  tinytable::style_tt(i = 1:6, j = 2, fontsize = 0.65, align = "l") |>
+  tinytable::group_tt(i = list("AZ" = 1, "Local Area" = 3), indent = 2) |> 
+  tinytable::style_tt(i = c(1,4), bold = T, line = "b", line_width = 0.05) |> 
+  tinytable::format_tt(markdown = TRUE) |>
+  tinytable::theme_tt(theme = "resize", width = 0.9)
+
+
+
+```
+
+
+
+
+

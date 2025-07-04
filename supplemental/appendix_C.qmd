@@ -1,0 +1,121 @@
+---
+title: "Appendix C"
+subtitle: "Polychoric Item and Score Correlations of Trust and Distrust"
+format:
+  typst: 
+    toc: false
+    keep-typ: true
+    papersize: us-letter
+    mainfont: TeX Gyre Pagella
+    fontsize: 11pt
+execute: 
+  echo: false
+knitr: 
+  opts_chunk: 
+    dev: "ragg_png" # same as knitr::opts_chunk$set(dev = "ragg_png")
+---
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+
+set.seed(1234)
+
+# load packages
+library(tidyverse)
+library(modelsummary)
+library(tinytable) # simple tables in html, LaTeX, markdown, word, pdf, typst
+library(litedown)
+library(ordinal)
+library(marginaleffects)
+library(easystats)
+library(patchwork)
+
+# set some session options for `tinytable`
+options(tinytable_tt_digits = 3)
+# set option to render tinytable math in html
+options(tinytable_html_mathjax = TRUE) 
+
+# options(tinytable_quarto_disable_processing = FALSE)
+# options(tinytable_theme_placement_latex_float = "H")
+
+# load data
+load(here::here("data", "research-paper-data-20241029.Rdata"))
+
+# set ggplot theme that will be used for every plot
+# theme_get()
+old <- theme_set(theme_bw()) # capture current theme
+
+# set/update new theme
+ggplot2::theme_set(
+  new = ggplot2::theme_bw(base_family = 'TeX Gyre Pagella')+
+    ggplot2::theme(legend.position = 'bottom'))
+
+
+
+```
+
+
+## Trust and Distrust
+
+Polychoric correlation is a measure of association between two ordered categorical variables each assumed to represent (i.e., indicate, be influenced by) two normally distributed, continuous, latent variables. Due to the fact that each item is an ordered categorical variable assumed to represent one of two latent constructs (i.e., trust or distrust, respectively), I examined polychoric correlations between the items used to construct each scale. In addition, one set of the trust and distrust items pertained to Maricopa County, AZ, whereas the other set of items were identical except that these items pertained to one's local area.
+
+Since the two sets of items (AZ items and Local items) are, in theory, supposed to capture the same normally distributed continuous latent variables, then the polychoric inter-item correlations should be significantly associated, strong, and in the same direction for the items that measure trust regardless of whether the items pertain to AZ or one's local area  (likewise for distrust). Simply, trust/distrust in elections in AZ should strongly and positively be associated with trust/distrust in elections in one's local area. 
+
+Additionally, the items that indicate trust should negatively correlate with items that indicate distrust. Furthermore, the strength of the negative correlations between trust and distrust should closely approximate if not match.  
+
+```{r}
+#| label: fig-polycor
+#| fig-cap: "Polychoric Item Correlation Matrix"
+#| fig-pos: '!t'
+#| fig-height: 5
+#| fig-width: 7.5
+#| fig-cap-location: top
+
+# Get polychoric item correlation matrix.
+item.cor <- data |>
+  dplyr::select(q19:q24, -q23, q28_1:q28_5, q30:q35, -q34, q40_1:q40_5) |> 
+  # ensure factors are ordered factors
+  dplyr::mutate(dplyr::across(where(is.factor), ~factor(., ordered = T))) |> 
+  # adjust variable column names of items
+  dplyr::rename(
+    trustvote_az     = q19,
+    trustadmin_az    = q20,
+    truststaff_az    = q21,
+    trustprcss_az    = q22,
+    trusttech_az     = q24,
+    votefraud_az     = q28_1,
+    miscount_az      = q28_2,
+    turnedaway_az    = q28_3,
+    foreigntamp_az   = q28_4,
+    discourage_az    = q28_5,
+    trustvote_lcl    = q30,
+    trustadmin_lcl   = q31,
+    truststaff_lcl   = q32,
+    trustprcss_lcl   = q33,
+    trusttech_lcl    = q35,
+    votefraud_lcl    = q40_1,
+    miscount_lcl     = q40_2,
+    turnedaway_lcl   = q40_3,
+    foreigntamp_lcl  = q40_4,
+    discourage_lcl   = q40_5
+  ) |> 
+  correlation::correlation(
+    select = 
+      c("trustvote_az", "trustadmin_az", "truststaff_az", "trustprcss_az", "trusttech_az",
+        "votefraud_az", "miscount_az", "turnedaway_az", "foreigntamp_az", "discourage_az"),
+    select2 =
+      c("trustvote_lcl", "trustadmin_lcl", "truststaff_lcl", "trustprcss_lcl","trusttech_lcl",
+        "votefraud_lcl", "miscount_lcl", "turnedaway_lcl", "foreigntamp_lcl","discourage_lcl"),
+    method = "polychoric") |>
+  summary()
+
+# plot item correlations
+plot(item.cor) + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, vjust = 0.6))
+
+```
+
+Indeed, this is what is revealed by the correlation matrix (@fig-polycor). Trust items correlate positively, strongly, and are significant regardless of location at which the items pertain. The same goes for distrust items. Also, items meant to measure trust negatively correlate with the items that measure distrust. However, the positive correlations are not nearly as high as would be expected supposing that the items are nearly identical theoretical indicators of the same hypothetical constructs, i.e., trust and distrust respectively. 
+
+If the items accurately measure trust/distrust in elections regardless of where those elections are said to take place, then positive correlations between the AZ and Local area items should approach perfect correlation as though the same exact questions were asked twice. This result, however, suggests that the location of which the survey items pertain (and perhaps other factors) makes a substantial difference in the pattern of responses, but also raises valid questions as to whether the items accurately measure the latent variable constructs in the first place.

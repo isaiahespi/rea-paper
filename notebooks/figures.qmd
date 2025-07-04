@@ -13,7 +13,6 @@ execute:
 
 set.seed(1234)
 library(tidyverse)
-library(here)
 library(patchwork)
 library(pewmethods)
 library(ggstats)

@@ -1,0 +1,276 @@
+---
+title: "Appendix D"
+subtitle: "Predicted Probabilities of Safety Concerns by Treatment Condition"
+format:
+  typst: 
+    toc: false
+    keep-typ: true
+    papersize: us-letter
+    mainfont: TeX Gyre Pagella
+    fontsize: 11pt
+execute: 
+  echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+
+set.seed(1234)
+
+# load packages
+library(tidyverse)
+library(modelsummary)
+library(tinytable) # simple tables in html, LaTeX, markdown, word, pdf, typst
+library(litedown)
+
+# set some session options for `tinytable`
+options(tinytable_tt_digits = 3)
+# set option to render tinytable math in html
+options(tinytable_html_mathjax = TRUE) 
+
+# options(tinytable_quarto_disable_processing = FALSE)
+# options(tinytable_theme_placement_latex_float = "H")
+
+# load data
+load(here::here("data", "research-paper-data-20241029.Rdata"))
+# load("data/research-paper-data-20241029.Rdata")
+
+
+```
+
+```{r}
+#| label: fun-logit-gof
+
+# custom function to return a certain selection of logistic regression model
+# goodness-of-fit statistics
+lrm.gof.stats <- function(model, ...){
+  
+  out <- data.frame(
+    nobs = stats::nobs(model),
+    null.deviance = model$null.deviance,
+    df.null = model$df.null,
+    logLik = as.numeric(stats::logLik(model)),
+    deviance = stats::deviance(model),
+    df.residual = stats::df.residual(model),
+    chisq = as.numeric(model$null.deviance - stats::deviance(model)),
+    df = as.numeric(model$df.null - stats::df.residual(model)),
+    'P(>chi)' = pchisq(q=model$null.deviance - stats::deviance(model),
+                       df = model$df.null - stats::df.residual(model), 
+                       lower.tail = F)
+  )
+  out <- dplyr::as_tibble(out) |>  
+  # rename column variables
+  dplyr::rename(
+    "Num.Obs."      = "nobs",
+    "Log.Lik"       = "logLik",
+    "Deviance"      = "deviance",
+    "Deviance Null" = "null.deviance",
+    "DF"            = "df",
+    "chisq"          = "chisq",
+    "P(>chisq)"     = "P..chi."
+  )
+  return(out)
+}
+
+```
+
+```{r}
+
+# see here: https://vincentarelbundock.github.io/tinytable/vignettes/theme.html#user-written-themes
+
+theme_mitex <- function(x, ...) {
+    fn <- function(table) {
+        if (isTRUE(table@output == "typst")) {
+          table@table_string <- gsub(
+            "\\$(.*?)\\$",
+            "#mitex(`\\1`)",
+            table@table_string)
+        }
+        return(table)
+    }
+    x <- style_tt(x, finalize = fn)
+    return(x)
+}
+
+```
+
+
+
+```{=typst}
+#show figure: set block(breakable: true)
+```
+
+```{=typst}
+#set block(spacing: 2em)
+#set par(first-line-indent: (
+  amount: 1.5em,
+  all: true),
+  leading: 0.85em,
+  spacing: 1.5em
+  )
+```
+
+
+```{r}
+#| label: ordinal-logit
+#| include: false
+
+# needed to duplicate `group` variable with different column name due to
+# conflict with marginaleffects R package
+data <- data |>
+  mutate(condition = group)
+
+# running ordinal logisitc regression models (proportional odds logistic regression)
+m.q25 <- MASS::polr(q25 ~ condition, data = data, method = "logistic", Hess = T)
+m.q26 <- MASS::polr(q26 ~ condition, data = data, method = "logistic", Hess = T)
+m.q36 <- MASS::polr(q36 ~ condition, data = data, method = "logistic", Hess = T)
+m.q37 <- MASS::polr(q37 ~ condition, data = data, method = "logistic", Hess = T)
+
+# "Outcome predicted by a fitted model on a specified scale for a given
+# combination of values of the predictor variables, such as their observed
+# values, their means, or factor levels (a.k.a. "reference grid")".
+
+# predictions(): unit-level (conditional) estimates.
+
+# predicted probability estimates by treatment or control
+q25_preds <- marginaleffects::predictions(m.q25, by = "condition", type = "probs")
+q26_preds <- marginaleffects::predictions(m.q26, by = "condition", type = "probs")
+q36_preds <- marginaleffects::predictions(m.q36, by = "condition", type = "probs")
+q37_preds <- marginaleffects::predictions(m.q37, by = "condition", type = "probs")
+
+# this provides the difference in predicted probabilities between treatment and
+# control
+pdiff_q25 <- marginaleffects::predictions(
+  m.q25,
+  by = "condition",
+  type = "probs",
+  hypothesis = ~ reference | group
+)
+
+pdiff_q26 <- marginaleffects::predictions(
+  m.q26,
+  by = "condition",
+  type = "probs",
+  hypothesis = ~ reference | group
+)
+
+
+
+```
+
+
+```{r}
+#| label: tbl-safety-logit
+#| tbl-cap: "Ordinal Logistic Regression of Concerns for Violence and Confidence in Voter Safety Regressed on Experiment Condition"
+#| tbl-cap-location: top
+
+# save models to a list
+safety_models <- list(
+  "Concerns for Violence (OR)" = m.q25,
+  "Confidence in Voter Safety (OR)" = m.q26)
+
+cm <- c("conditionTreatment" = "Treatment",
+        "Very concerned|Somewhat concerned" = "Very concerned | Somewhat concerned",
+        "Somewhat concerned|Not too concerned" = "Somewhat concerned | Not too concerned",
+        "Not too concerned|Not at all concerned" = "Not too concerned | Not at all concerned",
+        "Not at all confident|Not too confident" = "Not at all confident | Not too confident",
+        "Not too confident|Somewhat confident" = "Not too confident | Somewhat confident",
+        "Somewhat confident|Very confident" = "Somewhat confident | Very confident"
+        )
+
+tbl_safety_logit <- modelsummary::modelsummary(
+  safety_models,  
+  fmt = 3,
+  output = "tinytable",
+  exponentiate = T, # show odds ratio 
+  # coef_omit = c(-4), # only the beta coef, not the intercepts
+  # coef_rename = c("conditionTreatment" = "Treatment"),
+  coef_map = cm,
+  stars = F,
+  estimate = c("{estimate}, [{conf.low}, {conf.high}]"),
+  statistic = NULL, 
+  gof_map = c("nobs", "rmse"),
+  note = "Parameter estimate (and confidence intervals) exponentiated to show odds ratios.",
+  width = c(2, 1, 1)
+  )
+
+tbl_safety_logit |> 
+  tinytable::style_tt(
+    fontsize = 0.65 # fontsize of text in table in em units (0.75*default)
+    ) |> 
+  tinytable::style_tt(i = "notes", fontsize = 0.65, align = "l") |> 
+  tinytable::theme_tt(theme = theme_mitex)
+
+```
+
+```{r}
+#| label: tbl-safety-preds1
+#| tbl-cap: "Unit-level predicted probabilities of selecting response or higher comparing experiment condition"
+
+# table that shows the predicted probability of selecting a response or lower
+# conditional to the Treatment experiment condition.
+tab_safety_preds1 <- q25_preds |>  
+  dplyr::as_tibble() |> 
+  dplyr::mutate('Pr(>|z|)' = dplyr::case_when(
+    p.value < 0.05 ~ '\\<0.05',
+    p.value < 0.01 ~ '\\<0.01',
+    .default = as.character(p.value)
+  )) |> 
+  select(group, condition, 
+         estimate, std.error, statistic, 'Pr(>|z|)',
+         conf.low, conf.high) |> 
+  dplyr::rename(
+    Condition = condition,
+    Violence = group,
+    z = statistic) |>
+  insight::format_table(digits = 3)
+
+
+tinytable::tt(
+  tab_safety_preds1, digits = 3,
+  notes = attr(data$q25, "label")) |> 
+  tinytable::style_tt(
+    fontsize = 0.65, # fontsize of text in table in em units (0.75*default)
+    align = "llccccc") |> 
+  tinytable::style_tt(i = "notes", fontsize = 0.65, align = "l")
+
+
+```
+
+
+```{r}
+#| label: tbl-safety-preds2
+#| tbl-cap: "Unit-level predicted probabilities of selecting response or higher conditional to the Treatment experiment condition"
+
+# table that shows the predicted probability of selecting a response or lower
+# conditional to the Treatment experiment condition.
+tab_safety_preds2 <- q26_preds |> 
+  dplyr::as_tibble() |> 
+  dplyr::mutate('Pr(>|z|)' = dplyr::case_when(
+    p.value < 0.05 ~ '\\<0.05',
+    p.value < 0.01 ~ '\\<0.01',
+    .default = as.character(p.value)
+  )) |> 
+  select(group, condition, 
+         estimate, std.error, statistic, 'Pr(>|z|)',
+         conf.low, conf.high) |> 
+  dplyr::rename(
+    Condition = condition,
+    'Voter Safety' = group,
+    z = statistic) |>
+  insight::format_table(digits = 3)
+
+tinytable::tt(
+  tab_safety_preds2, digits = 3,
+  notes = attr(data$q26, "label")) |>  
+  tinytable::style_tt(
+    fontsize = 0.65, # fontsize of text in table in em units (0.75*default)
+    align = "llccccc"
+    ) |> 
+  tinytable::style_tt(i = "notes", fontsize = 0.65)
+
+
+```

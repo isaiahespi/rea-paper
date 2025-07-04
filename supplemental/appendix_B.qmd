@@ -1,0 +1,256 @@
+---
+title: "Appendix B"
+subtitle: "Sample Demographics and Balance"
+format:
+  typst: 
+    toc: false
+    keep-typ: true
+    papersize: us-letter
+    mainfont: TeX Gyre Pagella
+    fontsize: 11pt
+execute: 
+  echo: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+#| echo: false
+
+set.seed(1234)
+
+# load packages
+library(tidyverse)
+library(modelsummary)
+library(tinytable) # simple tables in html, LaTeX, markdown, word, pdf, typst
+library(litedown)
+
+# set some session options for `tinytable`
+options(tinytable_tt_digits = 3)
+# set option to render tinytable math in html
+options(tinytable_html_mathjax = TRUE) 
+
+# options(tinytable_quarto_disable_processing = FALSE)
+# options(tinytable_theme_placement_latex_float = "H")
+
+# load data
+load(here::here("data", "research-paper-data-20241029.Rdata"))
+# load("data/research-paper-data-20241029.Rdata")
+
+
+```
+
+```{r}
+#| label: fun-logit-gof
+
+# custom function to return a certain selection of logistic regression model
+# goodness-of-fit statistics
+lrm.gof.stats <- function(model, ...){
+  
+  out <- data.frame(
+    nobs = stats::nobs(model),
+    null.deviance = model$null.deviance,
+    df.null = model$df.null,
+    logLik = as.numeric(stats::logLik(model)),
+    deviance = stats::deviance(model),
+    df.residual = stats::df.residual(model),
+    chisq = as.numeric(model$null.deviance - stats::deviance(model)),
+    df = as.numeric(model$df.null - stats::df.residual(model)),
+    'P(>chi)' = pchisq(q=model$null.deviance - stats::deviance(model),
+                       df = model$df.null - stats::df.residual(model), 
+                       lower.tail = F)
+  )
+  out <- dplyr::as_tibble(out) |>  
+  # rename column variables
+  dplyr::rename(
+    "Num.Obs."      = "nobs",
+    "Log.Lik"       = "logLik",
+    "Deviance"      = "deviance",
+    "Deviance Null" = "null.deviance",
+    "DF"            = "df",
+    "chisq"          = "chisq",
+    "P(>chisq)"     = "P..chi."
+  )
+  return(out)
+}
+
+```
+
+
+```{=typst}
+#show figure: set block(breakable: true)
+```
+
+```{=typst}
+#set block(spacing: 2em)
+#set par(first-line-indent: (
+  amount: 1.5em,
+  all: true),
+  leading: 0.85em,
+  spacing: 1.5em
+  )
+```
+
+## Sample
+
+The survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment ($n = 650$) control ($n = 637$) conditions
+
+
+```{r}
+#| label: tbl-demog
+#| tbl-cap: "Sample Demographics"
+
+df <- data |>
+  dplyr::mutate(
+    mil = dplyr::case_when(
+      milserv1 =="Yes" & milserv2 == "Yes" ~ "Active Duty",
+      milserv1 =="Yes" & milserv2 == "No" ~ "Prior Service (Veteran)",
+      milservfam == "Yes" ~ "Has Family in Military",
+      milservfam == "No" ~ "No Family in Military",
+      TRUE ~ NA),
+    ideo_3cat = dplyr::case_when(
+      ideo %in% c("Extremely Liberal",
+                  "Slightly liberal",
+                  "Liberal") ~ "Liberal",
+      ideo %in% c("Extremely conservative",
+                  "Slightly conservative",
+                  "Conservative") ~ "Conservative",
+      ideo %in% c("Moderate: middle of the road") ~ "Moderate",
+      ideo %in% c("Haven't thought much about this") ~ "Unsure",
+      TRUE ~ NA)
+    ) |> 
+  dplyr::mutate(dplyr::across(where(is.character), ~as.factor(.))) |>
+  dplyr::select(
+    group,
+    age_4cat,
+    gender_3cat,
+    race,
+    hisp,
+    educ_4cat,
+    mil, 
+    partyid_3cat,
+    ideo_3cat
+    ) |> 
+  labelled::set_variable_labels(
+    age_4cat = "Age groups, in years",
+    gender_3cat = "Gender",
+    race = "Race",
+    hisp = "Is R of Hispanic, Latino, or Spanish origin",
+    educ_4cat = "Education",
+    mil = "Military Relation",
+    partyid_3cat = "Party ID", 
+    ideo_3cat = "Political Ideology"
+    )
+
+freqs <- df |> 
+  dplyr::mutate(dplyr::across(where(is.character), ~as.factor(.))) |>
+  purrr::map(janitor::tabyl, show_na = T) |> 
+  purrr::map(janitor::adorn_pct_formatting, affix_sign = F)
+
+freqs <- purrr::list_rbind(freqs) |> 
+  dplyr::rename(" " = '.x[[i]]',
+                "valid percent" = "valid_percent") |>
+  dplyr::as_tibble() |> 
+  dplyr::mutate(across(where(is.factor), ~as.character(.)))
+
+# inner <- "rows={abovesep=0pt, belowsep=0pt}"
+inner <- "rowsep=0pt"
+
+tinytable::tt(freqs, width = c(3, 1, 1, 1)) |>
+  tinytable::format_tt(j = "valid percent", replace = "-") |> 
+  tinytable::group_tt(i = list(
+    "Experiment Condition" = 1,
+    "Age" = 3,
+    "Gender" = 7,
+    "Race" = 11,
+    "Hispanic, Latino, or Spanish Origin" = 17,
+    "Education" = 21,
+    "Military Relation" = 26,
+    "Party ID" = 31,
+    "Political Ideology" = 35),
+    indent = 2
+    ) |>
+  tinytable::style_tt(fontsize = 0.65, align = "lrrr", tabularray_inner = inner)
+
+
+```
+
+{{< pagebreak >}}
+
+## Test of Random Assignment to Experiment Condition
+
+@tbl-logit shows results of a logistic regression test of random assignment to the treatment group. Demographics such as age, gender, race, educational attainment, and party ID are included as predictor variables. Note that 19 missing observations were deleted. A $\chi^2 = 11.010$, with 15 degrees of freedom and associated p-value > 0.05 ($p = 0.75$) confirms that none of the demographic predictor variables significantly increased the log-odds---in turn, the probability---of being assigned to the treatment group.
+
+
+
+```{r}
+#| label: tbl-logit
+#| tbl-cap: "Logistic Regression of Random Assignment to Treatment"
+
+# simple logit of test of random assignment to treatment
+# treatment is DV (treatment = 1, control = 0)
+# demographic variables are IVs
+m1 <- glm(group ~ age_4cat + gender_3cat + race2 + educ_4cat + partyid_3cat, 
+          family = binomial(link = "logit"), data = data)
+
+cmp <- c(
+  "age_4cat35-54"  = "35-54",
+  "age_4cat55-74"  = "55-74",
+  "age_4cat75-85+"  = "75-85+",
+  "gender_3catFemale"  = "Female",
+  "gender_3catOther/Refused"  = "Other/Refused",
+  "race2Asian"  = "Asian",
+  "race2Black"  = "Black",
+  "race2Other"  = "Other",
+  "race2Hispanic"  = "Hispanic",
+  "race2American Indian"  = "American Indian",
+  "educ_4catSome college no degree"  = "Some college no degree",
+  "educ_4catCollege degree"  = "College degree",
+  "educ_4catPostgraduate degree"  = "Postgraduate degree",
+  "partyid_3catRepublican"  = "Republican",
+  "partyid_3catDemocrat"  = "Democrat"
+)
+
+gm <- list(
+  list("raw" = "nobs", "clean" = "N", "fmt" = 0),
+  list("raw" = "logLik", "clean" = "Log.Lik.", "fmt" = 3),
+  list("raw" = "deviance", "clean" = "Deviance", "fmt" = 2),
+  list("raw" = "null.deviance", "clean" = "Deviance Null", "fmt" = 2),
+  list("raw" = "df", "clean" = "DF", "fmt" = 0),
+  list("raw" = "chisq", "clean" = "Chi2", "fmt" = 3),
+  list("raw" = "P(>chisq)", "clean" = "P(>chisq)", "fmt" = 3))
+
+
+tab.logit <- modelsummary::modelsummary(
+  list("log(OR)" = m1),
+  output = "tinytable",
+  estimate = "{estimate}, [{conf.low}, {conf.high}]",
+  statistic = NULL,
+  coef_map = cmp,
+  gof_function = lrm.gof.stats,
+  gof_map = gm,
+  gof_omit = "AIC|BIC|F|RMSE",
+  width = c(2,1)
+  ) |> 
+  tinytable::strip_tt(line = TRUE)
+
+
+
+
+tab.logit |> 
+  tinytable::group_tt(i = list(
+    "Age" = 1,
+    "Gender" = 4,
+    "Race" = 6,
+    "Education" = 11,
+    "Party ID" = 14), 
+    indent = 2
+    ) |> 
+  tinytable::style_tt(i = 20, line = "b", line_color = "black") |> 
+  # adjust fontsize of text within table
+  tinytable::style_tt(fontsize = 0.65, align = "lc", tabularray_inner = inner) |>
+  # finally, format markdown and blank out any NA fillers
+  tinytable::format_tt(markdown = T, replace = " ")
+
+```
