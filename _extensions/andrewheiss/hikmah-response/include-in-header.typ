@@ -10,7 +10,7 @@
 #set par(
   first-line-indent: 1em,
   justify: true,
-  spacing: 0.65em
+  spacing: 1.2em
 )
 
 #show heading: set block(above: 2em, below: 1em)

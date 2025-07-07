@@ -58,6 +58,7 @@ format:
   html: 
     toc: true
     toc-depth: 3
+    toc-expand: false
     mainfont: TeX Gyre Pagella
     sansfont: TeX Gyre Pagella
     mathfont: TeX Gyre Pagella Math
@@ -127,6 +128,13 @@ format:
           \AtBeginEnvironment{longtblr}{\begin{singlespacing}}
           \AtEndEnvironment{longtblr}{\end{singlespacing}}
   
+  # typst:  
+  #   toc: false
+  #   keep-typ: true
+  #   papersize: us-letter
+  #   mainfont: TeX Gyre Pagella
+  #   fontsize: 11pt
+    
   submittable-docx: default
   # jats: default
   # docx:

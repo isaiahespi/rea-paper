@@ -173,6 +173,28 @@ lrm.gof.stats <- function(model, ...){
 
 ```
 
+```{r}
+#| label: tinytable-theme
+
+# see here: https://vincentarelbundock.github.io/tinytable/vignettes/theme.html#user-written-themes
+
+theme_mitex <- function(x, ...) {
+    fn <- function(table) {
+        if (isTRUE(table@output == "typst")) {
+          table@table_string <- gsub(
+            "\\$(.*?)\\$",
+            "#mitex(`\\1`)",
+            table@table_string)
+        }
+        return(table)
+    }
+    x <- style_tt(x, finalize = fn)
+    return(x)
+}
+
+```
+
+
 
 {{< pagebreak >}}
 
@@ -216,19 +238,41 @@ There's also stark difference in public trust before the election has occurred c
 
 As such, it is questionable whether we can characterize public trust in the pre-election period as the same trust after the election results have come out. The former is *anticipatory*---i.e., the kind that is more or less anxious given the uncertainties surrounding the election. The latter is *empirical*---a judgement discerned in hindsight after the experience of the election event has occurred. As discussed by @stewart2022, not only was confidence in vote count accuracy influenced by the voter experience, but so too were evaluations of election officials [-@stewart2022, 242-243]. Not to mention the influence that the election results would also have on such evaluations. In other words, evaluations of trust considered in hindsight are influenced by the voter experience and the outcome of the election results. This study, in contrast, focuses primarily on that *anticipatory* kind of confidence, which speaks more to those insecurities based on perceptions of the institution's trustworthiness than upon the particular voter experience.
 
-Regardless of the measures taken by election officials to boost public confidence in the *trustworthiness* of election administration (e.g., conducting audits, testing election machines), public *trust* and confidence in elections more generally is apt to shift dramatically post-election based on factors such as partisanship, elite rhetoric, particular state policies, and more [@nadeau1993; @carter2024; @coll2024a]. Moreover, prior research has found that evaluation of election workers themselves are an important factor when it comes to levels of public confidence in the electoral process [@hall2007; @hall2009; @claassen2008]. Such studies focused on the quality of the voter experience with reference to the interaction between voter and election worker.
+Regardless of the measures taken by election officials to boost public confidence in the *trustworthiness* of election administration (e.g., conducting audits, testing election machines), public *trust* and confidence in elections more generally is apt to shift dramatically post-election based on factors such as partisanship, elite rhetoric, particular state policies, and more [@nadeau1993; @carter2024; @coll2024a]. Comparable research finds that confidence in elections is increased through elite rhetoric from fellow partisans affirming legitimacy of elections [@clayton2023], or through the provision of information about the electoral process or other official messaging of election officials themselves [@gaudette2025]. Moreover, prior research has found that evaluation of election workers themselves are an important factor when it comes to levels of public confidence in the electoral process [@hall2007; @hall2009; @claassen2008]. Such studies focused on the quality of the voter experience with reference to the interaction between voter and election worker.
 
-Beyond the general competence of election workers, however, the quality of the voter experience may be influenced merely by prior impressions about *who* comprises election staff and volunteers. Political and other social science researchers have recognized for some time the power that group identity can have over attitudes and perception [@xiao2016; @xiao2012; @vanbavel2021]. As such, we can expect that information identifying the particular groups being recruited to serve as election staff will be enough to improve confidence in elections, and lessen expectations of electoral fraud. The next section elaborates on the proposed theory, terms utilized, and why military veterans are of particular interest in this regard.
+Beyond the general competence of election workers, however, the quality of the voter experience may be influenced merely by prior impressions about *who* comprises election staff and volunteers. Political and other social science researchers have recognized for some time the power that group identity can have over attitudes and perception [@xiao2016; @xiao2012; @vanbavel2021]. As such, we can expect that information identifying the particular groups being recruited to serve as election staff will be enough to improve confidence in elections, and lessen expectations of electoral fraud. The next section elaborates on the proposed theory and why military veterans are of particular interest in this regard.
 
-# Theory
+## Theory: Why Veterans
 
-This theory is constrained to public confidence in the administration of elections in the United States. To be clear, the scope conditions in which this theory applies concern public trust and distrust in election administration in the anticipatory period prior to the election event. Moreover, this study is, to a limited extent, indirectly related to public regard about veteran members of the U.S. Armed Forces.
+The theory tested in this study is this: when the public is informed that election officials are actively recruiting veteran military service members to work at election sites as staff or volunteers, their overall confidence in the fairness, accuracy, and integrity of the electoral process will improve. Said another way, insecurities over the integrity of elections administration and safety of voters lessen as the public learns that military service veterans are being sought out by election officials to staff or volunteer at election sites. The stimulating influence of veterans as a group in the abstract is expected to counteract distrust and insecurity pertaining to the institution of elections administration, as well as inspire greater trust in the same. This prompts an obvious question: why would information about efforts to recruit veterans to work as election staff and volunteers have any influence on confidence in elections?
+
+Election officials don't focus on recruiting people of a particular demographic, status, class, or prestige in order to shore up public trust in elections, and they don't discriminate recruitment efforts based on who the public thinks is best suited to secure elections from fraud. Election officials are likely to be agnostic as to who dedicates their time to civil service such as election work. Especially since staffing has been an issue since at least the 1990s [@maidenberg1996; @ferrer2024]. In 2020, such efforts were made far more difficult by the COVID-19 pandemic [@mena2020; @abbate2020a]. There's no special reason to target veterans for recruitment above other groups. Indeed, there's no reason to discriminate recruitment efforts at all if the point is purely to fill staffing vacancies. 
+
+There was a sudden push to target veterans for recruitment efforts that arose shortly after the events on Capitol Hill on January 6th, 2021. After the 2020 election, large efforts were made to recruit military veterans and their families to work or volunteer as election staff [@wetheveterans2022; @nflfootballoperations2022]. Prior to that point, young people were sometimes given special mention as targets of election worker recruitment efforts [@powerthepolls2020; @herndon2020]. Generally, however, recruitment efforts cast a wide net, indiscriminate of who applies [@ross2020; @conde2020].
+
+One can speculate that the motivation to associate military veterans with civic engagement and democracy may be intended to counter negative perceptions and impressions given by the proportion of veteran service members arrested for taking part in the events on January 6th [@milton2021; @loewenson2023; @jensen2022a]. Especially with regard to research demonstrating that willingness to support violent efforts to overturn election results (in support of Trump) is, on average, more common among veterans than among matched samples of non-veterans [@pape2024]. This is in addition to a strengthened association portrayed in media outlets between military veterans and militias [@steinhauer2020]. Prior research has substantiated such a connection between veterans and militia groups. @cooter2024 notes from her 3-year ethnographic fieldwork among Michigan militia members that, "...approximately 40% of militia leaders and 30% of members had previous military experience. Most of these veterans actively sought out such groups, as opposed to being recruited by them" [see also @cooter2013]. Thus, countering such associations by promoting a different image of veterans to the mass public and veterans alike seems like a reasonable motivation. Yet such speculation is just that.
+
+The claim that recruiting veterans to work as election staff and volunteers would improve public confidence in elections emerges as non-profit organizations---mainly comprised of veteran and military family members themselves---operate under, and promote, that assumption [@looker2024; @lawrence2024; @wentling2024]. Non-profit groups of late have made incredible strides in targeted recruitment efforts under the notion that veterans are uniquely capable, committed, and best fit to serve the needs of the United States as civil servants and volunteers at election sites. Indeed, this study can be seen as a test of a particular assumption that veterans have about themselves---the assumption that their mere presence and civic engagement will inspire confidence in elections among the public.
+
+Veterans are, after all, civilians. Civilians with shared (but varied) experience and status of prior military service, but who are no more or less qualified for this civil service^[Research is limited and mixed on whether veterans in general are more inclined, however [@nesbit2011].] over non-veteran civilians. To be frank, announcements about concerted efforts to recruit veterans as election workers should not reasonably influence one's trust that votes will be counted more accurately, or that election fraud will not occur; there is no known evidence demonstrating that actually employing veterans as election staff or volunteers further improves the safety, security, and overall integrity of elections in the United States. Moreover, there's no known evidence of positive influence on public perceptions of said outcomes when voters encounter military veterans working as staff or volunteers at elections sites. So, why veterans?
+
+Two considerations underpin the notion that information about veterans will improve trust and quell distrust in elections. First, positive public regard for veterans *in general* is sufficient to elicit greater trust and lower distrust in elections despite the fact that information about veterans as election workers, or even merely information on efforts to recruit veterans, has no bearing on the actual integrity of the electoral process. 
+
+An underlying assumption here is that there *is* something special about veterans in the eyes of the public generally, but this doesn't include a proposition on exactly *what* that special something might be in theory. This is partly due to there being limited research on public opinion about former and active military service members distinguished separately from public opinion about the military as an institution in general. Support for the military is generally pretty high, but attitudes about the military in general can't be construed as public opinion about veterans as a group. The evidence that can be gathered concerning public regard for military veterans shows that, generally, veterans are perceived favorably among the general public and all groups express exaggerated support for veterans in more than one way [@kleykamp2018], suggesting that public regard for veterans is prescribed by widespread social norm. Although military recruitment shows a downward trend as of late, public perceptions of veterans are overwhelmingly positive [@kleykamp2023].
+
+Beyond such findings, it is overtly clear that former and active military service members are highly revered nationwide. Veteran's day is a national holiday, and custom prescribes thanking military members for their service. Calls to "support the troops" are distinct from calls to support the politics the troops are deployed to pursue. In 2016, former NFL player Colin Kaepernick went from sitting to kneeling in protest during the playing of the National Anthem upon criticism that sitting in protest implied disrespect for active and former military service members [@haerens2018]. 
+
+Generally high public regard for veterans is taken together with literature suggesting that public trust in elections is malleable to factors that range in logical relevance to the actual structure or administration of elections. On the one hand, public trust is, indeed, influenced by information specifically about the processes of conducting elections [@gaudette2025]. On the other hand, the public's trust in elections is not beholden to the demonstrated *trustworthiness* of the institution of election administration. Whether generally high public reverence for veterans is due to injunctive social norms or not, what may be posited is simply that positive regard for veterans in general may function sufficiently as a cue to elicit greater trust in elections despite relevance.
+
+Second, veterans are a particularly potent group where mention of one's veteran status seems to have a calming effect on attitudes. More so than just the general positive favor afforded to veterans, the group appears to have a somewhat pacifying effect on negative or otherwise contemptible discrimination, prejudice, and social stigma. For instance, recent research shows that, during his campaign in the 2020 Democratic Primaries, Pete Buttigieg's military background mitigated discrimination against him when he was presented as a veteran married to a man [@magni2024]. Similar research has also found that a candidate's veteran status affords them better evaluations regarding competency in particular issue areas (e.g., war competence) [@teigen2013; @hardy2019]. Moreover, veteran status seems to mitigate or nullify usual stigmas associated with mental illness. That is to say, there is negative stigma associated with mental illness [@corrigan2002] and such stigma incurs labor market discrimination [@hipes2016], but evidence suggests that veteran status overrides such stigma and discrimination [@maclean2014]. Or, in another light, mental illness is seemingly more *understandable* (i.e., permissible) for veterans given the presumptive reasons for their mental strife. And media framing as such plays an important role on public perception [@kleykamp2015]. Relatedly, attitudes about homelessness and PTSD---ranging from perceived causes of homelessness, whether the federal government should dedicate more resources, perceived effectiveness of policies, to compassion for homeless individuals---are generally more favorable for the homeless population among veterans than for the homeless population of general adults [@tsai2021].
+
+Such effects primarily pertain to attitudes about individual people or groups (e.g., a political candidate, prospective employees, the homeless population). The capacity of one's veteran status to pacify prejudice, discrimination, and stigma likely extends out to veterans as a group in a similar fashion. Information that election sites will be staffed by veterans may be enough to ease insecurities about the competence and commitment of the institution to conduct fair and accurate elections. 
 
 ## Trust and Distrust in Elections
 
-The theoretical relationship between trust and distrust is important to understand, especially when it comes to the dependent outcome of interest. Before going further, it is necessary to explicate the conception *confidence in elections* with respect to trust and distrust.
+This theory is constrained to public confidence in the administration of elections in the United States. To be clear, the scope conditions in which this theory applies concern public trust and distrust in election administration in the anticipatory period prior to the election event. The theoretical relationship between trust and distrust is important to understand, especially when it comes to the dependent outcome of interest. Before going further, it is necessary to explicate the conception *confidence in elections* with respect to how I've defined trust and distrust in elections.
 
-Trust is, after all, merely *belief* held in the face of uncertainty. Trust is reliance on the veracity of belief in the face of uncertainty. Said another way, trust is assured belief dependent on its supposed veracity; a state of certainty with respect to some belief or judgement. It is "assured" because it is one's belief that relies on something rather than nothing. Hence quantitative methods of the sciences are replete with things such as *confidence* intervals around our estimates. Therefore, I understand trust to refer to the state or quality of certainty around one's beliefs or expectations; the extent to which one is assured of their expectations regarding what is or what will be the case.
+Trust is, after all, merely *belief* held in the face of uncertainty. Trust is reliance on the veracity of belief in the face of uncertainty. Said another way, trust is *assured belief* dependent on its supposed veracity; a state of certainty with respect to some belief or judgement. It is "*assured*" because it is one's belief that relies on something rather than nothing. Hence quantitative methods of the sciences are replete with things such as *confidence* intervals around our estimates. Therefore, I understand trust to refer to the state or quality of certainty around one's beliefs or expectations; the extent to which one is assured of their expectations regarding what is or what will be the case.
 
 The kind of *trust in elections* I refer to concerns the expectations drawn up from one's judgement about the functioning of the electoral process---the extent to which one is assured in the belief that the electoral process will be fairly and accurately administered. I follow the notion of public trust in elections explicated by @stewart2022,
 
@@ -243,34 +287,6 @@ As such, trust and distrust represent opposing degrees of confidence along the s
 This means that a person's baseline level of confidence in elections must take into account their present degree of distrust---i.e., their expectations of electoral fraud. Something may cause a person to have greater expectations that election fraud will occur, which in turn will always lower their trust in elections. In contrast, a person's trust in the integrity of the electoral process is reduced by the extent to which they expect that electoral fraud will occur.
 
 Thus, it follows that a person distrusts the integrity of the electoral process to the extent that they are to some extent certain that electoral fraud will occur or has occurred. They are, perhaps, poised to discount election results as invalid or illegitimate in advance. Either way, both trust and distrust refer to some positive degree of confidence (i.e., assurance) regarding one's expectations. They are distinguished by reference to either the normative idea about what *should* come about, or what is *supposed* to come about given the logical structure and integrity of the process. If the structure and integrity of some process is coherent and secure, respectively, then the outcome that follows will be valid. Should the integrity of that process be damaged or opaque, then the process becomes vulnerable and validity of the results are open to challenge. With respect to the administration of U.S. elections, the confident voter expects that votes will be counted as voters intend, election staff will competently administer elections, election technology will be secure from nefarious tampering, and that the process will be fair for all involved.
-
-## Why Veterans
-
-Election officials don't focus on recruiting people of a particular demographic, status, class, or prestige in order to shore up public trust in elections, and they don't discriminate recruitment efforts based on who the public thinks is best suited to secure elections from fraud.
-
-Election officials are likely to be agnostic as to who dedicates their time to civil service such as election work. Especially since staffing has been an issue since at least the 1990s [@maidenberg1996; @ferrer2024]. In 2020, such efforts were made far more difficult by the COVID-19 pandemic [@mena2020; @abbate2020a]. There's no special reason to target veterans for recruitment above other groups. Indeed, there's no reason to discriminate recruitment efforts at all if the point is purely to fill staffing vacancies.
-
-Veteran military service members are, after all, civilians; Civilians with shared (but varied) experience and status of prior military service, but who are no more or less qualified for this civil service^[Research is limited and mixed on whether veterans in general are more inclined, however [@nesbit2011].] than non-veteran civilians. To be frank, announcements about concerted efforts to recruit veterans as election workers should not reasonably influence one's trust that votes will be counted more accurately, or that election fraud will not occur; there is no known evidence demonstrating that actually employing veterans as election staff or volunteers further improves the safety, security, and overall integrity of elections in the United States. Moreover, there's no known evidence of positive influence on public perceptions of said outcomes when voters encounter military veterans working as staff or volunteers at elections sites. 
-
-Rather, the claim that recruiting veterans to work as election staff and volunteers would improve public confidence in elections emerges as non-profit organizations---mainly comprised of veteran and military family members themselves---operate under, and promote, that assumption [@looker2024; @lawrence2024; @wentling2024]. Non-profit groups of late have made incredible strides in targeted recruitment efforts under the notion that veterans are uniquely capable, committed, and best fit to serve the needs of the United States as civil servants and volunteers at election sites. Indeed, this study can be seen as a test of a particular assumption that veterans have about themselves---the assumption that their mere presence and civic engagement will inspire confidence in elections among the public.
-
-There was a sudden push to target veterans for recruitment efforts that arose shortly after the events on Capitol Hill on January 6th, 2021. After the 2020 election, large efforts were made to recruit military veterans and their families to work or volunteer as election staff [@wetheveterans2022; @nflfootballoperations2022]. Prior to that point, young people were sometimes given special mention as targets of election worker recruitment efforts [@powerthepolls2020; @herndon2020]. Generally, however, recruitment efforts cast a wide net, indiscriminate of who applies [@ross2020; @conde2020].
-
-One can speculate that the motivation to associate military veterans with civic engagement and democracy may be intended to counter negative perceptions and impressions given by the proportion of veteran service members arrested for taking part in the events on January 6th [@milton2021; @loewenson2023; @jensen2022a]. Especially with regard to research demonstrating that willingness to support violent efforts to overturn election results (in support of Trump) is, on average, more common among veterans than among matched samples of non-veterans [@pape2024]. This is in addition to a strengthened association portrayed in media outlets between military veterans and militias [@steinhauer2020]. Prior research has substantiated such a connection between veterans and militia groups. @cooter2024 notes from her 3-year ethnographic fieldwork among Michigan militia members that, "...approximately 40% of militia leaders and 30% of members had previous military experience. Most of these veterans actively sought out such groups, as opposed to being recruited by them" [see also @cooter2013]. Thus, countering such associations by promoting a different image of veterans to the mass public and veterans alike seems like a reasonable motivation. Yet such speculation is just that.
-
-The key findings of literature on confidence in elections hardly point to public regard for veterans as a mechanism for the theoretical expectations of improving overall confidence in elections and improving feelings of voter safety at election sites. Comparable research finds that confidence in elections is increased through elite rhetoric from fellow partisans affirming legitimacy of elections [@clayton2023], or through the provision of information about the electoral process or other official messaging of election officials themselves [@gaudette2025]. Neither of the studies just cited, however, consider attitudes or sentiment about veterans as a source for dispelling distrust and improving trust in elections. To be clear, there is no immediate "puzzle" in the literature that immediately draws out public sentiment for military veterans as a source for bolstering confidence in elections. That being said, the general public perception, attitudes, or even stereotypes about military veterans are significant to consider.
-
-It is important to make clear two considerations that underpin the notion that information about veterans will improve trust and quell distrust in elections. First, positive public regard for veterans *in general* is sufficient to elicit greater trust and lower distrust in elections despite the fact that information about veterans as election workers, or even merely information on efforts to recruit veterans, has no bearing on the actual integrity of the electoral process. An underlying assumption here is that there *is* something special about veterans, but this doesn't include a proposition on exactly *what* that special something might be in theory. This is partly due to the limited research available on public regard for veterans, specifically in terms of elucidating an underlying mechanism for such positive favor. Moreover, there is limited research on public opinion about former and active military service members distinguished separately from public opinion about the military as an institution in general. Endorsement or support of government policies intended to benefit veterans specifically (e.g., federal funding on veteran healthcare) are easy to conflate as interchangeable with public attitudes about veterans as a group in particular. This, in turn, permits general expectations of positive influence due to the public's overarching positive regard for veterans, but disallows for expectations regarding how respondents would actually process and interpret a treatment that only mentions efforts to recruit them for election work. In short, we are sure that people sustain positive views for veterans generally, but beyond that I make no special effort to propose and examine why that is the case in greater detail.
-
-The evidence that can be gathered concerning public regard for military veterans shows that, generally, veterans are perceived favorably among the general public; although military recruitment shows a downward trend as of late, public perceptions of veterans are overwhelmingly positive [@kleykamp2023]. In my review of the literature, I found only one study which assessed public opinion about veterans specifically and examined whether attitudes differed by group [@kleykamp2018]. @kleykamp2018 investigated the extent to which positive regard for military veterans in terms of both social distance and deservingness varies across different groups, and the extent to which such support is exaggerated. Their research found that levels of support for veterans tended to be predictably lowest, but also most exaggerated, among those who were younger and non-White. Determining what groups hold special favor for veterans still leaves it unclear as to what it is about veterans that engenders greater confidence in elections. Yet, generally, all groups expressed exaggerated support for veterans in more than one way [@kleykamp2018], suggesting that public regard for veterans is prescribed by widespread social norm.  
-
-This is taken together with literature suggesting that public trust in elections is malleable to factors, experiences, events, or phenomena that range in logical relevance to the actual structure or administration of elections. On the one hand, public trust is, indeed, influenced by information specifically about the processes of conducting elections [@gaudette2025]. On the other hand, the public's trust in elections is not beholden to the demonstrated *trustworthiness* of the institution of election administration. Thus the first consideration is simply that the positive public regard for veterans in general may function sufficiently as a cue to elicit greater trust in elections despite relevance.
-
-Second, veterans are a particularly potent group where mention of one's veteran status seems to have a positive, calming, or nullifying effect on attitudes. More so than just the general positive favor afforded to veterans, the group appears to have a somewhat pacifying effect on negative or otherwise contemptible discrimination, prejudice, and social stigma. For instance, recent research shows that, during his campaign in the 2020 Democratic Primaries, Pete Buttigieg's military background mitigated discrimination against him when he was presented as a veteran married to a man [@magni2024]. Similar research has also found that a candidate's veteran status affords them better evaluations regarding competency in particular issue areas (e.g., war competence) [@teigen2013; @hardy2019]. Moreover, veteran status seems to mitigate or nullify usual stigmas associated with mental illness. That is to say, there is negative stigma associated with mental illness [@corrigan2002] and such stigma incurs labor market discrimination [@hipes2016], but evidence suggests that veteran status overrides such stigma and discrimination [@maclean2014]. Or, in another light, mental illness is seemingly more *understandable* (i.e., permissible) for veterans given the presumptive reasons for their mental strife. And media framing as such plays an important role on public perception [@kleykamp2015]. Relatedly, attitudes about homelessness and PTSD---ranging from perceived causes of homelessness, whether the federal government should dedicate more resources, perceived effectiveness of policies, to compassion for homeless individuals---are generally more favorable for the homeless population among veterans than for the homeless population of general adults [@tsai2021]. Such effects primarily pertain to attitudes about individual people or groups (e.g., a political candidate, prospective employees, the homeless population). The capacity of one's veteran status to pacify prejudice, discrimination, and stigma likely extends out to quell negative and disfavorable attitudes regarding institutions to a similar extent, e.g., distrust. 
-
-Given the heightened tensions and electoral anxieties, the expectations surrounding the unique pacifying effect that veterans have on attitudes about individuals or other groups is extended to determine whether a similar effect is found when the target of one's consideration is not just a person or group but the institution of election administration itself. Thus the second consideration for "why veterans" are expected to dispel distrust in elections pertains to pacifying effect of negative or disfavorable attitudes observed in relevant literature. 
-
-The stimulating influence of veterans as a group in the abstract is expected to counteract distrust and insecurity pertaining to the institution of elections administration, as well as inspire greater confidence in the same. There's scant research or evidence available to postulate a well-formed theory on the mechanism underlying the expected effects of veterans as a group on attitudes about institutions and processes, rather than on attitudes about persons or groups. What may be posited at best, however, is that distrust and insecurity in elections among the public is expectedly reduced to some extent through generally positive public regard for military veterans and their unique capacity to quell disfavorable attitudes.
 
 ## Hypotheses
 
@@ -296,6 +312,8 @@ Prior research has found that political candidates benefit from having a militar
 > H~4b~: Confidence that voters will be safe to vote in-person at election sites will be higher among those presented with an announcement that election officials are recruiting veteran service members for election jobs compared to those presented with an announcement of recruitment efforts that do not mention military veterans. 
 
 
+
+
 ## Experiment Design and Survey Measures
 
 To test the theory that publicized efforts to recruit veterans to work as election staff and volunteers would improve confidence in elections and ease insecurity, a recent experiment was embedded in a survey developed and conducted by the Center for Democracy and Civic Engagement (CDCE) at the University of Maryland. The survey was fielded from August 29th, 2024 to September 18th, 2024 on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. Respondents were randomly split into either the treatment ($n = 650$) control ($n = 637$) conditions[^4].
@@ -304,7 +322,7 @@ The median age was $46$ (mean age was $47$), $51.13\%$ ($n = 658$) women, $46.46
 
 Survey participants read either a treatment or control vignette, which resembled a news article about efforts in Maricopa County, AZ to recruit election staff and volunteers for the 2024 general election[^5]. The treatment vignette referred to a program designed to recruit veterans and their family members and describes an interviewee "Jordan Braxton" as an Army veteran. The control vignette simply omitted any mention of veterans and their family members, and didn't describe "Jordan Braxton" as an Army veteran. Beyond those small differences and the headlines, the article vignettes are identical. Therefore, effects can be attributed to the information about veterans in the treatment vignette[^6].
 
-The survey included two items as an attention check prior to presenting either the treatment or control vignette. Respondents who failed to select a certain response twice in a row were removed from the survey. Upon presentation of either the treatment or control vignette, survey respondents were unable to progress further in the survey until at least 15 seconds had elapsed. 
+A manipulation check is intended to ensure that the experimental treatment (or manipulation) is received by respondents as the researcher intends. Since this experiment required respondents to read a faux news article, inattention or speeding through vignette presentation would undermine results. To mitigate this as much as possible, the survey included two items as an attention check prior to presenting either the treatment or control vignette. Respondents who failed to select a certain response twice in a row were removed from the survey. Upon presentation of either the treatment or control vignette, survey respondents were unable to progress further in the survey until at least 15 seconds had elapsed. 
 
 It should be noted that Maricopa County, AZ was chosen as the setting of the story in the vignette due to the increased scrutiny levied toward election administration there after the 2020 election [@giles2021; @maricopacountyelectionsdepartment2022]. Because of this, treatment effects are potentially limited or constrained to attitudes concerning the location specified in the vignette. A block of survey items asked specifically about Maricopa County, AZ, followed by an identical block of items that asked the same questions about one's local area. I compare and discuss results between the items pertaining to different settings.
 
@@ -439,13 +457,10 @@ The results of @tbl-ttest show that, on a scale ranging from -3 to 3, the effect
 
 ```{r}
 #| label: fig-coef1
-#| layout-nrow: 2
 #| fig-height: 3.5
 #| fig-pos: 'H'
 #| fig-cap: "Confidence in Elections by Experiment Condition"
-#| fig-subcap: 
-#|   - "Confidence by Treatment Condition"
-#|   - "Trust and Distrust by Treatment Condition"
+
 
 # coef plot of treatment effect on confidence distinguished by location
 conf.coef1 <- jtools::plot_summs(
@@ -460,6 +475,19 @@ conf.coef1 <- jtools::plot_summs(
   labs(y = "")+
   theme_bw(base_family = "TeX Gyre Pagella")
 
+
+conf.coef1
+
+```
+
+@fig-coef1 displays standard difference estimates of two models for confidence in elections in Maricopa County, AZ, and one's local area by treatment condition (control condition as reference).
+
+
+```{r}
+#| label: fig-coef2
+#| fig-height: 3.5
+#| fig-pos: 'H'
+#| fig-cap: "Trust and Distrust by Treatment Condition"
 
 # Coef plots of trust and distrust models for AZ and Local items
 conf.coef2 <- jtools::plot_summs(
@@ -477,16 +505,13 @@ conf.coef2 <- jtools::plot_summs(
   labs(y = "")+
   theme_bw(base_family = "TeX Gyre Pagella")
 
-
-conf.coef1
 conf.coef2
-
 
 
 ```
 
 
-@fig-coef1 displays standard difference estimates of confidence in elections by treatment condition (control condition as reference). @fig-coef1-1 displays two models for confidence in elections in Maricopa County, AZ, and one's local area by treatment condition; @fig-coef1-2 displays the same except *confidence* is decomposed into its two components, *trust* and *distrust*. These figures merely illustrate the effect of the treatment with respect to the relationship between trust and distrust; ultimately confidence improves. 
+@fig-coef2 displays the same except *confidence* is decomposed into its two components, *trust* and *distrust*. @fig-coef2 merely illustrates the effect of the treatment with respect to the relationship between trust and distrust; ultimately confidence improves. 
 
 Confidence in elections was higher among those who read the treatment vignette but remained conditional on whether the survey questions inquired about elections in Maricopa County, AZ. This evidence suggests that announcing efforts to recruit veterans and their families to work as election staff and volunteers may increase confidence in elections administration in places outside of one's local area, but may not boost confidence in elections within one's local area.
 
@@ -564,15 +589,9 @@ There's a positive interaction effect of the treatment vignette among those who 
 
 While confidence in elections is one concern, it is not the only concern that arises in anticipation of US elections; the public must feel confident that voters are safe to cast a ballot in person. The survey included questions^[See @tbl-6 in Appendix A] that allowed me to assess whether those in the treatment condition expressed less concern for violence and more confidence in voter safety compared to those in the control condition. 
 
-
 ```{r}
-#| label: fig-safety-bars
-#| layout-ncol: 1
-#| layout-nrow: 2
-#| fig-cap: "Safety Concerns and Confidence by Treatment Condition"
-#| fig-subcap: 
-#|   - "Concern for Violence while voting in Maricopa County, AZ Elections"
-#|   - "Confidence in Voter Saftey at Election Sites in Maricopa County, AZ"
+#| label: barplot-setup
+#| include: false
 
 # concern for violence by treatment
 bar_q25 <- custom_barplot(
@@ -584,6 +603,7 @@ bar_q25 <- custom_barplot(
   theme(text = element_text(family = 'TeX Gyre Pagella'),
         legend.position = "right")
 
+
 # confidence in voter safety by treatment
 bar_q26 <- custom_barplot(
   data = data, 
@@ -594,19 +614,29 @@ bar_q26 <- custom_barplot(
   theme(text = element_text(family = 'TeX Gyre Pagella'),
         legend.position = "right")
 
-bar_q25
-bar_q26
 
 
 ```
 
-Briefly reviewing @fig-safety-bars, those in the treatment condition felt less concern over the potential for violence compared to those in the control. As for confidence in voter safety at election sites, it appears that more respondents in the treatment condition expressed that they were "Very confident" compared to those in the control, by approximately $8$ percentage points.
 
-{{< pagebreak >}}
+```{r}
+#| label: fig-safety1
+#| layout-nrow: 2
+#| fig-cap: "Safety Concerns by Treatment Condition"
+#| fig-subcap:  
+#|   - "Concerns for Violence"
+#|   - "Confidence in Voter Safety"
+
+bar_q25
+bar_q26
+
+```
+
+Briefly reviewing @fig-safety1, those in the treatment condition felt less concern over the potential for violence compared to those in the control.
+
+As for confidence in voter safety at election sites, it appears that more respondents in the treatment condition expressed that they were "Very confident" compared to those in the control, by approximately $8$ percentage points.
 
 It would appear that the treatment vignette increased the likelihood that a respondent would select a higher response option compared to those in the control group. In order to assess whether that was the case, I conducted an ordered logistic regression on the relevant items using the experimental condition as a dichotomous predictor.
-
-Those in the treatment condition had lower probability to express that they were 'Very' or 'Somewhat' concerned for violence in Maricopa County, AZ Elections, yet higher probability of expressing 'Not too' or 'Not at all' concerned. As for confidence in voter safety, moving from treatment to control, the difference in predicted probability of a respondent selecting "Very Confident" was $0.08$. @tbl-preds-diff1 and @tbl-preds-diff2 show the significant differences in predicted probabilities at 95$\%$ confidence^[The same models were run for items pertaining to safety concerns in one's local area but results of the treatment were not significantly different from the control. See Appendix E for full results table of ordinal logistic regression]. These findings support both H~4a~ and H~4b~ respectively, permitting rejection of the null for each hypothesis.
 
 ```{r}
 #| label: ordinal-logit
@@ -659,7 +689,7 @@ pdiff_q26 <- marginaleffects::predictions(
 ```{r}
 #| label: tbl-preds-diff1
 #| tbl-colwidths: [80]
-#| tbl-pos: t
+#| tbl-pos: 'H'
 #| tbl-cap: "Difference in Predicted Probabilities in Concern for violence, Threats of Violence, or Intimidation between Treatment and Control"
 
 tab_q25_pdiff <- pdiff_q25 |>
@@ -691,10 +721,13 @@ tinytable::tt(
 ```
 
 
+Shown in @tbl-preds-diff1, those in the treatment condition had lower probability to express that they were 'Very' or 'Somewhat' concerned for violence in Maricopa County, AZ Elections, yet higher probability of expressing 'Not too' or 'Not at all' concerned. 
+
+
 ```{r}
 #| label: tbl-preds-diff2
 #| tbl-colwidths: [80]
-#| tbl-pos: t
+#| tbl-pos: 'H'
 #| tbl-cap: "Difference in Predicted Probabilities in Confidence that voters will be safe to vote in-person between Treatment and Control"
 
 
@@ -725,21 +758,7 @@ tinytable::tt(
 ```
 
 
-{{< pagebreak >}}
-
-## Limitations
-
-The bluntness of the experimental stimulus and survey items don't allow us to establish exactly what it is about military veterans in particular that cues stronger confidence in elections. No survey items assessed public attitudes about military veterans specifically, pre- nor post-treatment. This unfortunately leaves no room for me to postulate and examine any potential mechanisms underlying results.
-
-It should be noted that these results are limited to one's expectations in anticipation of election night. Whether the increase in confidence is sustained post-election night cannot be inferred from these results. Moreover, It is yet unclear whether actually encountering and interacting with veterans working as staff or volunteers at election sites does much to improve voter confidence after election night compared to anyone else. It may be the case that assumptions that veterans are filling spots as election workers and volunteers simply primes positive expectations as one heads into an election site, potentially improving voters perceptions of their own experience on the way out. Further research would be needed to test such an idea.
-
-The setting of the vignette and specified in survey items might raise additional concerns on whether results are generalizable. Naming a specific county in the vignette adds in a potentially influential factor unaccounted for in the survey; some people may have attitudes about the county in question, others won't, while others may be muffed to consider a random county in the U.S. they know nothing about. Naming a real and somewhat salient county potentially undermines confidence that the treatment effects are solely attributable to veterans to an unknown degree. Simply put, there may be something special about Maricopa County, AZ in particular that generalizes across attitudes of trust or distrust in elections. 
-
-Arguably, however, Maricopa County is indicated as the setting in both the treatment and control vignettes, thus the only actual difference between conditions is constrained to the target group being recruited. Future research may employ vignettes naming a fictional U.S. county to hopefully eliminate the setting as a concern. Alternatively additional survey items that ask directly about one's knowledge or sentiment about the county in question could inform researchers on whether the named county imposes any undue influence at all, or whether the setting is associated with other factors such as partisanship.
-
-As stated previously, the survey was fielded on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. The results presented here are not assumed to be generalizable to the national population. It may be feasible to weigh the sample to demographics of the population at the time the survey was fielded, but this is unnecessary for the experimental purpose of the study. If similar findings complement or replicate these results, then the expense of drawing samples more representative of the national population may be justified. At this stage, however, the results are limited to demonstrating treatment effects.
-
-Note also that the measurement items of the components trust and distrust, and the method of computing scores for the dependent variable, confidence in elections, are unique to this study but falls under the methodological framework of Classical Test Theory (CTT). Although survey measurement items were either directly drawn from or inspired by similar survey items found in various other surveys (e.g., SPAE, Pew), the question wording, response choices, coding, and computation of sum scores of the dependent variable are specific, thus rendering measurement of the hypothetical constructs of interest (i.e., trust, distrust) less comparable across similar studies that profess measurement of similar constructs [@widaman2024]. Namely, trust, distrust, or confidence in elections as defined and measured here.
+As for confidence in voter safety in @tbl-preds-diff2, moving from treatment to control, the difference in predicted probability of a respondent selecting "Very Confident" was $0.08$. Both tables show the significant differences in predicted probabilities at 95$\%$ confidence^[The same models were run for items pertaining to safety concerns in one's local area but results of the treatment were not significantly different from the control. See Appendix E for full results table of ordinal logistic regression]. These findings support both H~4a~ and H~4b~ respectively, permitting rejection of the null for each hypothesis.
 
 ## Discussion
 
@@ -763,11 +782,29 @@ That being said, this study generally emulates treatment effects of comparable s
 
 The data of the current study is limited in helping to discern whether the treatment garners greater confidence in elections uniformly across different racial or ethnic groups given that the largest proportion of the sample identified their race as White (77%). It is reasonable to suspect that the treatment vignette might differ by race and ethnicity, but the sample is insufficient to make such generalizations. Nevertheless, attitudes about veterans that differ by group may play an important role in determining whether publicized efforts to recruit military veterans boosts confidence in elections uniformly or whether the effect is merely partial to certain segments of the population.
 
+It is definitely plausible that the public, to some unknown extent, associates a particular gender or race, or both, with former and active military members which may, in turn, mediate the effect of the veteran cue. Additionally, I can't be sure as to whether respondent's views of the military generalize to attitudes about active service members and veterans. However that is a separate question about the source of public opinion about military members themselves beyond the scope of this study. 
+
+There's scant research or evidence available to postulate a well-formed theory on the mechanism underlying the expected effects of veterans as a group on attitudes about institutions and processes, rather than on attitudes about persons or groups. That is to say, there's not much research on how the public feels, or what they think, about former members of the U.S. Armed Forces.
+
 In their research examining whether groups differed in attitudes about veterans, @kleykamp2018 could only speculate as to why levels of support were lowest among Hispanic and Black respondents. Their study was distinctive in that it stands as a rare case in which public attitudes about veteran military members was the specific focus of inquiry as opposed to studies that examine public opinion about the military in general. Other research has found that attitudes about the U.S. military generally---though not about active or veteran military service members in particular---differs by race and ethnicity to varying extents, but also could not supply reason for one groups' sentiment over another^[Note, however, that the sample examined by @nichols2015 was constrained to Texas residents, and the military-related issues concerned, among other things, favor for reinstatement of a military draft, support for allowing undocumented immigrants who live in the U.S. to serve in the U.S. Armed Forces, and whether undocumented immigrants should be granted U.S. citizenship as a result of military service. Although the authors found high overall support for the military as an institution, the other military-related attitudes of interest diverge far from public opinion about veterans. As such, differential effects found among different racial or ethnic groups likely have little to do with attitudes about former or active military service members.] [@nichols2015].
 
 Other studies have drawn out disparities in public attitudes about veterans but in ways that are mostly indirect, i.e., without assessing public regard for veterans directly. One overarching issue is that there's limited research that differentiates public regard for veteran and active military service members from the U.S. military as an institution in general. Some studies assess public regard for veterans indirectly by examining whether, and to what extent, endorsement of certain policies differentiate by whether such policies benefit veterans or the public generally. In one such study by @tsai2021, Republican partisanship was shown to be the most consistent factor associated with more favorable attitudes (e.g., compassion) toward homelessness and PTSD among the veteran population, but not among the general adult population. Additionally, Republican partisans tended to show greater support for federal funding for homelessness and PTSD research when the reference population was military veterans. That study, however, suggests that the effect of the veteran status cue is sensitive to the topic in question. 
 
-Perhaps unsurprisingly, military veterans appear to be uniquely deserving in the eyes of Republican partisans [@tsai2021; @mcdermott2015; @richardson2022]. As such, military veteran status may qualify favorable attitudes among Republican partisans whereas their regard for other non-veteran groups might otherwise express contempt or indifference. This further indicates a need for research to determine an underlying mechanism explaining why veterans incur special favor.
+Perhaps unsurprisingly, military veterans appear to be uniquely deserving in the eyes of Republican partisans [@tsai2021; @mcdermott2015; @richardson2022]. As such, military veteran status may qualify favorable attitudes among Republican partisans whereas their regard for other non-veteran groups might otherwise express contempt or indifference. This further indicates a need for research to determine an underlying mechanism explaining why, and for whom, veterans incur special favor.
+
+## Limitations
+
+The bluntness of the experimental stimulus and survey items don't allow us to establish exactly what it is about military veterans in particular that cues stronger confidence in elections. No survey items assessed public attitudes about military veterans specifically, pre- nor post-treatment. This unfortunately leaves no room for me to postulate and examine any potential mechanisms underlying results.
+
+It should be noted that these results are limited to one's expectations in anticipation of election night. Whether the increase in confidence is sustained post-election night cannot be inferred from these results. Moreover, It is yet unclear whether actually encountering and interacting with veterans working as staff or volunteers at election sites does much to improve voter confidence after election night compared to anyone else. It may be the case that assumptions that veterans are filling spots as election workers and volunteers simply primes positive expectations as one heads into an election site, potentially improving voters perceptions of their own experience on the way out. Further research would be needed to test such an idea.
+
+The setting of the vignette and specified in survey items might raise additional concerns on whether results are generalizable. Naming a specific county in the vignette adds in a potentially influential factor unaccounted for in the survey; some people may have attitudes about the county in question, others won't, while others may be muffed to consider a random county in the U.S. they know nothing about. Naming a real and somewhat salient county potentially undermines confidence that the treatment effects are solely attributable to veterans to an unknown degree. Simply put, there may be something special about Maricopa County, AZ in particular that generalizes across attitudes of trust or distrust in elections. 
+
+Arguably, however, Maricopa County is indicated as the setting in both the treatment and control vignettes, thus the only actual difference between conditions is constrained to the target group being recruited. Future research may employ vignettes naming a fictional U.S. county to hopefully eliminate the setting as a concern. Alternatively additional survey items that ask directly about one's knowledge or sentiment about the county in question could inform researchers on whether the named county imposes any undue influence at all, or whether the setting is associated with other factors such as partisanship.
+
+As stated previously, the survey was fielded on a non-probability sample of 1,287 U.S. citizens 18 years of age or older. The results presented here are not assumed to be generalizable to the national population. It may be feasible to weigh the sample to demographics of the population at the time the survey was fielded, but this is unnecessary for the experimental purpose of the study. If similar findings complement or replicate these results, then the expense of drawing samples more representative of the national population may be justified. At this stage, however, the results are limited to demonstrating treatment effects.
+
+Note also that the measurement items of the components trust and distrust, and the method of computing scores for the dependent variable, confidence in elections, are unique to this study but falls under the methodological framework of Classical Test Theory (CTT). Although survey measurement items were either directly drawn from or inspired by similar survey items found in various other surveys (e.g., SPAE, Pew), the question wording, response choices, coding, and computation of sum scores of the dependent variable are specific, thus rendering measurement of the hypothetical constructs of interest (i.e., trust, distrust) less comparable across similar studies that profess measurement of similar constructs [@widaman2024]. Namely, trust, distrust, or confidence in elections as defined and measured here.
 
 ## Conclusion
 
@@ -906,90 +943,147 @@ tab
 #| label: tbl-demog
 #| tbl-cap: "Sample Demographics"
 #| tbl-colwidths: [70]
-
-df <- data |>
-  dplyr::mutate(
-    mil = dplyr::case_when(
-      milserv1 =="Yes" & milserv2 == "Yes" ~ "Active Duty",
-      milserv1 =="Yes" & milserv2 == "No" ~ "Prior Service (Veteran)",
-      milservfam == "Yes" ~ "Has Family in Military",
-      milservfam == "No" ~ "No Family in Military",
-      TRUE ~ NA),
-    ideo_3cat = dplyr::case_when(
-      ideo %in% c("Extremely Liberal",
-                  "Slightly liberal",
-                  "Liberal") ~ "Liberal",
-      ideo %in% c("Extremely conservative",
-                  "Slightly conservative",
-                  "Conservative") ~ "Conservative",
-      ideo %in% c("Moderate: middle of the road") ~ "Moderate",
-      ideo %in% c("Haven't thought much about this") ~ "Unsure",
-      TRUE ~ NA)
-    ) |> 
-  dplyr::select(
-    group,
-    age_4cat,
-    gender_3cat,
-    race,
-    hisp,
-    educ_4cat,
-    mil, 
-    partyid_3cat,
-    ideo_3cat
-    ) |> 
-  labelled::set_variable_labels(
-    age_4cat = "Age groups, in years",
-    gender_3cat = "Gender",
-    race = "Race",
-    hisp = "Is R of Hispanic, Latino, or Spanish origin",
-    educ_4cat = "Education",
-    mil = "Military Relation",
-    partyid_3cat = "Party ID", 
-    ideo_3cat = "Political Ideology")
-
-freqs <- df |> 
-  dplyr::mutate(dplyr::across(where(is.character), ~as.factor(.))) |>
-  purrr::map(janitor::tabyl, show_na = T) |> 
-  purrr::map(janitor::adorn_pct_formatting, affix_sign = F)
-
-freqs <- purrr::list_rbind(freqs) |> 
-  dplyr::rename(" " = '.x[[i]]',
-                "valid percent" = "valid_percent") |>
-  dplyr::as_tibble() |> 
-  dplyr::mutate(across(where(is.factor), ~as.character(.)))
+#| tbl-pos: H
 
 
-tinytable::tt(freqs) |>
-  tinytable::format_tt(j = "valid percent", replace = "-") |> 
-  tinytable::group_tt(i = list(
-    "Experiment Condition" = 1,
-    "Age" = 3,
-    "Gender" = 7,
-    "Race" = 11,
-    "Hispanic, Latino, or Spanish Origin" = 17,
-    "Education" = 21,
-    "Military Relation" = 26,
-    "Party ID" = 31,
-    "Political Ideology" = 35),
-    indent = 2
-    ) |>
-  tinytable::style_tt(fontsize = 0.80, align = "lccc")
+# descriptive stats of categorical variables
+# gtsummary method
+gtsummary::theme_gtsummary_compact()
+
+tbl.desc <- data |>  
+  gtsummary::tbl_summary( 
+    by = group,
+    label = list(
+      age_4cat = "Age group, in years",
+      gender_3cat = "Gender",
+      race = "Race",
+      hisp = "Hispanic, Latino, or Spanish origin?",
+      educ_4cat = "Education"
+      ),
+    include = c(
+      age_4cat,
+      gender_3cat,
+      race,
+      hisp,
+      educ_4cat
+      ),
+    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
+    missing = "ifany",
+    missing_text = "NA") |> 
+  gtsummary::add_overall() |> 
+  gtsummary::modify_header(label = "**Variable**") |> 
+  gtsummary::bold_labels()
+
+
+tbl.desc |>
+  gtsummary::as_tibble() |>
+  dplyr::rename('**Overall (N = 1287)**' = "**Overall**  \nN = 1,287",
+                "**Control (N = 637)**" = "**Control**  \nN = 637",
+                "**Treatment (N = 650)**" = "**Treatment**  \nN = 650") |>
+  tinytable::tt(theme = "spacing") |>
+  tinytable::format_tt(markdown = T) |>
+  tinytable::format_tt(replace = " ") |>
+  tinytable::style_tt(fontsize = 0.70, align = "lccc")
+
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-demog2
+#| tbl-cap: "Sample Demographics"
+#| tbl-colwidths: [70]
+#| tbl-pos: H
+
+tbl.desc2 <- data |>  
+  gtsummary::tbl_summary( 
+    by = group,
+    label = list(
+      partyid_3cat = "Party ID",
+      ideo_3cat = "Political Ideology",
+      ideolean = "If R had to choose Political Ideology",
+      voted2020 = 'Did R Vote in 2020 Election',
+      choice2020 = 'Vote Choice in 2020 Election'),
+    include = c(
+      partyid_3cat,
+      ideo_3cat, 
+      ideolean, 
+      voted2020, 
+      choice2020),
+    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
+    missing = "ifany",
+    missing_text = "NA") |> 
+  gtsummary::add_overall() |> 
+  gtsummary::modify_header(label = "**Variable**") |> 
+  gtsummary::bold_labels()
+
+tbl.desc2 |>
+  gtsummary::as_tibble() |>
+  dplyr::rename('**Overall (N = 1287)**' = "**Overall**  \nN = 1,287",
+                "**Control (N = 637)**" = "**Control**  \nN = 637",
+                "**Treatment (N = 650)**" = "**Treatment**  \nN = 650") |>
+  tinytable::tt(theme = "spacing") |>
+  tinytable::format_tt(markdown = T) |>
+  tinytable::format_tt(replace = " ") |>
+  tinytable::style_tt(fontsize = 0.70, align = "lccc")
+
 
 
 ```
 
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-demog3
+#| tbl-cap: "Sample Demographics"
+#| tbl-pos: H
+
+tbl.desc3 <- data |>  
+  gtsummary::tbl_summary( 
+    by = group,
+    label = list(
+      milserv1 = "Military Service",
+      milserv2 = "Current Active Duty",
+      milservfam = "Military Service within Family?"
+      ),
+    include = c(
+      milserv1,
+      milserv2, 
+      milservfam), 
+    type = list(
+      milserv1 ~ "categorical",
+      milserv2 ~ "categorical",
+      milservfam ~ "categorical"
+      ),
+    statistic = list(gtsummary::all_categorical()~ "{n} ({p}%)"), 
+    missing = "ifany",
+    missing_text = "NA") |> 
+  gtsummary::add_overall() |> 
+  gtsummary::modify_header(label = "**Variable**") |> 
+  gtsummary::bold_labels()
+
+tbl.desc3 |>
+  gtsummary::as_tibble() |>
+  dplyr::rename('**Overall (N = 1287)**' = "**Overall**  \nN = 1,287",
+                "**Control (N = 637)**" = "**Control**  \nN = 637",
+                "**Treatment (N = 650)**" = "**Treatment**  \nN = 650") |>
+  tinytable::tt(theme = "spacing", width = 1) |>
+  tinytable::format_tt(markdown = T) |>
+  tinytable::format_tt(replace = " ") |>
+  tinytable::style_tt(fontsize = 0.70, align = "lccc")
+
+
+```
 
 {{< pagebreak >}}
 
-# Appendix C: Test of Random Assignment to Experiment Condition {.appendix}
+# Appendix B: Test of Random Assignment to Experiment Condition {.appendix}
 
 @tbl-logit shows results of a logistic regression test of random assignment to the treatment group. Demographics such as age, gender, race, educational attainment, and party ID are included as predictor variables. Note that 19 missing observations were deleted. A $\chi^2 = 11.010$, with 15 degrees of freedom and associated p-value > 0.05 ($p = 0.75$) confirms that none of the demographic predictor variables significantly increased the log-odds---in turn, the probability---of being assigned to the treatment group.
 
 ```{r}
 #| label: tbl-logit
 #| tbl-cap: "Logistic Regression of Random Assignment to Treatment"
-#| tbl-colwidths: [70]
-#| tbl-pos: H
 
 # simple logit of test of random assignment to treatment
 # treatment is DV (treatment = 1, control = 0)
@@ -1033,22 +1127,26 @@ tab.logit <- modelsummary::modelsummary(
   coef_map = cmp,
   gof_function = lrm.gof.stats,
   gof_map = gm,
-  gof_omit = "AIC|BIC|F|RMSE"
+  gof_omit = "AIC|BIC|F|RMSE",
+  width = c(2,1)
   ) |> 
   tinytable::strip_tt(line = TRUE)
 
+
+
+
 tab.logit |> 
   tinytable::group_tt(i = list(
-    "**Age**" = 1,
-    "**Gender**" = 4,
-    "**Race**" = 6,
-    "**Education**" = 11,
-    "**Party ID**" = 14), 
+    "Age" = 1,
+    "Gender" = 4,
+    "Race" = 6,
+    "Education" = 11,
+    "Party ID" = 14), 
     indent = 2
     ) |> 
-  tinytable::style_tt(i = 20, line = "b", line_color = "black", line_width = .05) |> 
+  tinytable::style_tt(i = 20, line = "b", line_color = "black") |> 
   # adjust fontsize of text within table
-  tinytable::style_tt(fontsize = 0.7, align = "lc") |>
+  tinytable::style_tt(fontsize = 0.65, align = "lc") |>
   # finally, format markdown and blank out any NA fillers
   tinytable::format_tt(markdown = T, replace = " ")
 
@@ -1131,8 +1229,7 @@ In short, I expected item responses from the trust and distrust scales to be inv
 #| label: tbl-safety-logit
 #| tbl-cap: "Ordinal Logistic Regression of Concerns for Violence and Confidence in Voter Safety Regressed on Experiment Condition"
 #| tbl-cap-location: top
-#| tbl-colwidths: [80]
-#| tbl-pos: 'H'
+#| tbl-pos: H
 
 # save models to a list
 safety_models <- list(
@@ -1156,42 +1253,43 @@ tbl_safety_logit <- modelsummary::modelsummary(
   # coef_omit = c(-4), # only the beta coef, not the intercepts
   # coef_rename = c("conditionTreatment" = "Treatment"),
   coef_map = cm,
-  stars = T,
-  # estimate = c("{estimate}{stars}"),
-  statistic = "conf.int",
-  gof_map = c("nobs", "rmse"), 
-  note = list(
-    "Parameter estimate (and confidence intervals) exponentiated to show odds ratios.",
-    "Uncertainty intervals (profile-likelihood) and p-values (two-tailed) computed using a Wald t-distribution approximation")
+  stars = F,
+  estimate = c("{estimate}, [{conf.low}, {conf.high}]"),
+  statistic = NULL, 
+  gof_map = c("nobs", "rmse"),
+  note = "Parameter estimate (and confidence intervals) exponentiated to show odds ratios.",
+  width = c(2, 1, 1)
   )
 
-tbl_safety_logit |>  
+tbl_safety_logit |> 
   tinytable::style_tt(
-    fontsize = 0.80 # fontsize of text in table in em units (0.75*default)
+    fontsize = 0.65 # fontsize of text in table in em units (0.75*default)
     ) |> 
-  tinytable::style_tt(i = "notes", fontsize = 0.75, align = "l")
+  tinytable::style_tt(i = "notes", fontsize = 0.65, align = "l")
 
 ```
 
 ```{r}
 #| label: tbl-safety-preds1
 #| tbl-cap: "Unit-level predicted probabilities of selecting response or higher comparing experiment condition"
-#| tbl-colwidths: [80]
-#| tbl-pos: 'H'
-
+#| tbl-pos: H
 
 # table that shows the predicted probability of selecting a response or lower
 # conditional to the Treatment experiment condition.
 tab_safety_preds1 <- q25_preds |>  
   dplyr::as_tibble() |> 
+  dplyr::mutate('Pr(>|z|)' = dplyr::case_when(
+    p.value < 0.05 ~ '<0.05',
+    p.value < 0.01 ~ '<0.01',
+    .default = as.character(p.value)
+  )) |> 
   select(group, condition, 
-         estimate, std.error, statistic,  p.value,
+         estimate, std.error, statistic, 'Pr(>|z|)',
          conf.low, conf.high) |> 
   dplyr::rename(
     Condition = condition,
     Violence = group,
-    z = statistic,
-    'Pr(>|z|)' = p.value) |>
+    z = statistic) |>
   insight::format_table(digits = 3)
 
 
@@ -1199,9 +1297,9 @@ tinytable::tt(
   tab_safety_preds1, digits = 3,
   notes = attr(data$q25, "label")) |> 
   tinytable::style_tt(
-    fontsize = 0.80, # fontsize of text in table in em units (0.75*default)
+    fontsize = 0.65, # fontsize of text in table in em units (0.75*default)
     align = "llccccc") |> 
-  tinytable::style_tt(i = "notes", fontsize = 0.75, align = "l")
+  tinytable::style_tt(i = "notes", fontsize = 0.65, align = "l")
 
 
 ```
@@ -1210,33 +1308,34 @@ tinytable::tt(
 ```{r}
 #| label: tbl-safety-preds2
 #| tbl-cap: "Unit-level predicted probabilities of selecting response or higher conditional to the Treatment experiment condition"
-#| tbl-colwidths: [80]
-#| tbl-pos: 'H'
-
-
+#| tbl-pos: H
 
 # table that shows the predicted probability of selecting a response or lower
 # conditional to the Treatment experiment condition.
 tab_safety_preds2 <- q26_preds |> 
   dplyr::as_tibble() |> 
+  dplyr::mutate('Pr(>|z|)' = dplyr::case_when(
+    p.value < 0.05 ~ '<0.05',
+    p.value < 0.01 ~ '<0.01',
+    .default = as.character(p.value)
+  )) |> 
   select(group, condition, 
-         estimate, std.error, statistic,  p.value,
+         estimate, std.error, statistic, 'Pr(>|z|)',
          conf.low, conf.high) |> 
   dplyr::rename(
     Condition = condition,
     'Voter Safety' = group,
-    z = statistic,
-    'Pr(>|z|)' = p.value) |>
+    z = statistic) |>
   insight::format_table(digits = 3)
 
 tinytable::tt(
   tab_safety_preds2, digits = 3,
   notes = attr(data$q26, "label")) |>  
   tinytable::style_tt(
-    fontsize = 0.80, # fontsize of text in table in em units (0.75*default)
+    fontsize = 0.65, # fontsize of text in table in em units (0.75*default)
     align = "llccccc"
     ) |> 
-  tinytable::style_tt(i = "notes", fontsize = 0.75)
+  tinytable::style_tt(i = "notes", fontsize = 0.65)
 
 
 ```
