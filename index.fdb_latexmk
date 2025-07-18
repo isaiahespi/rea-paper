@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1751920300.36753 "index.tex" "index.pdf" "index" 1751920304.98238 0
+["pdflatex"] 1752875911.21004 "index.tex" "index.pdf" "index" 1752875915.67597 0
   "c:/Users/isaia/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc" 1741590948 2375 baa924870cfb487815765f9094cf3728 ""
   "c:/Users/isaia/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc" 1741590950 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
   "c:/Users/isaia/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc" 1741590950 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -239,16 +239,16 @@
   "c:/Users/isaia/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1751766231 494498 4ccdb31014cb5ff5294419cea3193081 ""
   "c:/Users/isaia/AppData/Roaming/TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt" 1751400952 2251103 a302de448d0130aba4d3c325c7e3caee ""
   "c:/Users/isaia/AppData/Roaming/TinyTeX/texmf.cnf" 1741590912 903 164c5b127cd0d6dc91abad2f62421ea2 ""
-  "index.aux" 1751920304 30214 b42153000a31f87a3861e1df6aedfce4 "pdflatex"
-  "index.tex" 1751920290 157965 13af4e1b2c918b8206f94db323c7e68e ""
-  "index_files/figure-latex/notebooks-figures-fig-dist-output-1.png" 1751920257 42733 6ff36212d80847544a450a271abbd0cd ""
-  "index_files/figure-latex/notebooks-figures-fig-patch13-output-1.png" 1751920257 172954 91f157114935817c606f418dad4aac67 ""
-  "index_files/figure-latex/notebooks-figures-fig-patch14-output-1.png" 1751920257 177877 6b53b55006ee834be5ac8038a0189a05 ""
-  "index_files/figure-pdf/fig-coef1-1.png" 1751920094 40148 70ec3daa6ea7cb7e3a9559fbb580268b ""
-  "index_files/figure-pdf/fig-coef2-1.png" 1751920095 52828 d11a3371fd5624249eb8a6d525f794a9 ""
-  "index_files/figure-pdf/fig-polycor-1.png" 1751920109 391142 57d5833addeaf6d532f771f0f0fcd11c ""
-  "index_files/figure-pdf/fig-safety1-1.png" 1751920096 104805 9b2f433789e2dff97e7bae326eaaca13 ""
-  "index_files/figure-pdf/fig-safety1-2.png" 1751920096 102903 e7d5fda01e3ee039555014c7b74c8656 ""
+  "index.aux" 1752875915 29956 568c091f573ca8c2c77dd744a618ba27 "pdflatex"
+  "index.tex" 1752875901 155228 7f1bc99d19e72be9ba8aef4e419028e2 ""
+  "index_files/figure-latex/notebooks-figures-fig-dist-output-1.png" 1752875890 42733 6ff36212d80847544a450a271abbd0cd ""
+  "index_files/figure-latex/notebooks-figures-fig-patch13-output-1.png" 1752875890 172954 91f157114935817c606f418dad4aac67 ""
+  "index_files/figure-latex/notebooks-figures-fig-patch14-output-1.png" 1752875890 177877 6b53b55006ee834be5ac8038a0189a05 ""
+  "index_files/figure-pdf/fig-coef1-1.png" 1752874792 40148 70ec3daa6ea7cb7e3a9559fbb580268b ""
+  "index_files/figure-pdf/fig-coef2-1.png" 1752874793 52828 d11a3371fd5624249eb8a6d525f794a9 ""
+  "index_files/figure-pdf/fig-polycor-1.png" 1752874805 391142 57d5833addeaf6d532f771f0f0fcd11c ""
+  "index_files/figure-pdf/fig-safety1-1.png" 1752874794 104805 9b2f433789e2dff97e7bae326eaaca13 ""
+  "index_files/figure-pdf/fig-safety1-2.png" 1752874794 102903 e7d5fda01e3ee039555014c7b74c8656 ""
   (generated)
   "index.aux"
   "index.log"

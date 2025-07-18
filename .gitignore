@@ -20,3 +20,6 @@ data/cps_sep2024.rds
 .Rdata
 .httr-oauth
 .DS_Store
+
+response_memo.qmd
+response_memo.pdf
